@@ -26,6 +26,7 @@ public class Question extends Auditing {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
     @Builder.Default

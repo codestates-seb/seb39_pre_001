@@ -5,30 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90361030-bda1-4dbb-b06d-ac9cfd8d023c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/audit/Auditing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/dislike/entity/Dislike.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/like/entity/Like.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/entity/Question.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/entity/QuestionDislike.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/entity/QuestionLike.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application-common.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/seb39_pre_001.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/seb39_pre_001.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/helper/dto/MultiResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/helper/dto/PageInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/helper/dto/SingleResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/controller/QuestionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/dto/QuestionResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/service/QuestionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/service/QuestionStubService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-local.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/entity/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/preproject/preproject/questions/entity/Question.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,9 +53,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Unnamed" />
         <option value="DefaultEntityTemplate" />
+        <option value="DefaultDtoWithLombok" />
+        <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -150,7 +137,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/back/feat/beef-36" />
+                        <option value="back/feat/beef-36" />
                       </list>
                     </value>
                   </entry>
