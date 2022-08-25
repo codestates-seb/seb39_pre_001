@@ -12,4 +12,8 @@ public interface QuestionService {
     Question postQuestion(Question question);
 
     Question updateQuestion(Question question);
+
+    void like(long questionId, long userId);
+
+    void dislike(long questionId, long userId);
 }

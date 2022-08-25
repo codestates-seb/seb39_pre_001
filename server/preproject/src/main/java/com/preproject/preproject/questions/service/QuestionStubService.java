@@ -1,11 +1,9 @@
 package com.preproject.preproject.questions.service;
 
-import com.preproject.preproject.questions.dto.QuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.questions.entity.QuestionLike;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class QuestionStubService implements QuestionService {
@@ -43,5 +41,22 @@ public class QuestionStubService implements QuestionService {
                 .title("stub : update")
                 .description("what is breakfast?")
                 .build();
+    }
+
+    @Override
+    public void like(long questionId, long userId) {
+
+        Question foundQuestion = Question.builder().questionId(questionId).build();
+
+        QuestionLike
+                .builder()
+                .questionLikeId(1L)
+                .question(foundQuestion)
+                .build();
+    }
+
+    @Override
+    public void dislike(long questionId, long userId) {
+
     }
 }
