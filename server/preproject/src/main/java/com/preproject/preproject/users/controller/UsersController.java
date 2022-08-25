@@ -1,19 +1,24 @@
 package com.preproject.preproject.users.controller;
 
 
+import com.preproject.preproject.users.dto.UsersPostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UsersController {
 
-    @PostMapping("/new-user")
-    public ResponseEntity postUser() {
+    @PostMapping("/join")
+    public ResponseEntity postUser(@RequestBody UsersPostDto usersPostDto) {
 
-        return new ResponseEntity<>("Created",HttpStatus.CREATED);
+        return new ResponseEntity<>(usersPostDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/join")
+    public ResponseEntity getUser() {
+
+        return new ResponseEntity<>("Welcome Join User", HttpStatus.OK);
     }
 }
