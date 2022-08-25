@@ -9,7 +9,6 @@ const LoginContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid pink;
   height: 100vh;
 `;
 
@@ -32,10 +31,6 @@ const BottomText = styled.div`
   padding-top: 16px;
 `;
 
-const SignupText = styled.div`
-
-`;
-
 const Link = styled.a`
   color: #0074cc;
 `;
@@ -52,7 +47,7 @@ const Login = () => {
       <SocialLogin />
       <EmailLogin />
       <BottomText>
-        <SignupText>Don't have an account? <Link>Sign up</Link></SignupText>
+        <div>Don't have an account? <Link>Sign up</Link></div>
         <EmployerSignupText>Are you an employer? <Link>Sign up on Talent<RiShareBoxLine /></Link></EmployerSignupText>
       </BottomText>
     </LoginContainer>
