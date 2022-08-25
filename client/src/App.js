@@ -2,14 +2,14 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {About} from "./pages/about";
 import {Product} from "./pages/product";
 import {ForTeams} from "./pages/forTeams";
-import { Navbar } from "./components/Navbar/navbar";
+import { NavbarBootstrap } from "./components/Navbar/navbarBS";
 
 
 
 function App() {
   return (
    <Router>
-    <Navbar />
+    <NavbarBootstrap />
     <Routes>
       <Route path="/about" exact element={<About/>} />
       <Route path="/product" exact element={<Product/>} />
