@@ -14,19 +14,49 @@ z-index: 12;
 .NavIcon {
     font-size: 25px;
 }
+
+.Dropdown-btn {
+    padding: 0 1rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: none;
+}
+
+.home-img {
+    height: 25px;
+    padding: 0 0.2rem;
+}
+button {
+    width: 140px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  margin-left: 15px;
+}
 `;
 
+
 export const NavLink = styled(Link)`
-color: #808080;
+color: #222;
 display: flex;
 align-items: center;
 text-decoration: none;
 padding: 0 1rem;
 height: 100%;
 cursor: pointer;
-&.active {
-    color: #000000;
-}
 `;
 
 export const NavMenu = styled.div `
