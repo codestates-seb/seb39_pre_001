@@ -20,8 +20,28 @@ public class QuestionStubService implements QuestionService {
         return Question
                 .builder()
                 .questionId(questionId)
-                .title("stub")
+                .title("stub : get")
                 .description("what is dinner?")
+                .build();
+    }
+
+    @Override
+    public Question postQuestion(Question question) {
+        return Question
+                .builder()
+                .questionId(1L)
+                .title("stub : post")
+                .description("what is lunch?")
+                .build();
+    }
+
+    @Override
+    public Question updateQuestion(Question question) {
+        return Question
+                .builder()
+                .questionId(question.getQuestionId())
+                .title("stub : update")
+                .description("what is breakfast?")
                 .build();
     }
 }

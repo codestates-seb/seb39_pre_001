@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Entity
 public class QuestionLike {
 
+    //todo : user
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionLikeId;
