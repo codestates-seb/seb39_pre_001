@@ -36,7 +36,7 @@ const SignupForm = () => {
       <SocialSignup />
       <EmailSignup />
       <BottomText>
-        <div>Don't have an account? <Link>Sign up</Link></div>
+        <div>Already have an account? <Link>Log in</Link></div>
         <EmployerSignupText>Are you an employer? <Link>Sign up on Talent<RiShareBoxLine /></Link></EmployerSignupText>
       </BottomText>
     </SignupSection>
