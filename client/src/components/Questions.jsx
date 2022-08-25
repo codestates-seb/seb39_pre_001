@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import Summary from './Summary';
 import question from '../data/dummy';
+import Pagination from 'react-js-pagination';
+import { useState, useEffect } from 'react';
 
 const StyledQuestions = styled.div`
   font-size: 16px;
@@ -68,9 +70,70 @@ const StyledQuestions = styled.div`
       }
     }
   }
+  > .pagination-container {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    row-gap: 30px;
+    justify-content: space-between;
+    margin: 20px 0;
+    > .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      > li {
+        display: flex;
+        align-items: center;
+        height: 23px;
+        margin: 0 2px;
+        padding: 0 8px;
+        border-radius: 3px;
+        border: 1px solid #d6d9dc;
+        font-size: 13px;
+        color: #3b4045;
+        cursor: pointer;
+        :hover {
+          background-color: #e3e6e8;
+        }
+        > a {
+          margin-top: 2px;
+          text-decoration: none;
+          color: #3b4045;
+        }
+        &.active {
+          background-color: #f48225;
+          cursor: default;
+          > a {
+            color: white;
+            cursor: auto;
+          }
+        }
+      }
+    }
+    select {
+      margin-left: auto;
+      border: 1px solid #d6d9dc;
+      border-radius: 3px;
+      font-size: 13px;
+      color: #3b4045;
+    }
+  }
 `;
 
 function Questions() {
+  const [data, setData] = useState(question);
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState(5);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+  const itemChange = (e) => {
+    setItems(Number(e.target.value));
+  };
+
   return (
     <StyledQuestions>
       <div className='title'>
@@ -86,9 +149,23 @@ function Questions() {
         </div>
       </div>
       <div className='questions-container'>
-        {question.map((e) => (
+        {data.slice(items * (page - 1), items * (page - 1) + items).map((e) => (
           <Summary key={e.id} question={e}></Summary>
         ))}
+      </div>
+      <div className='pagination-container'>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={items}
+          totalItemsCount={data.length}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}></Pagination>
+        <select name='items' onChange={itemChange}>
+          <option value='5'>5개</option>
+          <option value='10'>10개</option>
+          <option value='15'>15개</option>
+          <option value='20'>20개</option>
+        </select>
       </div>
     </StyledQuestions>
   );

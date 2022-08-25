@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import userImg from '../static/user.png';
 
 const StyledSummary = styled.div`
   display: flex;
@@ -42,10 +43,10 @@ const StyledSummary = styled.div`
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      row-gap: 8px;
       > .tags {
         display: flex;
         flex-wrap: wrap;
-        width: 80%;
         gap: 4px;
         > div {
           font-size: 12px;
@@ -57,8 +58,14 @@ const StyledSummary = styled.div`
         }
       }
       > .user {
+        display: flex;
+        align-items: center;
         margin-left: auto;
         font-size: 12px;
+        > img {
+          width: 16px;
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -76,7 +83,7 @@ function Summary({ question }) {
       <div className='content'>
         <h3 className='title'>
           <a className='title' href='https://stackoverflow.com/questions/73480702/maximum-concurrent-dpu-usage-count'>
-            {title}
+            {id} {title}
           </a>
         </h3>
         <div className='body'>{body}</div>
@@ -87,6 +94,7 @@ function Summary({ question }) {
             ))}
           </div>
           <div className='user'>
+            <img src={userImg} alt='user' />
             {author} 이(가) {date}
           </div>
         </div>
