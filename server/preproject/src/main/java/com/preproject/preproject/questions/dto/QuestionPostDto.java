@@ -5,17 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionResponseDto {
+public class QuestionPostDto {
 
-    //todo: user, tags
-
-    private Long questionId;
+    //todo user, tags
     private String title;
     private String description;
 
