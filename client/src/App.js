@@ -1,9 +1,9 @@
 import React from "react";
-import {Main} from "./components/Main/main";
+import {CarouselFadeExample} from "./components/Main/main";
 
 function App() {
   return (
-   <Main/>
+   <CarouselFadeExample/>
   );
 }
 
