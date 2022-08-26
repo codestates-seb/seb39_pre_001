@@ -6,6 +6,7 @@ import com.preproject.preproject.questions.dto.QuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
@@ -15,4 +16,6 @@ public interface QuestionMapper {
     Question entityFromDto(QuestionPostDto dto);
 
     Question entityFromDto(QuestionPatchDto dto);
+
+    void updateEntityFromSource(@MappingTarget Question question, Question source);
 }
