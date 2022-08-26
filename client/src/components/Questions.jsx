@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Summary from './Summary';
 import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const StyledQuestions = styled.div`
   font-size: 16px;
@@ -50,6 +50,7 @@ const StyledQuestions = styled.div`
         border: 1px solid #838c95;
         padding: 10px;
         background-color: #ffffff;
+        cursor: pointer;
         :first-child {
           border-radius: 3px;
           border-top-right-radius: 0;
@@ -126,12 +127,35 @@ function Questions() {
   const [data, setData] = useState(question);
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(5);
+  const [selected, setSelected] = useState('newest');
 
   const handlePageChange = (page) => {
     setPage(page);
   };
   const itemChange = (e) => {
     setItems(Number(e.target.value));
+  };
+  const sortHandler = (e) => {
+    switch (e.target.value) {
+      case 'newest':
+        setSelected('newest');
+        setData([...question]);
+        break;
+      case 'like':
+        setSelected('like');
+        const tempData = [...question];
+        const sortedLike = tempData.sort((a, b) => b.like - a.like);
+        setData([...sortedLike]);
+        break;
+      case 'dislike':
+        setSelected('dislike');
+        const tempData2 = [...question];
+        const sortedDislike = tempData2.sort((a, b) => b.dislike - a.dislike);
+        setData([...sortedDislike]);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -142,10 +166,16 @@ function Questions() {
       </div>
       <div className='sort'>
         <div className='questions-counter'>{question.length} questions</div>
-        <div className='sort-container'>
-          <button className='is-selected'>최신순</button>
-          <button>좋아요순</button>
-          <button>싫어요순</button>
+        <div className='sort-container' onClick={sortHandler}>
+          <button className={selected === 'newest' ? 'is-selected' : null} value={'newest'}>
+            최신순
+          </button>
+          <button className={selected === 'like' ? 'is-selected' : null} value={'like'}>
+            좋아요순
+          </button>
+          <button className={selected === 'dislike' ? 'is-selected' : null} value={'dislike'}>
+            싫어요순
+          </button>
         </div>
       </div>
       <div className='questions-container'>
