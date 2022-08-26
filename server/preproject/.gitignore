@@ -41,3 +41,7 @@ server/preproject/build/
 
 ### VS Code ###
 .vscode/
+/.gradle/7.5/
+/.gradle/
+/build/
+/server/preproject/build/
