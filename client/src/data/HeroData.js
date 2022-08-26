@@ -14,7 +14,7 @@ export const heroMain = {
 	start: 'true',
 };
 
-export const heroOne = {
+const heroOne = {
 	reverse: true,
 	inverse: true,
 	topLine: {
@@ -30,7 +30,7 @@ export const heroOne = {
 	start: 'true',
 };
 
-export const heroTwo = {
+const heroTwo = {
 	reverse: false,
 	inverse: false,
 	topLine: {
@@ -46,7 +46,7 @@ export const heroTwo = {
 	start: 'true',
 };
 
-export const heroThree = {
+const heroThree = {
 	reverse: true,
 	inverse: true,
 	topLine: {
@@ -63,7 +63,7 @@ export const heroThree = {
 	start: 'true',
 };
 
-export const heroFour = {
+const heroFour = {
 	reverse: false,
 	inverse: false,
 	topLine: {
@@ -78,3 +78,5 @@ export const heroFour = {
 	img: './assets/hero3.jpg',
 	start: 'true',
 };
+
+export const heroData = [heroOne, heroTwo, heroThree, heroFour];
