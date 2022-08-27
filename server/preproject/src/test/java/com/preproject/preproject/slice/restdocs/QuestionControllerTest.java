@@ -9,6 +9,8 @@ import com.preproject.preproject.questions.dto.QuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
+import com.preproject.preproject.tags.dto.TagResponseDto;
+import com.preproject.preproject.users.dto.UsersResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -60,11 +61,25 @@ public class QuestionControllerTest {
         //given
         long questionId = 1L;
 
+        UsersResponseDto usersResponseDto =
+                UsersResponseDto.builder()
+                        .displayName("homer simpson")
+                        .userId(1L)
+                        .build();
+
+        List<TagResponseDto> tagResponseDtos = List.of(
+                TagResponseDto.builder().tagId(1L).name("java").build(),
+                TagResponseDto.builder().tagId(2L).name("spring").build(),
+                TagResponseDto.builder().tagId(3L).name("jpa").build()
+        );
+
         QuestionResponseDto responseDto =
                 QuestionResponseDto.builder()
                         .questionId(questionId)
                         .title("question 1")
                         .description("this is question 1")
+                        .tags(tagResponseDtos)
+                        .user(usersResponseDto)
                         .build();
 
         given(questionService.getQuestion(Mockito.anyLong())).willReturn(Mockito.mock(Question.class));
@@ -85,9 +100,12 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.data.questionId").value(responseDto.getQuestionId()))
                 .andExpect(jsonPath("$.data.title").value(responseDto.getTitle()))
                 .andExpect(jsonPath("$.data.description").value(responseDto.getDescription()))
+                .andExpect(jsonPath("$.data.user.userId").value(responseDto.getUser().getUserId()))
+                .andExpect(jsonPath("$.data.user.displayName").value(responseDto.getUser().getDisplayName()))
+                .andExpect(jsonPath("$.data.tags").isArray())
                 .andDo(
                         document(
-                                "get a single question",
+                                "get-question",
                                 RestDocumentationHelper.prettyPrintRequest(),
                                 RestDocumentationHelper.prettyPrintResponse(),
                                 pathParameters(
@@ -97,7 +115,13 @@ public class QuestionControllerTest {
                                         List.of(
                                                 fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용")
+                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
+                                                fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                                fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그"),
+                                                fieldWithPath("data.tags[].tagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                                fieldWithPath("data.tags[].name").type(JsonFieldType.STRING).description("태그 이름")
                                         )
                                 )
                         )

@@ -1,11 +1,13 @@
 package com.preproject.preproject.questions.dto;
 
+import com.preproject.preproject.tags.dto.TagResponseDto;
+import com.preproject.preproject.users.dto.UsersResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -18,5 +20,8 @@ public class QuestionResponseDto {
     private Long questionId;
     private String title;
     private String description;
+
+    private UsersResponseDto user;
+    private List<TagResponseDto> tags;
 
 }
