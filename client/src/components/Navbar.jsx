@@ -4,7 +4,8 @@ import { BsPerson } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
-import Logo from "../assets/logo.png";
+import Dropdown from "react-bootstrap/Dropdown";
+import Button from 'react-bootstrap/Button';
 export default function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const html = document.querySelector("html");
@@ -12,7 +13,7 @@ export default function Navbar() {
   return (
     <Container state={isNavOpen ? 1 : 0}>
       <div className="brand">
-        <img src={Logo} alt="logo" />
+        StackOverfow
       </div>
       <div className="toggle">
         {isNavOpen ? (
@@ -29,34 +30,39 @@ export default function Navbar() {
       <div className={`links ${isNavOpen ? "show" : ""}`}>
         <ul>
           <li>
-            <a href="#services">Home</a>
+            <a href="#abouts">About</a>
           </li>
           <li>
-            <a href="#destination"> Destination</a>
+            <a href="#products">Product</a>
           </li>
           <li>
-            <a href="#offer">Offer</a>
+            <a href="#forTeams">For Teams</a>
           </li>
-          <li>
-            <a href="#tour">Tour</a>
-          </li>
-          <li>
-            <a href="#blog">Blog</a>
-          </li>
+          
+          <Dropdown>
+          <Dropdown.Toggle variant="light" id="dropdown-basic">
+            <GiHamburgerMenu className="NavIcon" />
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/Questions">Questions</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         </ul>
       </div>
+      <button>
+      <div className="search">
+          <IoSearchOutline />
+        </div>
+        </button>
       <div className="account-info">
         <div className="account">
-          <span>
-            <BsPerson />
-          </span>
-          <span>My Account</span>
-        </div>
-        <div className="search">
-          <IoSearchOutline />
+          <Button variant="outline-primary">Primary</Button>{' '}
+          <Button variant="outline-warning">Warning</Button>{' '}
         </div>
       </div>
     </Container>
+    
   );
 }
 
@@ -64,6 +70,7 @@ const Container = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 1rem;
   .brand {
     img {
       cursor: pointer;
@@ -74,6 +81,7 @@ const Container = styled.nav`
   }
   .links {
     ul {
+      margin-top: 15px;
       display: flex;
       gap: 3rem;
       list-style-type: none;
@@ -99,11 +107,11 @@ const Container = styled.nav`
       cursor: pointer;
     }
     .search {
-      cursor: pointer;
+      border: 1px solid #222;
     }
   }
 
-  @media screen and (min-width: 280px) and (max-width: 1080px) {
+  /* @media screen and (min-width: 280px) and (max-width: 1080px) {
     position: relative;
     padding: 1rem 0.5rem;
     z-index: 10;
@@ -149,5 +157,5 @@ const Container = styled.nav`
         }
       }
     }
-  }
+  } */
 `;
