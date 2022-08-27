@@ -34,10 +34,7 @@ public class Question extends Auditing {
 
     @OneToMany(mappedBy = "question")
     private List<QuestionLike> questionLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "question")
-    private List<QuestionDislike> questionDislikes = new ArrayList<>();
-
+    
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "USERS_ID")
     private Users user;
