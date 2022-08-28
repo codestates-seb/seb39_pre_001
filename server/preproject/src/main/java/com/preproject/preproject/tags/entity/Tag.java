@@ -1,9 +1,6 @@
 package com.preproject.preproject.tags.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,15 +10,16 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-public class Tags {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long tags_id;
+    private long tagId;
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private List<TagsQuestions> tagsQuestions = new ArrayList<>();
+    private List<TagQuestion> tagsQuestions = new ArrayList<>();
 
 }

@@ -1,4 +1,4 @@
-package com.preproject.preproject.helper.dto;
+package com.preproject.preproject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

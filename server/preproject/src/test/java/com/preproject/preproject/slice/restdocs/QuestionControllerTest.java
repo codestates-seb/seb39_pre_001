@@ -12,6 +12,7 @@ import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
 import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.users.dto.UsersResponseDto;
+import com.preproject.preproject.users.entity.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,10 +69,8 @@ public class QuestionControllerTest {
                         .userId(1L)
                         .build();
 
-        List<TagResponseDto> tagResponseDtos = List.of(
-                TagResponseDto.builder().tagId(1L).name("java").build(),
-                TagResponseDto.builder().tagId(2L).name("spring").build(),
-                TagResponseDto.builder().tagId(3L).name("jpa").build()
+        List<String> tags = List.of(
+                "java", "react", "mysql"
         );
 
         QuestionResponseDto responseDto =
@@ -79,7 +78,7 @@ public class QuestionControllerTest {
                         .questionId(questionId)
                         .title("question 1")
                         .description("this is question 1")
-                        .tags(tagResponseDtos)
+                        .tags(tags)
                         .user(usersResponseDto)
                         .build();
 
@@ -120,9 +119,7 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그"),
-                                                fieldWithPath("data.tags[].tagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
-                                                fieldWithPath("data.tags[].name").type(JsonFieldType.STRING).description("태그 이름")
+                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그")
                                         )
                                 )
                         )
@@ -132,13 +129,15 @@ public class QuestionControllerTest {
 
     @DisplayName("QuestionController.postQuestion")
     @Test
-    public void givenPostDto_whenPostRequested_thenQuestionReturned() throws Exception {
+    public void givenPostDtoWithUserIdAndTags_whenPostRequested_thenNewQuestionReturned() throws Exception {
 
         //given
         QuestionPostDto requestDto =
                 QuestionPostDto.builder()
                         .title("question 1")
                         .description("this is question 1")
+                        .tags(List.of("java", "react", "mysql"))
+                        .userId(1L)
                         .build();
 
         String requestBody = gson.toJson(requestDto);
@@ -148,6 +147,8 @@ public class QuestionControllerTest {
                         .questionId(1L)
                         .title(requestDto.getTitle())
                         .description(requestDto.getDescription())
+                        .tags(requestDto.getTags())
+                        .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
                         .build();
 
         given(questionMapper.entityFromDto(Mockito.any(QuestionPostDto.class))).willReturn(Mockito.mock(Question.class));
@@ -181,14 +182,21 @@ public class QuestionControllerTest {
                                 requestFields(
                                         List.of(
                                                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                                fieldWithPath("description").type(JsonFieldType.STRING).description("게시글 내용")
+                                                fieldWithPath("description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("관련 태그"),
+                                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 식별자")
                                         )
                                 ),
                                 responseFields(
                                         List.of(
                                                 fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용")
+                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자 정보"),
+                                                fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                                fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                                fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("관련 태그")
+
                                         )
                                 )
                         )
@@ -207,12 +215,15 @@ public class QuestionControllerTest {
                         .questionId(questionId)
                         .title("updated")
                         .description("updated desc")
+                        .tags(List.of("java", "react", "mysql"))
                         .build();
 
         QuestionResponseDto responseDto =
                 QuestionResponseDto.builder()
                         .questionId(questionId)
                         .title(requestDto.getTitle())
+                        .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
+                        .tags(List.of("java", "react", "mysql"))
                         .description(requestDto.getDescription())
                         .build();
 
@@ -254,14 +265,18 @@ public class QuestionControllerTest {
                                         List.of(
                                                 fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정될 게시글 제목").optional(),
-                                                fieldWithPath("description").type(JsonFieldType.STRING).description("수정될 게시글 내용").optional()
+                                                fieldWithPath("description").type(JsonFieldType.STRING).description("수정될 게시글 내용").optional(),
+                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정 태그").optional()
                                         )
                                 ),
                                 responseFields(
                                         List.of(
                                                 fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용")
+                                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                                fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                                fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("수정 태그")
                                         )
                                 )
                         )

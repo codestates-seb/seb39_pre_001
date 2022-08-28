@@ -1,7 +1,7 @@
 package com.preproject.preproject.questions.controller;
 
-import com.preproject.preproject.helper.dto.MultiResponseDto;
-import com.preproject.preproject.helper.dto.SingleResponseDto;
+import com.preproject.preproject.dto.MultiResponseDto;
+import com.preproject.preproject.dto.SingleResponseDto;
 import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.dto.QuestionPostDto;
 import com.preproject.preproject.questions.dto.QuestionResponseDto;
@@ -9,6 +9,7 @@ import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class QuestionController {
     public ResponseEntity<MultiResponseDto<QuestionResponseDto>> getQuestions(
             @RequestParam(name = "tab", required = false) String tab,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page) {
+
+        Page<Question> entities = questionService.getQuestions(page, 5);
+
 
         return null;
     }

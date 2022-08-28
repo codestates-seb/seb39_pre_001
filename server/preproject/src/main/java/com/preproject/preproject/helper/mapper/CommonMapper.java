@@ -1,4 +1,4 @@
-package com.preproject.preproject.helper.dto.mapper;
+package com.preproject.preproject.helper.mapper;
 
 public interface CommonMapper<E, D> {
 

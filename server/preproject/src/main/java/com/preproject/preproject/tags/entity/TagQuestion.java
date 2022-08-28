@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class TagsQuestions {
+public class TagQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +25,5 @@ public class TagsQuestions {
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "TAGS_ID")
-    private Tags tag;
+    private Tag tag;
 }
