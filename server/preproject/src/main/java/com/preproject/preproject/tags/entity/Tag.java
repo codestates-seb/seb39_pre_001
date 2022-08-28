@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+
 
 @Getter
 @Setter
@@ -21,5 +23,6 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<TagQuestion> tagsQuestions = new ArrayList<>();
+
 
 }
