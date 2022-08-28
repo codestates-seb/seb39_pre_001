@@ -15,13 +15,13 @@ import java.util.List;
 @Builder
 public class QuestionResponseDto {
 
-    //todo: user, tags
+    //todo: likes count
 
     private Long questionId;
     private String title;
     private String description;
 
     private UsersResponseDto user;
-    private List<TagResponseDto> tags;
+    private List<String> tags;
 
 }

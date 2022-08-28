@@ -1,8 +1,7 @@
 package com.preproject.preproject.questions.entity;
 
 import com.preproject.preproject.audit.Auditing;
-import com.preproject.preproject.tags.entity.Tags;
-import com.preproject.preproject.tags.entity.TagsQuestions;
+import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,14 +31,34 @@ public class Question extends Auditing {
     @Column(nullable = false)
     private String description;
 
+    @Builder.Default
     @OneToMany(mappedBy = "question")
     private List<QuestionLike> questionLikes = new ArrayList<>();
-    
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USERS_ID")
     private Users user;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
-    private List<TagsQuestions> tagsQuestions = new ArrayList<>();
+    private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
+
+    /**
+     * setter method for stubbing.
+     * Must only be used for testing.</br>
+     *
+     * @author thom-mac
+     */
+    public void setTagQuestionList(List<TagQuestion> tagQuestionList) {
+        this.tagQuestionList.addAll(tagQuestionList);
+    }
+
+    /**
+     * setter method for stubbing. Must only be used for testing.
+     *
+     * @author thom-mac
+     */
+    public void setQuestionLikes(List<QuestionLike> questionLikeList) {
+        this.questionLikes.addAll(questionLikeList);
+    }
 }
