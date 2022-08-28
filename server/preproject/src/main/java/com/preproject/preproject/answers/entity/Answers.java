@@ -15,8 +15,8 @@ import javax.persistence.Entity;
 public class Answers {
     private long answer_id;
     private String content;
-    //TODO question entity 와 매핑 필요
+    //todo: question entity 와 매핑 필요
 
-    //TODO users entity 매핑 필요
+    //todo: users entity 매핑 필요
     private Users users;
 }
