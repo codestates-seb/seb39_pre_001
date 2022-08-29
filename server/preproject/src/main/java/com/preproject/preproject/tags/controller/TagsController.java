@@ -2,8 +2,8 @@ package com.preproject.preproject.tags.controller;
 
 
 import com.preproject.preproject.tags.dto.TagResponseDto;
-import com.preproject.preproject.tags.entity.Tags;
-import com.preproject.preproject.tags.mapper.TagMapper;
+import com.preproject.preproject.tags.entity.Tag;
+import com.preproject.preproject.tags.mapper.mapstruct.TagMapper;
 import com.preproject.preproject.tags.service.TagService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class TagsController {
     @GetMapping
     public ResponseEntity getTags() {
 
-        List<Tags> tags = tagService.findTags();
+        List<Tag> tags = tagService.findTags();
         List<TagResponseDto> response = tags.stream()
                 .map(tags1 -> mapper.tagResponse(tags1)).collect(Collectors.toList());
 
