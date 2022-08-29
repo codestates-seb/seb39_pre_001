@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Answer from './pages/Answer';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,6 +20,7 @@ const App = () => {
       <Routes>
         <Route path="/users/login" element={<Login />} />
         <Route path="/users/join" element={<Signup />} />
+        <Route path="/questions/questionId/answer" element={<Answer />} />
       </Routes>
     </BrowserRouter>
   );
