@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class UsersPostDto {
     @NotBlank
     private String display_name;
-
     @Email
     @NotBlank(message = "이메일은 비어있지 않아야 합니다.")
     private String email;
