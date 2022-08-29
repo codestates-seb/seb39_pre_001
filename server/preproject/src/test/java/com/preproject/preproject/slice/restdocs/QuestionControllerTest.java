@@ -1,5 +1,6 @@
 package com.preproject.preproject.slice.restdocs;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.gson.Gson;
 import com.preproject.preproject.dto.PageInfo;
 import com.preproject.preproject.helper.QuestionControllerHelper;
@@ -39,12 +40,11 @@ import java.util.Map;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(QuestionController.class)
@@ -300,10 +300,10 @@ public class QuestionControllerTest {
 
         List<QuestionResponseDto> list = List.of(
                 QuestionResponseDto.builder().user(
-                        UsersResponseDto.builder().userId(1L).displayName("user1").build())
+                                UsersResponseDto.builder().userId(1L).displayName("user1").build())
                         .questionId(1L)
                         .description("question1")
-                        .tags(List.of("java","spring","mysql"))
+                        .tags(List.of("java", "spring", "mysql"))
                         .title("question title1")
                         .build());
 
@@ -333,7 +333,7 @@ public class QuestionControllerTest {
                                 "get-questions",
                                 RestDocumentationHelper.prettyPrintRequest(),
                                 RestDocumentationHelper.prettyPrintResponse(),
-                                pathParameters(
+                                requestParameters(
                                         parameterWithName("page").optional().description("페이지 번호. 미입력시 1"),
                                         parameterWithName("tab").optional().description("정렬 기준. 미입력시 createdAt")
                                 ),
@@ -358,5 +358,45 @@ public class QuestionControllerTest {
 
                         )
                 );
+    }
+
+    @DisplayName("QuestionController.like")
+    @Test
+    public void givenQuestionId_whenPatch_thenQuestionLikeUpdated() throws Exception {
+
+        //given
+
+        long questionId = 1L;
+
+        //when
+        ResultActions resultActions =
+                mockMvc
+                        .perform(
+                                patch(QuestionControllerHelper.URL + "/{questionId}/like", questionId).param("userId", "1")
+                                        .contentType(MediaType.APPLICATION_JSON)
+                        );
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value("liked"));
+
+        resultActions
+                .andDo(
+                        document(
+                                "hit-like-button",
+                                RestDocumentationHelper.prettyPrintRequest(),
+                                RestDocumentationHelper.prettyPrintResponse(),
+                                requestParameters(
+                                        parameterWithName("userId").description("좋아요 누른 사용자 식별자")
+                                ),
+                                pathParameters(
+                                        parameterWithName("questionId").description("게시글 식별자")
+                                ),
+                                responseFields(
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("결과")
+                                )
+                        )
+                );
+
     }
 }

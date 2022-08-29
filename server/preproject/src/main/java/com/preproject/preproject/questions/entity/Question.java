@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @Entity
 public class Question extends Auditing {
 
-    //todo: mapping to user, tags
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
