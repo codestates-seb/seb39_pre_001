@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/preproject.iml" filepath="$PROJECT_DIR$/.idea/modules/preproject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/preproject.main.iml" filepath="$PROJECT_DIR$/.idea/modules/preproject.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/preproject.test.iml" filepath="$PROJECT_DIR$/.idea/modules/preproject.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/seb39_pre_001.iml" filepath="$PROJECT_DIR$/.idea/seb39_pre_001.iml" />
     </modules>
   </component>
