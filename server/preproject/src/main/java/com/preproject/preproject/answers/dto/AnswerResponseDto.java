@@ -2,14 +2,12 @@ package com.preproject.preproject.answers.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
-@Setter
 @AllArgsConstructor
-@Builder
+@Setter
 @NoArgsConstructor
-public class AnswersPostDto {
-    @NotBlank
+@Builder
+public class AnswerResponseDto {
+    private long answerId;
     private String content;
 }

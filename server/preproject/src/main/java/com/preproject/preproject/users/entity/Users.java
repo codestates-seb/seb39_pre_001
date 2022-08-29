@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -13,9 +14,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Users {
+    @Id
     private long id;
+
     private String display_name;
     private String password;
     private String email;
-    private LocalDateTime regdate = LocalDateTime.now();
+//    private LocalDateTime regdate = LocalDateTime.now();
 }

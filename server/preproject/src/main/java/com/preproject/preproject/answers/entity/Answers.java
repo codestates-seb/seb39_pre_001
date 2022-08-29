@@ -7,16 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answers {
+    @Id
     private long answer_id;
+
     private String content;
     //todo: question entity 와 매핑 필요
 
     //todo: users entity 매핑 필요
-    private Users users;
+//    private Users users;
 }
