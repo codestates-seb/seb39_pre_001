@@ -29,9 +29,7 @@ public class QuestionStubService implements QuestionService {
      * - question2: tagged with react.
      * */
     @Override
-    public Page<Question> getQuestions(int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Question> getQuestions(Pageable pageable) {
 
         Users user1 =
                 Users.builder()
@@ -120,7 +118,10 @@ public class QuestionStubService implements QuestionService {
         question1.setQuestionLikes(List.of(questionLike2));
         question2.setQuestionLikes(List.of(questionLike1));
 
-        List<Question> content = List.of(question1, question2);
+        List<Question> content = List.of(question1, question2,
+                new Question(), new Question(), new Question(), new Question(),
+                new Question(), new Question(), new Question(),new Question(),
+                new Question());
 
         return new PageImpl<>(content, pageable, content.size());
 

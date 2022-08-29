@@ -1,6 +1,7 @@
 package com.preproject.preproject.slice.restdocs;
 
 import com.google.gson.Gson;
+import com.preproject.preproject.dto.PageInfo;
 import com.preproject.preproject.helper.QuestionControllerHelper;
 import com.preproject.preproject.helper.RestDocumentationHelper;
 import com.preproject.preproject.questions.controller.QuestionController;
@@ -22,12 +23,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -241,7 +248,7 @@ public class QuestionControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request)
-        );
+                );
 
         //then
         resultActions
@@ -279,6 +286,76 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("수정 태그")
                                         )
                                 )
+                        )
+                );
+    }
+
+    @DisplayName("QuestionController.getQuestions")
+    @Test
+    public void givenPageAndTab_whenGetRequest_thenPageReturned() throws Exception {
+        //given
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("page", "1");
+        params.add("tab", null);
+
+        List<QuestionResponseDto> list = List.of(
+                QuestionResponseDto.builder().user(
+                        UsersResponseDto.builder().userId(1L).displayName("user1").build())
+                        .questionId(1L)
+                        .description("question1")
+                        .tags(List.of("java","spring","mysql"))
+                        .title("question title1")
+                        .build());
+
+        given(questionService.getQuestions(Mockito.any(PageRequest.class))).willReturn(Mockito.mock(PageImpl.class));
+        given(questionMapper.listDtoFromEntities(Mockito.any(List.class))).willReturn(list);
+
+        //when
+        ResultActions resultActions =
+                mockMvc
+                        .perform(
+                                get(QuestionControllerHelper.URL)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .params(params)
+                        );
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isArray())
+                .andExpect(jsonPath("$.pageInfo.page").value(1))
+                .andExpect(jsonPath("$.data[0].tags").isArray())
+                .andDo(print());
+
+        resultActions
+                .andDo(
+                        document(
+                                "get-questions",
+                                RestDocumentationHelper.prettyPrintRequest(),
+                                RestDocumentationHelper.prettyPrintResponse(),
+                                pathParameters(
+                                        parameterWithName("page").optional().description("페이지 번호. 미입력시 1"),
+                                        parameterWithName("tab").optional().description("정렬 기준. 미입력시 createdAt")
+                                ),
+                                responseFields(
+                                        List.of(
+                                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("게시글 목록"),
+                                                fieldWithPath("data[].questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                                fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                                fieldWithPath("data[].description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("data[].user").type(JsonFieldType.OBJECT).description("작성자 정보"),
+                                                fieldWithPath("data[].user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                                fieldWithPath("data[].user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                                fieldWithPath("data[].tags").type(JsonFieldType.ARRAY).description("수정 태그"),
+                                                fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지네이션 정보"),
+                                                fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                                                fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 번에 출력할 페이지 개수"),
+                                                fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 게시글 개수"),
+                                                fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+                                                fieldWithPath("pageInfo.tab").type(JsonFieldType.STRING).description("입력된 정렬 기준(테스트 시 확인용)")
+                                        )
+                                )
+
                         )
                 );
     }

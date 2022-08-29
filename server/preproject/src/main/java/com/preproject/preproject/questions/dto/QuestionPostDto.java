@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,7 +18,8 @@ public class QuestionPostDto {
     private String title;
     private String description;
 
-    private List<String> tags;
+    @Builder.Default
+    private List<String> tags = new ArrayList<>();
     private long userId;
 
 }

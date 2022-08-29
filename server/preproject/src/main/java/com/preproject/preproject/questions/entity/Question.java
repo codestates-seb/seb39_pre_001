@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -39,8 +40,13 @@ public class Question extends Auditing {
     @JoinColumn(name = "USERS_ID")
     private Users user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
+
+    public List<String> getTags() {
+        return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
+    }
 
 
     /**
