@@ -1,7 +1,7 @@
 package com.preproject.preproject.answers.controller;
 
-import com.preproject.preproject.answers.controller.dto.AnswerPatchDto;
-import com.preproject.preproject.answers.controller.dto.AnswersPostDto;
+import com.preproject.preproject.answers.dto.AnswerPatchDto;
+import com.preproject.preproject.answers.dto.AnswersPostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 public class AnswersController {
 
     @PostMapping("/{question-id}/answer")
-    public ResponseEntity postAnswer(@RequestBody AnswersPostDto answersPostDto) {
+    public ResponseEntity postAnswer(//@PathVariable("question-id") long question_id,
+                                     @RequestBody AnswersPostDto answersPostDto) {
 
         return new ResponseEntity<>(answersPostDto, HttpStatus.CREATED);
     }
@@ -28,6 +29,6 @@ public class AnswersController {
     @DeleteMapping("/{question-id}/answer/{answer-id}")
     public ResponseEntity DeleteAnswer() {
 
-        return new ResponseEntity<>("답글이 삭제되었습니다", HttpStatus.OK);
+        return new ResponseEntity<>("답글이 삭제되었습니다", HttpStatus.NO_CONTENT);
     }
 }
