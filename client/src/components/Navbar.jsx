@@ -57,8 +57,8 @@ export default function Navbar() {
         </button>
       <div className="account-info">
         <div className="account">
-          <Button variant="outline-primary">Primary</Button>{' '}
-          <Button variant="outline-warning">Warning</Button>{' '}
+          <Button variant="outline-primary">로그인</Button>{' '}
+          <Button variant="outline-warning">회원가입</Button>{' '}
         </div>
       </div>
     </Container>
@@ -148,7 +148,7 @@ const Container = styled.nav`
       ul {
         flex-direction: column;
         text-align: center;
-        height: 100%;
+        height: 100%;c
         justify-content: center;
         li {
           a {

@@ -8,7 +8,7 @@ export default function Testimonial() {
   return (
     <Section id="blog">
       <div className="title">
-        <h1>What our Happy Customers Say About Us</h1>
+        <h1>Explore technical topics and other disciplines across 170+ Q&A communities</h1>
       </div>
       <div className="testimonials">
         <div className="testimonial-image-one">
@@ -20,15 +20,12 @@ export default function Testimonial() {
               <img src={avatar} alt="avatar" />
             </div>
             <div className="info">
-              <h3>Kishan Sheth</h3>
-              <span>Full Stack Developer</span>
+              <h3>SET Agora</h3>
+              <span>StackOverflow</span>
             </div>
           </div>
           <p className="desrciption">
-            Jetrips Hotel is an excellent choice for anybody for considering
-            hosting their events there. Top level facilities and excellent staff
-            make for a briallant environment within which to operate. The hotel
-            is meticulous in its planning.
+          From Server Fault to Super User, much of the Stack Exchange network continues our mission to empower the world to develop technology through collective knowledge. Other sites on the Stack Exchange network further encourage knowledge sharing across topics such as cooking and medicine.
           </p>
         </div>
         <div className="testimonial-image-two">

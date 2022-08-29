@@ -4,38 +4,36 @@ import logo from "../assets/logo.png";
 import Button from "./Button";
 
 export default function Footer() {
-  const quickLinks = [
-    "About Us",
-    "Destinations",
-    "Latest Blog",
-    "Our Team",
-    "Contact Us",
+  const products = [
+    "Teams",
+    "Advertising",
+    "Collectives",
+    "Talent",
   ];
-  const supportLinks = [
-    "Customer Support",
+  const company = [
+    "About",
+    "Press",
+    "Work Here",
+    "Legal",
     "Privacy Policy",
-    "Terms & Condition",
-    "Forum",
-    "Tour Guide",
+    "Teams of Service"
   ];
   return (
     <Container>
       <div className="upper-footer">
         <div className="col">
           <div className="brand">
-            <div className="logo">
-              <img src={logo} alt="logo" />
-            </div>
-            <p className="desciption">
-              You can dream, create, design, and build the most wonderful place.
-            </p>
+          <div className="brand">
+        StackOverfow
+      </div>
+            
           </div>
           <ul>
             <li>
               <span> +0213 456 987 </span>
             </li>
             <li>
-              <span>kishansheth21@gmail.com</span>
+              <span>test@gmail.com</span>
             </li>
             <li>
               <span>www.youtube.com</span>
@@ -43,33 +41,28 @@ export default function Footer() {
           </ul>
         </div>
         <div className="col">
-          <h2>Quick Links</h2>
+          <h2>PRODUCTS</h2>
           <ul>
-            {quickLinks.map((link) => (
+            {products.map((link) => (
               <li key={link}>{link}</li>
             ))}
           </ul>
         </div>
         <div className="col">
-          <h2>Support</h2>
+          <h2>COMPANY</h2>
           <ul>
-            {supportLinks.map((link) => (
+            {company.map((link) => (
               <li key={link}>{link}</li>
             ))}
           </ul>
         </div>
         <div className="col">
-          <h2>Newsletter</h2>
+          <h2>STACK EXCHANGE NETWORK</h2>
           <div className="newsletter">
             <input type="text" placeholder="Your Email" />
             <Button text="Subscribe Now" />
           </div>
         </div>
-      </div>
-      <div className="lower-footer">
-        <span>
-          Copyright &copy; Travel. Designed by <a href="#">Kishan Sheth</a>
-        </span>
       </div>
     </Container>
   );
