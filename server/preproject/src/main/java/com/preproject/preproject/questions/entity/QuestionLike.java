@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "QUESTIONS_LIKES")
 @Entity
 public class QuestionLike {
 

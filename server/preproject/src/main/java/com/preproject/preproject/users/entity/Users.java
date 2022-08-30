@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 public class Users {
 
     @Id
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String displayName;

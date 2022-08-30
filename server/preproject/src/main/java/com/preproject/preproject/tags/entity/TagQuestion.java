@@ -12,18 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "TAGS_QUESTIONS")
 @Entity
 public class TagQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tagsQuestionsId;
+    private Long tagQuestionId;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "TAGS_ID")
+    @JoinColumn(name = "TAG_ID")
     private Tag tag;
 }

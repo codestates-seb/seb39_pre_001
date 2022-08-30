@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "QUESTIONS")
 @Entity
 public class Question extends Auditing {
 
@@ -35,7 +36,7 @@ public class Question extends Auditing {
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USERS_ID")
+    @JoinColumn(name = "USER_ID")
     private Users user;
 
     @Builder.Default
@@ -44,6 +45,10 @@ public class Question extends Auditing {
 
     public List<String> getTags() {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public long getLikeCount() {
+        return this.questionLikes.size();
     }
 
 

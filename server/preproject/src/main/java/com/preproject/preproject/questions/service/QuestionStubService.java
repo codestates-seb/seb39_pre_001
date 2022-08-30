@@ -2,31 +2,31 @@ package com.preproject.preproject.questions.service;
 
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
-import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Profile("local")
 @Service
 public class QuestionStubService implements QuestionService {
 
     /** stubbing method. stubbed data as following scenario.</br>
      *
      * <p>Scenario:
-     * - three tags : java, react, mysql
-     * - user1 : writes question1. dislike question2.
-     * - user2 : wrties question2. likes question1.
+     * three tags : java, react, mysql
+     * user1 : writes question1. dislike question2.
+     * user2 : wrties question2. likes question1.
      *
      * - question1: tagged with java, mysql.
      * - question2: tagged with react.
+     * </p>
      * */
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -80,21 +80,21 @@ public class QuestionStubService implements QuestionService {
 
         TagQuestion tagQuestion1 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(1L)
+                        .tagQuestionId(1L)
                         .tag(tag1)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion2 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(2L)
+                        .tagQuestionId(2L)
                         .tag(tag3)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion3 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(3L)
+                        .tagQuestionId(3L)
                         .tag(tag2)
                         .question(question2)
                         .build();
