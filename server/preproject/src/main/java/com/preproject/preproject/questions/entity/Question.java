@@ -3,16 +3,14 @@ package com.preproject.preproject.questions.entity;
 import com.preproject.preproject.audit.Auditing;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,11 +30,11 @@ public class Question extends Auditing {
     private String description;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USERS_ID")
     private Users user;
 
     @Builder.Default
@@ -47,19 +45,21 @@ public class Question extends Auditing {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
     }
 
-    public long getLikeCount() {
-        return this.questionLikes.size();
+    public boolean alreadyLikedBy(Users user) {
+        return this
+                .getQuestionLikes().stream()
+                .anyMatch(questionLike -> questionLike.getUser() == user);
     }
 
     public void addUser(Users user) {
-        if (this.user != user) {
-            this.user = user;
-            user.getQuestions().add(this);
+        this.user = user;
+        if (!this.user.getQuestions().contains(this)) {
+            this.user.getQuestions().add(this);
         }
     }
-
-
-
+    public long getLikeCount() {
+        return this.questionLikes.size();
+    }
 
 
     /**

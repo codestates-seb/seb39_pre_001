@@ -6,8 +6,10 @@ import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
 import org.springframework.context.annotation.Profile;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,12 @@ public class QuestionStubService implements QuestionService {
     /** stubbing method. stubbed data as following scenario.</br>
      *
      * <p>Scenario:
-     * three tags : java, react, mysql
-     * user1 : writes question1. dislike question2.
-     * user2 : wrties question2. likes question1.
+     * - three tags : java, react, mysql
+     * - user1 : writes question1. dislike question2.
+     * - user2 : wrties question2. likes question1.
      *
      * - question1: tagged with java, mysql.
      * - question2: tagged with react.
-     * </p>
      * */
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -101,17 +102,17 @@ public class QuestionStubService implements QuestionService {
 
         QuestionLike questionLike1 =
                 QuestionLike.builder()
-                        .questionLikeId(1L)
                         .question(question2)
                         .user(user1)
                         .build();
+        questionLike1.setQuestionLikeId(1L);
 
         QuestionLike questionLike2 =
                 QuestionLike.builder()
-                        .questionLikeId(2L)
                         .question(question1)
                         .user(user2)
                         .build();
+        questionLike2.setQuestionLikeId(2L);
 
         question1.setTagQuestionList(List.of(tagQuestion1, tagQuestion2));
         question2.setTagQuestionList(List.of(tagQuestion3));
@@ -164,7 +165,6 @@ public class QuestionStubService implements QuestionService {
 
         QuestionLike
                 .builder()
-                .questionLikeId(1L)
                 .question(foundQuestion)
                 .build();
     }
