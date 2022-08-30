@@ -35,7 +35,7 @@ public class Question extends Auditing {
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USERS_ID")
+    @JoinColumn(name = "USER_ID")
     private Users user;
 
     @Builder.Default

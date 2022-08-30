@@ -30,6 +30,6 @@ public class Answer {
     //todo: users entity 매핑 필요?
 
     @ManyToOne
-    @JoinColumn(name = "USERS_ID")
-    private Users users;
+    @JoinColumn(name = "USER_ID")
+    private Users user;
 }
