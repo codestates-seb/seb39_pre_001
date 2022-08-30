@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Editor, Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import TextEditor from '../components/TextEditor';
 
 const StyledQuestionCreator = styled.div`
   background-color: #f1f2f3;
   padding: 24px;
   > h1 {
     margin-top: 0;
-    font-weight: 500;
+    font-weight: 400;
+    font-size: 27px;
   }
   > .form-container {
     display: flex;
@@ -29,11 +30,11 @@ const StyledQuestionCreator = styled.div`
     > p {
       font-size: 12px;
       margin: 0;
+      margin-bottom: 4px;
     }
     > input {
       border: 1px solid #babfc4;
       border-radius: 3px;
-      margin: 5px 0;
       padding: 8px 9px;
     }
     > .tag-maker {
@@ -119,13 +120,7 @@ function QuestionCreator() {
         />
         <h3>Body</h3>
         <p>Include all the information someone would need to answer your question</p>
-        <Editor
-          initialValue=''
-          previewStyle='vertical'
-          height='400px'
-          initialEditType='markdown'
-          hideModeSwitch={true}></Editor>
-        <Viewer initialValue={''} />
+        <TextEditor />
         <h3>Tags</h3>
         <p>Add up to 5 tags to describe what your question is about</p>
         <div className='tag-maker'>

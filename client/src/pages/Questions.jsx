@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Summary from './Summary';
+import Summary from '../components/Summary';
 import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
 import { useState } from 'react';

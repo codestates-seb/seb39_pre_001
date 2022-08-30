@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Answer from '../components/Answer';
 import question from '../data/dummy';
 import userImg from '../static/user.png';
 
@@ -121,7 +122,6 @@ const StyledAskButton = styled.button`
 
 function QuestionAnswer() {
   const { questionId } = useParams();
-  console.log(typeof questionId);
   const { id, title, body, tags, author, date, like, dislike, view } = question.filter(
     (e) => String(e.id) === questionId
   )[0];
@@ -130,7 +130,9 @@ function QuestionAnswer() {
     <StyledQuestionAnswer>
       <div className='title'>
         <h1>{title}</h1>
-        <StyledAskButton>Ask Question</StyledAskButton>
+        <Link to='/questions/ask'>
+          <StyledAskButton>Ask Question</StyledAskButton>
+        </Link>
       </div>
       <div className='info'>
         <div>{date}</div>
@@ -162,6 +164,7 @@ function QuestionAnswer() {
           </div>
         </div>
       </div>
+      <Answer />
     </StyledQuestionAnswer>
   );
 }
