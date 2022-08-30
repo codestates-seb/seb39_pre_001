@@ -1,7 +1,11 @@
 package com.preproject.preproject.questions.service;
 
 import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.questions.entity.QuestionLike;
+import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
+import com.preproject.preproject.users.entity.Users;
+import com.preproject.preproject.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -18,6 +22,8 @@ import java.util.NoSuchElementException;
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionLikeRepository questionLikeRepository;
+    private final UsersService usersService;
 
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -27,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getQuestion(long questionId) {
-        return verifyExists(questionId);
+        return getQuestionById(questionId);
     }
 
     @Override
@@ -44,7 +50,20 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void like(long questionId, long userId) {
+        Users user = usersService.getUserById(userId);
+        Question question = getQuestionById(questionId);
 
+        if (question.alreadyLikedBy(user)) {
+            throw new RuntimeException("you have already liked this question.");
+        }
+
+        QuestionLike questionLike =
+                QuestionLike.builder()
+                        .question(question)
+                        .user(user)
+                        .build();
+
+        questionLikeRepository.save(questionLike);
     }
 
     @Override
@@ -52,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    public Question verifyExists(long questionId) {
+    public Question getQuestionById(long questionId) {
         return questionRepository
                 .findById(questionId)
                 .orElseThrow(() -> {

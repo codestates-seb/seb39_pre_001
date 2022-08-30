@@ -30,11 +30,12 @@ public class Question extends Auditing {
     private String description;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    @Setter
+    @OneToMany(mappedBy = "question")
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USERS_ID")
+    @JoinColumn(name = "USER_ID")
     private Users user;
 
     @Builder.Default
@@ -77,7 +78,7 @@ public class Question extends Auditing {
      *
      * @author thom-mac
      */
-    public void setQuestionLikes(List<QuestionLike> questionLikeList) {
-        this.questionLikes.addAll(questionLikeList);
-    }
+//    public void setQuestionLikes(List<QuestionLike> questionLikeList) {
+//        this.questionLikes = questionLikeList;
+//    }
 }
