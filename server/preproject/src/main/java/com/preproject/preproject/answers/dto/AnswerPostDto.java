@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class AnswersPostDto {
+public class AnswerPostDto {
     @NotBlank
     private String content;
 }

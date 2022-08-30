@@ -1,17 +1,17 @@
 package com.preproject.preproject.answers.service;
 
-import com.preproject.preproject.answers.entity.Answers;
+import com.preproject.preproject.answers.entity.Answer;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AnswerService {
 
-    public Answers createAnswer(Answers answer) {
+    public Answer createAnswer(Answer answer) {
 
         return answer;
     }
 
-    public Answers updateAnswer(Answers answer) {
+    public Answer updateAnswer(Answer answer) {
 
         return answer;
     }

@@ -1,9 +1,9 @@
 package com.preproject.preproject.answers;
 
 import com.google.gson.Gson;
-import com.preproject.preproject.answers.controller.AnswersController;
+import com.preproject.preproject.answers.controller.AnswerController;
 import com.preproject.preproject.answers.dto.AnswerPatchDto;
-import com.preproject.preproject.answers.dto.AnswersPostDto;
+import com.preproject.preproject.answers.dto.AnswerPostDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AnswersController.class)
+@WebMvcTest(AnswerController.class)
 @AutoConfigureRestDocs
 public class AnswerControllerTest {
 
@@ -42,7 +42,7 @@ public class AnswerControllerTest {
     public void postAnswerTest() throws Exception {
 
         //given
-        AnswersPostDto post = AnswersPostDto.builder()
+        AnswerPostDto post = AnswerPostDto.builder()
                 .content("답변내용").build();
 
         String content = gson.toJson(post);

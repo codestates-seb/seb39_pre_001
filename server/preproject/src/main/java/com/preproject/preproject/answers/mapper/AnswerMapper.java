@@ -2,31 +2,30 @@ package com.preproject.preproject.answers.mapper;
 
 import com.preproject.preproject.answers.dto.AnswerPatchDto;
 import com.preproject.preproject.answers.dto.AnswerResponseDto;
-import com.preproject.preproject.answers.dto.AnswersPostDto;
-import com.preproject.preproject.answers.entity.Answers;
-import org.mapstruct.Mapper;
+import com.preproject.preproject.answers.dto.AnswerPostDto;
+import com.preproject.preproject.answers.entity.Answer;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AnswerMapper {
-    public Answers answerPost(AnswersPostDto answersPostDto) {
-        Answers answers = new Answers();
+    public Answer answerPost(AnswerPostDto answersPostDto) {
+        Answer answers = new Answer();
 
         answers.setContent(answersPostDto.getContent());
 
         return answers;
     }
 
-    public Answers answerPatch(AnswerPatchDto answerPatchDto){
-        Answers answers = new Answers();
-        answers.setAnswer_id(answerPatchDto.getAnswer_id());
+    public Answer answerPatch(AnswerPatchDto answerPatchDto){
+        Answer answers = new Answer();
+        answers.setAnswerId(answerPatchDto.getAnswer_id());
         answers.setContent(answerPatchDto.getContent());
 
         return answers;
     }
 
-    public AnswerResponseDto answerResponse(Answers answers){
-        long answerId = answers.getAnswer_id();
+    public AnswerResponseDto answerResponse(Answer answers){
+        long answerId = answers.getAnswerId();
         String content = answers.getContent();
 
         return new AnswerResponseDto(answerId, content);

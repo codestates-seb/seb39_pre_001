@@ -1,6 +1,7 @@
 package com.preproject.preproject.users.entity;
 
 
+import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionDislike;
 import com.preproject.preproject.questions.entity.QuestionLike;
@@ -17,7 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
 
 
 @NoArgsConstructor
@@ -31,9 +31,14 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(unique = true)
     private String displayName;
     private String password;
+
+    @Column(unique = true, updatable = false)
     private String email;
+
     private LocalDateTime regdate = LocalDateTime.now();
 
     @Builder.Default
@@ -47,5 +52,8 @@ public class Users {
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<QuestionDislike> questionDislikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
 
 }

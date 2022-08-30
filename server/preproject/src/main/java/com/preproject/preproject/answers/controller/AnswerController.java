@@ -1,8 +1,8 @@
 package com.preproject.preproject.answers.controller;
 
 import com.preproject.preproject.answers.dto.AnswerPatchDto;
-import com.preproject.preproject.answers.dto.AnswersPostDto;
-import com.preproject.preproject.answers.entity.Answers;
+import com.preproject.preproject.answers.dto.AnswerPostDto;
+import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.answers.mapper.AnswerMapper;
 import com.preproject.preproject.answers.service.AnswerService;
 import org.springframework.http.HttpStatus;
@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/questions")
-public class AnswersController {
+public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
 
-    public AnswersController(AnswerService answerService, AnswerMapper answerMapper) {
+    public AnswerController(AnswerService answerService, AnswerMapper answerMapper) {
         this.answerService = answerService;
         this.answerMapper = answerMapper;
     }
 
     @PostMapping("/{question-id}/answer")
-    public ResponseEntity postAnswer(@RequestBody AnswersPostDto answersPostDto) {
-        Answers answers = answerMapper.answerPost(answersPostDto);
+    public ResponseEntity postAnswer(@RequestBody AnswerPostDto answersPostDto) {
+        Answer answers = answerMapper.answerPost(answersPostDto);
 
-        Answers response = answerService.createAnswer(answers);
+        Answer response = answerService.createAnswer(answers);
 
 
         return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class AnswersController {
                                       @RequestBody AnswerPatchDto answerPatchDto) {
         answerPatchDto.setAnswer_id(answer_id);
 
-        Answers response =
+        Answer response =
                 answerService.updateAnswer(answerMapper.answerPatch(answerPatchDto));
 
         return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.OK);

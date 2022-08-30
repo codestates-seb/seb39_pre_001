@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tags")
-public class TagsController {
+public class TagController {
 
     private final TagService tagService;
     private final TagMapper mapper;
 
-    public TagsController(TagService tagService, TagMapper mapper) {
+    public TagController(TagService tagService, TagMapper mapper) {
         this.tagService = tagService;
         this.mapper = mapper;
     }
