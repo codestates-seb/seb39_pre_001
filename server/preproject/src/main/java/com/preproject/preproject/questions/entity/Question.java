@@ -3,16 +3,14 @@ package com.preproject.preproject.questions.entity;
 import com.preproject.preproject.audit.Auditing;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +29,7 @@ public class Question extends Auditing {
     private String description;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -46,6 +44,18 @@ public class Question extends Auditing {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
     }
 
+    public boolean alreadyLikedBy(Users user) {
+        return this
+                .getQuestionLikes().stream()
+                .anyMatch(questionLike -> questionLike.getUser() == user);
+    }
+
+    public void addUser(Users user) {
+        this.user = user;
+        if (!this.user.getQuestions().contains(this)) {
+            this.user.getQuestions().add(this);
+        }
+    }
 
     /**
      * setter method for stubbing.

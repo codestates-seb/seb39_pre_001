@@ -2,7 +2,7 @@ package com.preproject.preproject.tags.controller;
 
 
 import com.preproject.preproject.tags.dto.TagResponseDto;
-import com.preproject.preproject.tags.entity.Tags;
+import com.preproject.preproject.tags.entity.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
