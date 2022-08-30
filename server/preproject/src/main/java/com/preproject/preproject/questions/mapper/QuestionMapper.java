@@ -23,6 +23,7 @@ public interface QuestionMapper {
 
     List<QuestionResponseDto> listDtoFromEntities(List<Question> questions);
 
+    @Mapping(target = "user.id", source = "userId")
     Question entityFromDto(QuestionPostDto dto);
 
     Question entityFromDto(QuestionPatchDto dto);

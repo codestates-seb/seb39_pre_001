@@ -51,6 +51,16 @@ public class Question extends Auditing {
         return this.questionLikes.size();
     }
 
+    public void addUser(Users user) {
+        if (this.user != user) {
+            this.user = user;
+            user.getQuestions().add(this);
+        }
+    }
+
+
+
+
 
     /**
      * setter method for stubbing.

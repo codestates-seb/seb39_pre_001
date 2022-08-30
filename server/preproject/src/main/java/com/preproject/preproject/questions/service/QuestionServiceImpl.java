@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @Profile("dev")
 @RequiredArgsConstructor
@@ -25,11 +27,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getQuestion(long questionId) {
-        return null;
+        return verifyExists(questionId);
     }
 
     @Override
     public Question postQuestion(Question question) {
+        verifyDuplicationById(question.getQuestionId());
+
         return null;
     }
 
@@ -46,5 +50,20 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void dislike(long questionId, long userId) {
 
+    }
+
+    public Question verifyExists(long questionId) {
+        return questionRepository
+                .findById(questionId)
+                .orElseThrow(() -> {
+                    throw new NoSuchElementException("no data");
+                });
+    }
+
+
+    public void verifyDuplicationById(long questionId) {
+        if (questionRepository.findById(questionId).isPresent()) {
+            throw new RuntimeException("duplicated");
+        }
     }
 }
