@@ -2,8 +2,8 @@ CREATE TABLE `questions` (
   `question_id` int PRIMARY KEY AUTO_INCREMENT,
   `title` varchar(255),
   `description` varchar(255),
-  `created at` datetime,
-  `modified at` datetime,
+  `created_at` datetime,
+  `modified_at` datetime,
   `user_id` int,
   `tag_id` int
 );

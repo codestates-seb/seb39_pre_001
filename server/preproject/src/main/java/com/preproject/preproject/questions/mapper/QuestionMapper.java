@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public interface QuestionMapper {
 
     @Mapping(target = "tags", source = "tags")
-    @Mapping(target = "likes", source = "getLikeCount")
+    @Mapping(target = "likes", source = "likeCount")
     QuestionResponseDto dtoFrom(Question question);
 
     List<QuestionResponseDto> listDtoFromEntities(List<Question> questions);

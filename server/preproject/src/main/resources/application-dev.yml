@@ -4,11 +4,11 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/beef-macaron-pre-local-dev?allowPublicKeyRetrieval=true
     username: root
     password: 1111
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath*:db/h2/data-mysql.sql
-#      schema-locations: classpath*:db/h2/schema-mysql.sql
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:db/mysql/data-mysql.sql
+      schema-locations: classpath*:db/mysql/schema-mysql.sql
 #  jpa:
 #    hibernate:
 #      ddl-auto: create
