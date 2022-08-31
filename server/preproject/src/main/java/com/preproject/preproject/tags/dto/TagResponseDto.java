@@ -1,19 +1,13 @@
 package com.preproject.preproject.tags.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @Builder
 public class TagResponseDto {
-
-    //todo : maybe other tagged questions?
-
     private long tagId;
     private String name;
-
 }
