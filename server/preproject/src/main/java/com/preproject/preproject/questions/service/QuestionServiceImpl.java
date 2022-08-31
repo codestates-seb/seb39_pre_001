@@ -4,6 +4,9 @@ import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
 import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
+import com.preproject.preproject.tags.entity.Tag;
+import com.preproject.preproject.tags.entity.TagQuestion;
+import com.preproject.preproject.tags.service.TagService;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Profile("dev")
@@ -24,6 +29,8 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
     private final UsersService usersService;
+
+    private final TagService tagService;
 
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -38,9 +45,19 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question postQuestion(Question question) {
-        verifyDuplicationById(question.getQuestionId());
+        Users user = usersService.getUserById(question.getUser().getId());
 
-        return null;
+        List<TagQuestion> tagQuestionList = question.getTagQuestionList().stream()
+                .map(tagQuestion -> {
+                    Tag tag = tagService.findOrCreateTag(tagQuestion.getTag().getName());
+                    tagQuestion.addQuestion(question);
+                    tagQuestion.addTag(tag);
+                    return tagQuestion;
+                }).collect(Collectors.toList());
+
+        question.addUser(user);
+
+        return questionRepository.save(question);
     }
 
     @Override

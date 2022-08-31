@@ -57,6 +57,7 @@ public class QuestionController {
     @PostMapping("/ask")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto) {
 
+        // todo: user authentication needed. Principal needed.
         Question mapped = questionMapper.entityFromDto(questionPostDto);
         Question created = questionService.postQuestion(mapped);
         QuestionResponseDto response = questionMapper.dtoFrom(created);

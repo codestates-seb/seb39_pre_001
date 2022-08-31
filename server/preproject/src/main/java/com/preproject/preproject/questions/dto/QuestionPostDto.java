@@ -13,8 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QuestionPostDto {
-
-    //todo user, tags
+    
     private String title;
     private String description;
 

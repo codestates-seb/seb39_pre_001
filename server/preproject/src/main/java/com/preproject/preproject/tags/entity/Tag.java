@@ -22,6 +22,7 @@ public class Tag {
     private long tagId;
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
