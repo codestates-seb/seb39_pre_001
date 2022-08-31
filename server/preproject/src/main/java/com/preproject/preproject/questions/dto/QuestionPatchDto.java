@@ -11,9 +11,10 @@ import java.util.List;
 public class QuestionPatchDto {
 
     @Setter
-    private long questionId;
+    private Long questionId;
     private String title;
     private String description;
 
     private List<String> tags;
+    private Long userId;
 }

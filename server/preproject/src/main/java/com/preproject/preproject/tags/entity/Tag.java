@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "TAGS")
 @Entity
 public class Tag {
 
@@ -22,8 +23,9 @@ public class Tag {
 
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private List<TagQuestion> tagsQuestions = new ArrayList<>();
+    private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
 
 }

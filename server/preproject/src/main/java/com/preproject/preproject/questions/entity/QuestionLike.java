@@ -1,20 +1,18 @@
 package com.preproject.preproject.questions.entity;
 
 import com.preproject.preproject.users.entity.Users;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "QUESTIONS_LIKES")
 @Entity
 public class QuestionLike {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionLikeId;
@@ -27,4 +25,28 @@ public class QuestionLike {
     @JoinColumn(name = "USER_ID")
     private Users user;
 
+    public void addQuestion(Question question) {
+        System.out.println("addquestion");
+        this.question = question;
+        if (!this.question.getQuestionLikes().contains(this)) {
+            System.out.println("add question like");
+            this.question.getQuestionLikes().add(this);
+        }
+    }
+
+    public void addUser(Users user) {
+        this.user = user;
+        if (!this.user.getQuestionLikes().contains(this)) {
+            this.user.getQuestionLikes().add(this);
+        }
+    }
+
+    @Builder
+    public static QuestionLike of(Question question, Users user) {
+        System.out.println("i'm invoked");
+        QuestionLike questionLike = new QuestionLike();
+        questionLike.addQuestion(question);
+        questionLike.addUser(user);
+        return questionLike;
+    }
 }
