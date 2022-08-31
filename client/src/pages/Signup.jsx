@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import NavBar from '../components/NavBar';
 import SideText from '../components/SideText';
 import SignupForm from '../components/SignupForm';
 
@@ -15,10 +16,13 @@ const SignupContainer = styled.div`
 const Signup = () => {
 
   return (
-    <SignupContainer>
-      <SideText />
-      <SignupForm />
-    </SignupContainer>
+    <>
+      <NavBar />
+      <SignupContainer>
+        <SideText />
+        <SignupForm />
+      </SignupContainer>
+    </>
   );
 };
 

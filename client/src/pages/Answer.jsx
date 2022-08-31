@@ -18,21 +18,6 @@ const Header = styled.h2`
   padding: 20px 0px 0px;
 `;
 
-const AnswerSubmitButton = styled.button`
-  background-color: #0a95ff;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 10.4px;
-  margin: 20px 2px;
-  border: none;
-  border-radius: 4px;
-  width: 128.91px;
-  cursor: pointer;
-  :hover {
-    background-color: #0074CC;
-  }
-`;
 
 const BottomText = styled.div`
   color: #232629;
@@ -72,7 +57,6 @@ const Answer = () => {
     <AnswerWrapper>
       <Header>Your Answer</Header>
       <TextEditor />
-      <AnswerSubmitButton>Post Your Answer</AnswerSubmitButton>
       {/* Link -> 질문 작성 페이지로 이동 */}
       <BottomText>Not the answer you're looking for? Browse other questions tagged <TagLink>macos</TagLink>
         <TagLink>macos-catalina</TagLink> <TagLink>facetime</TagLink> or <NavLink to="/questions">ask your own question</NavLink>.</BottomText>

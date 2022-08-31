@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../resources/stack-overflow.png';
+import NavBar from '../components/NavBar';
 import SocialLogin from '../components/SocialLogin';
 import EmailLogin from '../components/EmailLogin';
 import { RiShareBoxLine } from 'react-icons/ri';
@@ -45,15 +46,18 @@ const NavLink = styled(Link)`
 const Login = () => {
 
   return (
-    <LoginContainer>
-      <StackOverflowLogo />
-      <SocialLogin />
-      <EmailLogin />
-      <BottomText>
-        <div>Don't have an account? <NavLink to="/users/join">Sign up</NavLink></div>
-        <div>Are you an employer? Sign up on Talent<RiShareBoxLine /></div>
-      </BottomText>
-    </LoginContainer>
+    <>
+      <NavBar />
+      <LoginContainer>
+        <StackOverflowLogo />
+        <SocialLogin />
+        <EmailLogin />
+        <BottomText>
+          <div>Don't have an account? <NavLink to="/users/join">Sign up</NavLink></div>
+          <div>Are you an employer? Sign up on Talent<RiShareBoxLine /></div>
+        </BottomText>
+      </LoginContainer>
+    </>
   );
 };
 
