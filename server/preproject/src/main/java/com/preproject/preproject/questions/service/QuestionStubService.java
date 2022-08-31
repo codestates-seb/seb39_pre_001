@@ -6,6 +6,7 @@ import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Profile("local")
 @Service
 public class QuestionStubService implements QuestionService {
 
@@ -79,35 +81,31 @@ public class QuestionStubService implements QuestionService {
 
         TagQuestion tagQuestion1 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(1L)
                         .tag(tag1)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion2 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(2L)
                         .tag(tag3)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion3 =
                 TagQuestion.builder()
-                        .tagsQuestionsId(3L)
+
                         .tag(tag2)
                         .question(question2)
                         .build();
 
         QuestionLike questionLike1 =
                 QuestionLike.builder()
-                        .questionLikeId(1L)
                         .question(question2)
                         .user(user1)
                         .build();
 
         QuestionLike questionLike2 =
                 QuestionLike.builder()
-                        .questionLikeId(2L)
                         .question(question1)
                         .user(user2)
                         .build();
@@ -163,7 +161,6 @@ public class QuestionStubService implements QuestionService {
 
         QuestionLike
                 .builder()
-                .questionLikeId(1L)
                 .question(foundQuestion)
                 .build();
     }

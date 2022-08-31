@@ -29,4 +29,11 @@ public class TagService {
         return tags;
 
     }
+
+    public Tag findOrCreateTag(String name) {
+        return tagRepository.findByName(name).orElse(Tag.builder().name(name).build());
+
+    }
+
+
 }
