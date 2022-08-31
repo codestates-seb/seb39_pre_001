@@ -103,12 +103,14 @@ public class QuestionStubService implements QuestionService {
                         .question(question2)
                         .user(user1)
                         .build();
+        questionLike1.setQuestionLikeId(1L);
 
         QuestionLike questionLike2 =
                 QuestionLike.builder()
                         .question(question1)
                         .user(user2)
                         .build();
+        questionLike2.setQuestionLikeId(2L);
 
         question1.setTagQuestionList(List.of(tagQuestion1, tagQuestion2));
         question2.setTagQuestionList(List.of(tagQuestion3));
