@@ -1,7 +1,9 @@
 package com.preproject.preproject.questions.service;
 
+import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
+import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
@@ -29,8 +31,9 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
     private final UsersService usersService;
-
     private final TagService tagService;
+
+    private final QuestionMapper questionMapper;
 
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -62,7 +65,23 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question updateQuestion(Question question) {
-        return null;
+        Question entity = getQuestionById(question.getQuestionId());
+        entity.checkWriter(question.getUser().getId());
+
+        List<TagQuestion> tagQuestionList = question.getTagQuestionList().stream()
+                .map(
+                        tagQuestion -> {
+                            Tag tag = tagService.findOrCreateTag(tagQuestion.getTag().getName());
+                            tagQuestion.addQuestion(entity);
+                            tagQuestion.addTag(tag);
+                            return tagQuestion;
+                        }
+
+                ).collect(Collectors.toList());
+
+        entity.getTagQuestionList().clear();
+//        entity.setTagQuestionList(tagQuestionList);
+        return questionRepository.save(entity);
     }
 
     @Override

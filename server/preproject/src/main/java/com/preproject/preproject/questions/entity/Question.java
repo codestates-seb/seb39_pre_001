@@ -23,9 +23,11 @@ public class Question extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
+    @Setter
     @Column(nullable = false)
     private String title;
 
+    @Setter
     @Column(nullable = false)
     private String description;
 
@@ -39,7 +41,7 @@ public class Question extends Auditing {
     private Users user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
     public List<String> getTags() {
@@ -62,6 +64,11 @@ public class Question extends Auditing {
         return this.questionLikes.size();
     }
 
+    public void checkWriter(long userId) {
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("Only user who wrote this question can update.");
+        }
+    }
 
     /**
      * setter method for stubbing.
