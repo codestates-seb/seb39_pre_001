@@ -82,7 +82,7 @@ function Header() {
       <MenuIcon>
         <GiHamburgerMenu />
       </MenuIcon>
-      <LogoLink href='/questions' className='logo'>
+      <LogoLink href='/' className='logo'>
         <img className='logoImage' src={logo} alt='logo' />
         Stack<b>Overflow</b>
       </LogoLink>

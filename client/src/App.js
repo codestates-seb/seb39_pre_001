@@ -4,9 +4,9 @@ import QuestionAnswer from './pages/QuestionAnswer';
 import Header from './components/Header';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Answer from './components/Answer';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,12 +23,12 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/questions' element={<Questions />} />
           <Route path='/questions/ask' element={<QuestionCreator />} />
           <Route path='/questions/:questionId' element={<QuestionAnswer />} />
           <Route path='/users/login' element={<Login />} />
           <Route path='/users/join' element={<Signup />} />
-          <Route path='/questions/questionId/answer' element={<Answer />} />
         </Routes>
       </BrowserRouter>
     </div>
