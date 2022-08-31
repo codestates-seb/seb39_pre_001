@@ -11,11 +11,7 @@ import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Profiles;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,10 +21,10 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Profile("dev")
+@Profile("local")
 @RequiredArgsConstructor
 @Service
-public class QuestionServiceImpl implements QuestionService {
+public class QuestionServiceLocalImpl implements QuestionService{
 
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
@@ -106,3 +102,4 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 }
+

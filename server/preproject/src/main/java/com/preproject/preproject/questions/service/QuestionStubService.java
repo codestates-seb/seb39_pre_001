@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("local")
+@Profile("test")
 @Service
 public class QuestionStubService implements QuestionService {
 
