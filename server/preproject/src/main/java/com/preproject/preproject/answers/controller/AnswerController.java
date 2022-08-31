@@ -23,7 +23,9 @@ public class AnswerController {
     }
 
     @PostMapping("/{question-id}/answer")
-    public ResponseEntity postAnswer(@RequestBody AnswerPostDto answersPostDto) {
+    public ResponseEntity postAnswer(@RequestBody AnswerPostDto answersPostDto,
+                                     @PathVariable("question-id") long questionId) {
+        answersPostDto.setQuestionId(questionId);
 
         Answer answers = answerMapper.answerPost(answersPostDto);
         Answer created = answerService.createAnswer(answers);

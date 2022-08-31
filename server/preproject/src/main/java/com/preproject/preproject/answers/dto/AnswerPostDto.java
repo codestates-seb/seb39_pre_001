@@ -28,9 +28,9 @@ public class AnswerPostDto {
         return users;
     }
 
-//    public Question getQuestion() {
-//        Question question = new Question();
-//        question.setQuestionId(questionId);
-//        return question;
-//    }
+    public Question getQuestion() {
+        Question question = new Question();
+        question.setQuestionId(questionId);
+        return question;
+    }
 }
