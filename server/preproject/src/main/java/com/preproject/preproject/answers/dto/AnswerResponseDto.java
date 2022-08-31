@@ -1,5 +1,6 @@
 package com.preproject.preproject.answers.dto;
 
+import com.preproject.preproject.users.dto.UsersResponseDto;
 import lombok.*;
 
 @Getter
@@ -10,4 +11,5 @@ import lombok.*;
 public class AnswerResponseDto {
     private long answerId;
     private String content;
+    private UsersResponseDto user;
 }

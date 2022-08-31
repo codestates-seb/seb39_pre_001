@@ -18,16 +18,16 @@ public class AnswerMapper {
 
     public Answer answerPatch(AnswerPatchDto answerPatchDto){
         Answer answers = new Answer();
-        answers.setAnswerId(answerPatchDto.getAnswer_id());
+        answers.setAnswerId(answerPatchDto.getAnswerId());
         answers.setContent(answerPatchDto.getContent());
 
         return answers;
     }
 
-    public AnswerResponseDto answerResponse(Answer answers){
-        long answerId = answers.getAnswerId();
-        String content = answers.getContent();
-
-        return new AnswerResponseDto(answerId, content);
-    }
+//    public AnswerResponseDto answerResponse(Answer answers){
+//        long answerId = answers.getAnswerId();
+//        String content = answers.getContent();
+//
+////        return new AnswerResponseDto(answerId, content);
+//    }
 }

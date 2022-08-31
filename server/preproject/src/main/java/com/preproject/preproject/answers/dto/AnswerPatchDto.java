@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnswerPatchDto {
-    private long answer_id;
 
+    private long answerId;
     @NotBlank
     private String content;
 }

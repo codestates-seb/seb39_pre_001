@@ -2,9 +2,11 @@ package com.preproject.preproject.answers.controller;
 
 import com.preproject.preproject.answers.dto.AnswerPatchDto;
 import com.preproject.preproject.answers.dto.AnswerPostDto;
+import com.preproject.preproject.answers.dto.AnswerResponseDto;
 import com.preproject.preproject.answers.entity.Answer;
-import com.preproject.preproject.answers.mapper.AnswerMapper;
+import com.preproject.preproject.answers.mapper.mapstruct.AnswerMapper;
 import com.preproject.preproject.answers.service.AnswerService;
+import com.preproject.preproject.dto.SingleResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +24,20 @@ public class AnswerController {
 
     @PostMapping("/{question-id}/answer")
     public ResponseEntity postAnswer(@RequestBody AnswerPostDto answersPostDto) {
+
         Answer answers = answerMapper.answerPost(answersPostDto);
+        Answer created = answerService.createAnswer(answers);
+        AnswerResponseDto response = answerMapper.answerResponse(created);
 
-        Answer response = answerService.createAnswer(answers);
 
-
-        return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}/answer/{answer-id}")
-    public ResponseEntity PatchAnswer(@PathVariable("answer-id") long answer_id,
+    public ResponseEntity PatchAnswer(@PathVariable("answer-id") long answerId,
                                       @RequestBody AnswerPatchDto answerPatchDto) {
-        answerPatchDto.setAnswer_id(answer_id);
+        answerPatchDto.setAnswerId(answerId);
+        System.out.println(answerPatchDto.getAnswerId());
 
         Answer response =
                 answerService.updateAnswer(answerMapper.answerPatch(answerPatchDto));

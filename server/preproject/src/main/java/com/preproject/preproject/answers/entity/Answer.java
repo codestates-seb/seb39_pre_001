@@ -27,8 +27,8 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
-    //todo: users entity 매핑 필요?
 
+    //todo: users entity 매핑 필요?
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private Users user;

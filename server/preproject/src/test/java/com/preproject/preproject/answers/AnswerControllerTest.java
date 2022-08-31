@@ -81,7 +81,7 @@ public class AnswerControllerTest {
         long answer_id = 1L;
 
         AnswerPatchDto patch = AnswerPatchDto.builder()
-                .answer_id(answer_id)
+                .answerId(answer_id)
                 .content("답변 수정").build();
 
         String content = gson.toJson(patch);
@@ -95,7 +95,7 @@ public class AnswerControllerTest {
 
         //then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.answer_id").value(patch.getAnswer_id()))
+                .andExpect(jsonPath("$.answer_id").value(patch.getAnswerId()))
                 .andExpect(jsonPath("$.content").value("답변 수정"))
                 .andDo(document("patch-answer",
                         getRequestPreProcessor(),

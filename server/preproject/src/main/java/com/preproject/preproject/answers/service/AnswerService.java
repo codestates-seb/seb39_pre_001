@@ -2,7 +2,7 @@ package com.preproject.preproject.answers.service;
 
 import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.answers.repository.AnswerRepository;
-import org.springframework.http.HttpStatus;
+import com.preproject.preproject.users.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,13 +11,16 @@ import java.util.Optional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final UserService userService;
 
-    public AnswerService(AnswerRepository answerRepository) {
+    public AnswerService(AnswerRepository answerRepository, UserService userService) {
         this.answerRepository = answerRepository;
+        this.userService = userService;
     }
 
     public Answer createAnswer(Answer answer) {
 
+//        userService.findUserCheck(answer.getUser().getId());
         return answerRepository.save(answer);
     }
 
@@ -42,7 +45,7 @@ public class AnswerService {
                 answerRepository.findById(answerId);
 
         Answer findAnswer = optionalAnswer.orElseThrow(() ->
-                new RuntimeException(String.valueOf(HttpStatus.NOT_FOUND)));
+                new RuntimeException("답변을 찾을수 없습니다."));
 
         return findAnswer;
     }
