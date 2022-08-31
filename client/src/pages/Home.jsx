@@ -9,6 +9,7 @@ import { IoPeople } from 'react-icons/io5';
 const StyledHome = styled.div`
   padding: 48px;
   margin: auto;
+  background-color: #f8f9f9;
   > .home-container {
     padding: 32px;
     background: linear-gradient(180deg, #232629 0%, #525960 130%);
