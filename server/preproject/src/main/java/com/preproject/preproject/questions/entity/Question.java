@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "QUESTIONS")
 @Entity
 @Setter
 public class Question extends Auditing {
@@ -29,6 +31,7 @@ public class Question extends Auditing {
     private String description;
 
     @Builder.Default
+    @Setter
     @OneToMany(mappedBy = "question")
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
@@ -42,6 +45,22 @@ public class Question extends Auditing {
 
     public List<String> getTags() {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public boolean alreadyLikedBy(Users user) {
+        return this
+                .getQuestionLikes().stream()
+                .anyMatch(questionLike -> questionLike.getUser() == user);
+    }
+
+    public void addUser(Users user) {
+        this.user = user;
+        if (!this.user.getQuestions().contains(this)) {
+            this.user.getQuestions().add(this);
+        }
+    }
+    public long getLikeCount() {
+        return this.questionLikes.size();
     }
 
 
@@ -60,7 +79,7 @@ public class Question extends Auditing {
      *
      * @author thom-mac
      */
-    public void setQuestionLikes(List<QuestionLike> questionLikeList) {
-        this.questionLikes.addAll(questionLikeList);
-    }
+//    public void setQuestionLikes(List<QuestionLike> questionLikeList) {
+//        this.questionLikes = questionLikeList;
+//    }
 }

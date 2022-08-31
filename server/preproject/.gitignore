@@ -47,4 +47,5 @@ server/preproject/build/
 /.gradle/
 /build/
 /server/preproject/build/
+server/preproject/src/main/resources/application-remote-dev.yml
 

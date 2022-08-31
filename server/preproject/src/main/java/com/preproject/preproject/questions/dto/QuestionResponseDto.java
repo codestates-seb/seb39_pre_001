@@ -27,4 +27,5 @@ public class QuestionResponseDto {
     @Builder.Default
     private List<String> tags = new ArrayList<>();
 
+    private Long likes;
 }

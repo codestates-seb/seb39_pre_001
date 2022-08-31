@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/beef-macaron-pre-local-dev?allowPublicKeyRetrieval=true
+    username: root
+    password: 1111
+#  sql:
+#    init:
+#      mode: embedded
+#      data-locations: classpath*:db/mysql/data-mysql.sql
+#      schema-locations: classpath*:db/mysql/schema-mysql.sql
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLInnoDBDialect
+#  sql:
+#    init:
+#      schema-locations: classpath*:db/h2/schema-mysql.sql
+#      data-locations: classpath*:db/h2/data-mysql.sql

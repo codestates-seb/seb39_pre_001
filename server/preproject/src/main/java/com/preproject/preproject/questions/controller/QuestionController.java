@@ -33,7 +33,7 @@ public class QuestionController {
             @RequestParam(name = "tab", required = false) String tab,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page) {
 
-        if (tab == null) tab = "createdAt";
+        if (tab == null) tab = "created_at";
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(tab));
 
         Page<Question> entities = questionService.getQuestions(pageable);
@@ -57,6 +57,7 @@ public class QuestionController {
     @PostMapping("/ask")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto) {
 
+        // todo: user authentication needed. Principal needed.
         Question mapped = questionMapper.entityFromDto(questionPostDto);
         Question created = questionService.postQuestion(mapped);
         QuestionResponseDto response = questionMapper.dtoFrom(created);
