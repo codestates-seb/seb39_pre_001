@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 @Table(name = "QUESTIONS")
 @Entity
+@Setter
 public class Question extends Auditing {
 
     @Id

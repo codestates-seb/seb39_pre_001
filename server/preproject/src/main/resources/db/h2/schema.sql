@@ -39,6 +39,17 @@ CREATE TABLE `tags_questions` (
   `tag_id` int
 );
 
+CREATE TABLE `answer` (
+    `answer_id` int PRIMARY KEY AUTO_INCREMENT,
+    `content` varchar,
+    `question_id` int,
+    `user_id` int
+);
+
+ALTER TABLE `answer` ADD FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
+
+ALTER TABLE `answer` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
 ALTER TABLE `questions` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `questions` ADD FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`);
