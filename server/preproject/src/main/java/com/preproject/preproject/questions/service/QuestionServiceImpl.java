@@ -2,10 +2,12 @@ package com.preproject.preproject.questions.service;
 
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
+import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
+import com.preproject.preproject.tags.repository.TagQuestionRepository;
 import com.preproject.preproject.tags.service.TagService;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UsersService;
@@ -19,13 +21,14 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Profile("dev")
+@Profile("local")
 @RequiredArgsConstructor
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -33,8 +36,10 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
     private final UsersService usersService;
-
     private final TagService tagService;
+
+    private final QuestionMapper questionMapper;
+    private final TagQuestionRepository tagQuestionRepository;
 
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -64,8 +69,39 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
     public Question updateQuestion(Question question) {
-        return null;
+        Question entity = getQuestionById(question.getQuestionId());
+        entity.checkWriter(question.getUser().getId());
+
+        List<TagQuestion> list = question.getTagQuestionList().stream()
+                .map(
+                        tagQuestion -> {
+                            TagQuestion tagQuestionEntity =
+                                    tagQuestionRepository
+                                            .findByTagName(
+                                                    tagQuestion
+                                                            .getTag().getName()
+                                            )
+                                            .orElseGet(
+                                                    () -> {
+                                                        Tag tag = tagService.findOrCreateTag(tagQuestion.getTag().getName());
+                                                        return TagQuestion.of(entity, tag);
+                                                    }
+                                            );
+
+                            return tagQuestionRepository.save(tagQuestionEntity);
+                        }
+                ).collect(Collectors.toList());
+
+        List<TagQuestion> difference =
+                entity.getTagQuestionList().stream()
+                        .filter(tagQuestion -> !list.contains(tagQuestion))
+                        .collect(Collectors.toList());
+
+        entity.getTagQuestionList().removeAll(difference);
+
+        return questionRepository.save(entity);
     }
 
     @Override

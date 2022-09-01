@@ -2,21 +2,21 @@ package com.preproject.preproject.questions.service;
 
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
-import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
 import org.springframework.context.annotation.Profile;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Profile("test")
-@Service
+//@Profile("local")
+//@Service
 public class QuestionStubService implements QuestionService {
 
     /** stubbing method. stubbed data as following scenario.</br>
@@ -81,19 +81,21 @@ public class QuestionStubService implements QuestionService {
 
         TagQuestion tagQuestion1 =
                 TagQuestion.builder()
+                        .tagQuestionId(1L)
                         .tag(tag1)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion2 =
                 TagQuestion.builder()
+                        .tagQuestionId(2L)
                         .tag(tag3)
                         .question(question1)
                         .build();
 
         TagQuestion tagQuestion3 =
                 TagQuestion.builder()
-
+                        .tagQuestionId(3L)
                         .tag(tag2)
                         .question(question2)
                         .build();
@@ -103,15 +105,17 @@ public class QuestionStubService implements QuestionService {
                         .question(question2)
                         .user(user1)
                         .build();
+        questionLike1.setQuestionLikeId(1L);
 
         QuestionLike questionLike2 =
                 QuestionLike.builder()
                         .question(question1)
                         .user(user2)
                         .build();
+        questionLike2.setQuestionLikeId(2L);
 
-        question1.setTagQuestionList(List.of(tagQuestion1, tagQuestion2));
-        question2.setTagQuestionList(List.of(tagQuestion3));
+        question1.setTagQuestionListForStub(List.of(tagQuestion1, tagQuestion2));
+        question2.setTagQuestionListForStub(List.of(tagQuestion3));
         question1.setQuestionLikes(List.of(questionLike2));
         question2.setQuestionLikes(List.of(questionLike1));
 
