@@ -8,6 +8,7 @@ import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.tags.repository.TagQuestionRepository;
+import com.preproject.preproject.tags.service.TagQuestionService;
 import com.preproject.preproject.tags.service.TagService;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UsersService;
@@ -28,7 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Profile("local")
+//@Profile("local")
 @RequiredArgsConstructor
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -40,6 +41,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionMapper questionMapper;
     private final TagQuestionRepository tagQuestionRepository;
+    private final TagQuestionService tagQuestionService;
 
     @Override
     public Page<Question> getQuestions(Pageable pageable) {
@@ -55,7 +57,8 @@ public class QuestionServiceImpl implements QuestionService {
     public Question postQuestion(Question question) {
         Users user = usersService.getUserById(question.getUser().getId());
 
-        List<TagQuestion> tagQuestionList = question.getTagQuestionList().stream()
+        List<TagQuestion> tagQuestionList =
+                question.getTagQuestionList().stream()
                 .map(tagQuestion -> {
                     Tag tag = tagService.findOrCreateTag(tagQuestion.getTag().getName());
                     tagQuestion.addQuestion(question);
@@ -81,7 +84,7 @@ public class QuestionServiceImpl implements QuestionService {
                                     tagQuestionRepository
                                             .findByTagName(
                                                     tagQuestion
-                                                            .getTag().getName()
+                                                            .getTag().getName(), entity.getQuestionId()
                                             )
                                             .orElseGet(
                                                     () -> {

@@ -22,8 +22,8 @@ public class TagService {
     public Tag findOrCreateTag(String name) {
         return tagRepository
                 .findByName(name)
-                .orElse(
-                        Tag.builder().name(name).build()
+                .orElseGet(
+                        () -> Tag.builder().name(name).build()
                 );
     }
 

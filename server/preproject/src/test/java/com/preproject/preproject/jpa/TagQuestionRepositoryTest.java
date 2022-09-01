@@ -82,8 +82,8 @@ public class TagQuestionRepositoryTest {
         TagQuestion entity = tagQuestionRepository.save(tagQuestion);
         TagQuestion entity2 = tagQuestionRepository.save(tagQuestion1);
 
-        TagQuestion tagQuestion2 = tagQuestionRepository.findByTagName(tag1.getName()).orElseThrow();
-        TagQuestion tagQuestion3 = tagQuestionRepository.findByTagName(tag2.getName()).orElseThrow();
+        TagQuestion tagQuestion2 = tagQuestionRepository.findByTagName(tag1.getName(), 1L).orElseThrow();
+        TagQuestion tagQuestion3 = tagQuestionRepository.findByTagName(tag2.getName(), 1L).orElseThrow();
 
 //        System.out.println(tagQuestion2.getTagQuestionId());
 //        System.out.println(tagQuestion2.getQuestion().getQuestionId());

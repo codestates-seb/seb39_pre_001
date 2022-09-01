@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface TagQuestionRepository extends JpaRepository<TagQuestion, Long> {
 
-    @Query("SELECT tq FROM TagQuestion tq JOIN tq.tag t WHERE t.name = :tag")
-    Optional<TagQuestion> findByTagName(@Param("tag") String tag);
+    @Query("SELECT tq FROM TagQuestion tq JOIN tq.tag t WHERE t.name = :tag and tq.question.questionId = :questionId")
+    Optional<TagQuestion> findByTagName(
+            @Param("tag") String tag,
+            @Param("questionId") long questionId);
 }

@@ -22,12 +22,12 @@ VALUES(5, 'user5', '1234', 'user5@gmail.com', current_timestamp);
 --
 --INSERT INTO TAGS (tag_id, name)
 --VALUES(3, 'react');
-
-INSERT INTO QUESTIONS(question_id, title, description, user_id)
-VALUES (1, 'question1', 'question1', 1);
-
-INSERT INTO QUESTIONS(question_id, title, description, user_id)
-VALUES (2, 'question2', 'question2', 2);
+--
+--INSERT INTO QUESTIONS(question_id, title, description, user_id)
+--VALUES (1, 'question1', 'question1', 1);
+--
+--INSERT INTO QUESTIONS(question_id, title, description, user_id)
+--VALUES (2, 'question2', 'question2', 2);
 
 --INSERT INTO TAGS_QUESTIONS(tag_question_id, question_id, tag_id)
 --VALUES (1, 1, 1);
