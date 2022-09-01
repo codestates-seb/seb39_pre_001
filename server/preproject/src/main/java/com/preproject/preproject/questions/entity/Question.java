@@ -44,6 +44,10 @@ public class Question extends Auditing {
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
+    public void setTagQuestionList(List<TagQuestion> list) {
+        this.tagQuestionList = list;
+    }
+
     public List<String> getTags() {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
     }
@@ -70,13 +74,17 @@ public class Question extends Auditing {
         }
     }
 
+    public boolean taggedWith(TagQuestion tagQuestion) {
+        return this.getTagQuestionList().contains(tagQuestion);
+    }
+
     /**
      * setter method for stubbing.
      * Must only be used for testing.</br>
      *
      * @author thom-mac
      */
-    public void setTagQuestionList(List<TagQuestion> tagQuestionList) {
+    public void setTagQuestionListForStub(List<TagQuestion> tagQuestionList) {
         this.tagQuestionList.addAll(tagQuestionList);
     }
 

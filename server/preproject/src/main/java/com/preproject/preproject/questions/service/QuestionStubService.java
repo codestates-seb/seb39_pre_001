@@ -5,18 +5,14 @@ import com.preproject.preproject.questions.entity.QuestionLike;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
-import org.springframework.context.annotation.Profile;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Profile("local")
-@Service
+//@Profile("local")
+//@Service
 public class QuestionStubService implements QuestionService {
 
     /** stubbing method. stubbed data as following scenario.</br>
@@ -114,8 +110,8 @@ public class QuestionStubService implements QuestionService {
                         .build();
         questionLike2.setQuestionLikeId(2L);
 
-        question1.setTagQuestionList(List.of(tagQuestion1, tagQuestion2));
-        question2.setTagQuestionList(List.of(tagQuestion3));
+        question1.setTagQuestionListForStub(List.of(tagQuestion1, tagQuestion2));
+        question2.setTagQuestionListForStub(List.of(tagQuestion3));
         question1.setQuestionLikes(List.of(questionLike2));
         question2.setQuestionLikes(List.of(questionLike1));
 

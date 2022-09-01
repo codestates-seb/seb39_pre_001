@@ -1,6 +1,7 @@
 package com.preproject.preproject.tags.entity;
 
 import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.tags.repository.TagQuestionFunction;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,5 +40,11 @@ public class TagQuestion {
         }
     }
 
+    public static TagQuestion of(Question question, Tag tag) {
+        TagQuestion tagQuestion = new TagQuestion();
+        tagQuestion.addQuestion(question);
+        tagQuestion.addTag(tag);
+        return tagQuestion;
+    }
 
 }
