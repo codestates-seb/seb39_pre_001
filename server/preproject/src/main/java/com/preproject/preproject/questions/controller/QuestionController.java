@@ -30,10 +30,10 @@ public class QuestionController {
 
     @GetMapping
     public ResponseEntity<MultiResponseDto<QuestionResponseDto>> getQuestions(
-            @RequestParam(name = "tab", required = false) String tab,
+            @RequestParam(name = "tab", required = false, defaultValue = "createdAt") String tab,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page) {
 
-        if (tab == null) tab = "created_at";
+        if (tab == null) tab = "createdAt";
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(tab));
 
         Page<Question> entities = questionService.getQuestions(pageable);
