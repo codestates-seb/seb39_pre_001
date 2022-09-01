@@ -7,6 +7,8 @@ import { FaBuilding } from 'react-icons/fa';
 import { IoPeople } from 'react-icons/io5';
 
 const StyledHome = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
   padding: 48px;
   margin: auto;
   background-color: #f8f9f9;

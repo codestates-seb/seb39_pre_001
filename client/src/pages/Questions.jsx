@@ -4,13 +4,30 @@ import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Dropdown from '../components/Dropdown';
+
+// 전체 questions page
+const QuestionsPageWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 1000px;
+  margin: auto;
+  > .sidebar {
+    flex: 0 0 164px;
+    > nav {
+      width: 164px;
+      position: sticky;
+      top: 47px;
+    }
+  }
+`;
 
 const StyledQuestions = styled.div`
   font-size: 16px;
-  margin: auto;
   padding: 24px;
   width: 80%;
-  max-width: 750px;
+  flex: 1 1 80%;
   border-left: 1px solid #d6d9dc;
   border-right: 1px solid #d6d9dc;
   border-bottom: 1px solid #d6d9dc;
@@ -161,47 +178,52 @@ function Questions() {
   };
 
   return (
-    <StyledQuestions>
-      <div className='title'>
-        <h1>All Questions</h1>
-        <Link to='/questions/ask'>
-          <StyledAskButton>Ask Question</StyledAskButton>
-        </Link>
+    <QuestionsPageWrapper>
+      <div className='sidebar'>
+        <Dropdown />
       </div>
-      <div className='sort'>
-        <div className='questions-counter'>{question.length} questions</div>
-        <div className='sort-container' onClick={sortHandler}>
-          <button className={selected === 'newest' ? 'is-selected' : null} value={'newest'}>
-            최신순
-          </button>
-          <button className={selected === 'like' ? 'is-selected' : null} value={'like'}>
-            좋아요순
-          </button>
-          <button className={selected === 'dislike' ? 'is-selected' : null} value={'dislike'}>
-            싫어요순
-          </button>
+      <StyledQuestions>
+        <div className='title'>
+          <h1>All Questions</h1>
+          <Link to='/questions/ask'>
+            <StyledAskButton>Ask Question</StyledAskButton>
+          </Link>
         </div>
-      </div>
-      <div className='questions-container'>
-        {data.slice(items * (page - 1), items * (page - 1) + items).map((e) => (
-          <Summary key={e.id} question={e}></Summary>
-        ))}
-      </div>
-      <div className='pagination-container'>
-        <Pagination
-          activePage={page}
-          itemsCountPerPage={items}
-          totalItemsCount={data.length}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}></Pagination>
-        <select name='items' onChange={itemChange}>
-          <option value='5'>5개</option>
-          <option value='10'>10개</option>
-          <option value='15'>15개</option>
-          <option value='20'>20개</option>
-        </select>
-      </div>
-    </StyledQuestions>
+        <div className='sort'>
+          <div className='questions-counter'>{question.length} questions</div>
+          <div className='sort-container' onClick={sortHandler}>
+            <button className={selected === 'newest' ? 'is-selected' : null} value={'newest'}>
+              최신순
+            </button>
+            <button className={selected === 'like' ? 'is-selected' : null} value={'like'}>
+              좋아요순
+            </button>
+            <button className={selected === 'dislike' ? 'is-selected' : null} value={'dislike'}>
+              싫어요순
+            </button>
+          </div>
+        </div>
+        <div className='questions-container'>
+          {data.slice(items * (page - 1), items * (page - 1) + items).map((e) => (
+            <Summary key={e.id} question={e}></Summary>
+          ))}
+        </div>
+        <div className='pagination-container'>
+          <Pagination
+            activePage={page}
+            itemsCountPerPage={items}
+            totalItemsCount={data.length}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}></Pagination>
+          <select name='items' onChange={itemChange}>
+            <option value='5'>5개</option>
+            <option value='10'>10개</option>
+            <option value='15'>15개</option>
+            <option value='20'>20개</option>
+          </select>
+        </div>
+      </StyledQuestions>
+    </QuestionsPageWrapper>
   );
 }
 

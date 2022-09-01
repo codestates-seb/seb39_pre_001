@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GrMenu, GrClose } from 'react-icons/gr';
 import { AiOutlineSearch } from 'react-icons/ai';
-import axios from 'axios';
+import Dropdown from './Dropdown';
 
 const NavBarWrapper = styled.div`
+  position: fixed; // box-shadow 보이기 위해서 설정
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -13,21 +14,22 @@ const NavBarWrapper = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   max-width: 100%;
-  height: 100%;
   background-color: #f8f9f9;
   margin: 0 auto;
   border-top: 3px solid #f48225;
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
 
   > .nav-bar-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 97.2307692rem;
+    width: 100%;
     height: 100%;
+    max-width: 1000px;
     background-color: #f8f9f9;
-    margin: 0 50px;
+    position: relative;
     > .menuBtn {
       display: flex;
       justify-content: center;
@@ -40,7 +42,17 @@ const NavBarWrapper = styled.div`
         background-color: #e2e6e8;
       }
     }
-
+    // 햄버거 버튼 dropdown 메뉴
+    > .dropdown-menu {
+      position: absolute;
+      padding: 0;
+      margin: 0;
+      top: 47px;
+      left: 0;
+      box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+      // z-index: 1 로 설정 -> drowdown 메뉴가 화면의 가장 앞쪽으로 보이게(뒤에 묻히지 않게) 한다.
+      z-index: 999;
+    }
     > .logo-wrapper {
       display: flex;
       justify-content: center;
@@ -79,6 +91,7 @@ const NavBarWrapper = styled.div`
     > form {
       padding: 0 12px;
       width: 100%;
+      max-width: 700px;
       > .input-search {
         display: flex;
         flex-direction: row;
@@ -129,7 +142,8 @@ const NavBarWrapper = styled.div`
       font-size: 12px;
       margin: 0 0 0 4px;
       padding: 8px 10.4px;
-      border: 1px solid #0a95ff;
+      border: 1px solid transparent;
+      box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
       border-radius: 4px;
       :hover {
         background-color: #0074cc;
@@ -145,8 +159,14 @@ const NavLink = styled(Link)`
 `;
 
 const NavBar = () => {
+  const location = useLocation().pathname;
+
   // dropdown 메뉴 구현하기
   const [click, setClick] = useState(false);
+
+  useEffect(() => {
+    setClick(false);
+  }, [location]);
 
   const handleClick = () => {
     setClick(!click);
@@ -155,9 +175,21 @@ const NavBar = () => {
   return (
     <NavBarWrapper>
       <div className='nav-bar-wrapper'>
-        <div className='menuBtn' onClick={handleClick}>
-          {!click ? <GrMenu /> : <GrClose />}
-        </div>
+        {!(location.slice(0, 10) === '/questions' && location !== '/questions/ask') ? (
+          <div className='menuBtn' onClick={handleClick}>
+            {/* 173 - 180번 줄: 클릭 시 버튼이 햄버거 -> X 로 변환, 그에 따라 dropdown 메뉴 보이게/보이지 않게 처리 */}
+            {click ? <GrClose /> : <GrMenu />}
+          </div>
+        ) : (
+          ''
+        )}
+        {!(location.slice(0, 10) === '/questions' && location !== '/questions/ask') && click ? (
+          <div className='dropdown-menu'>
+            <Dropdown />
+          </div>
+        ) : (
+          ''
+        )}
         <a href='/' className='logo-wrapper'>
           <div className='logo' />
         </a>

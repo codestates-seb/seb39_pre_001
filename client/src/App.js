@@ -4,11 +4,11 @@ import QuestionAnswer from './pages/QuestionAnswer';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { createGlobalStyle } from 'styled-components';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import NavBar from './components/NavBar';
-import { useEffect } from 'react';
-import axios from 'axios';
+import Footer from './components/Footer';
+import Background from './components/Background';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -25,6 +25,7 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <NavBar />
+        <Background />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/questions' element={<Questions />} />
@@ -33,6 +34,7 @@ function App() {
           <Route path='/users/login' element={<Login />} />
           <Route path='/users/join' element={<Signup />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
