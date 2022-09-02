@@ -19,6 +19,7 @@ public interface QuestionMapper {
 
     @Mapping(target = "tags", source = "tags")
     @Mapping(target = "likes", source = "likeCount")
+    @Mapping(target = "dislikes", source = "dislikeCount")
     @Mapping(target = "user.userId", source = "user.id")
     QuestionResponseDto dtoFrom(Question question);
 

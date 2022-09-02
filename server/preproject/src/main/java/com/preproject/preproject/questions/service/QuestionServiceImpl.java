@@ -1,8 +1,10 @@
 package com.preproject.preproject.questions.service;
 
 import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.questions.entity.QuestionDislike;
 import com.preproject.preproject.questions.entity.QuestionLike;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
+import com.preproject.preproject.questions.repository.QuestionDislikeRepository;
 import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.tags.entity.Tag;
@@ -36,6 +38,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
+    private final QuestionDislikeRepository questionDislikeRepository;
     private final UsersService usersService;
     private final TagService tagService;
 
@@ -128,6 +131,20 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void dislike(long questionId, long userId) {
 
+        Users user = usersService.getUserById(userId);
+        Question question = getQuestionById(questionId);
+
+        if (question.alreadyDislikedBy(user)) {
+            throw new RuntimeException("you have already disliked this question");
+        }
+
+        QuestionDislike questionDislike =
+                QuestionDislike.builder()
+                        .question(question)
+                        .user(user)
+                        .build();
+
+        questionDislikeRepository.save(questionDislike);
     }
 
     public Question getQuestionById(long questionId) {

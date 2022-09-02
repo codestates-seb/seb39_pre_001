@@ -4,6 +4,7 @@ import com.preproject.preproject.audit.Auditing;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ public class Question extends Auditing {
     @OneToMany(mappedBy = "question")
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
+    @Builder.Default
+    @Setter
+    @OneToMany(mappedBy = "question")
+    private List<QuestionDislike> questionDislikes = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private Users user;
@@ -59,6 +65,12 @@ public class Question extends Auditing {
                 .anyMatch(questionLike -> questionLike.getUser() == user);
     }
 
+    public boolean alreadyDislikedBy(Users user) {
+        return this
+                .getQuestionDislikes().stream()
+                .anyMatch(questionDislike -> questionDislike.getUser() == user);
+    }
+
     public void addUser(Users user) {
         this.user = user;
         if (!this.user.getQuestions().contains(this)) {
@@ -68,6 +80,7 @@ public class Question extends Auditing {
     public long getLikeCount() {
         return this.questionLikes.size();
     }
+    public long getDislikeCount() {return this.getQuestionDislikes().size();}
 
     public void checkWriter(long userId) {
         if (this.getUser().getId() != userId) {

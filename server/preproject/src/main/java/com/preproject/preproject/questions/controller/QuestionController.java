@@ -79,7 +79,6 @@ public class QuestionController {
 
     @PatchMapping("/{questionId}/like")
     public ResponseEntity<SingleResponseDto<String>> like(@PathVariable long questionId, long userId) {
-        //todo : check user and create
         questionService.like(questionId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("liked"), HttpStatus.OK);
     }
