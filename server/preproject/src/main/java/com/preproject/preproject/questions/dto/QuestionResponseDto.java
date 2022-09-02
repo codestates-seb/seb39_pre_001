@@ -28,4 +28,5 @@ public class QuestionResponseDto {
     private List<String> tags = new ArrayList<>();
 
     private Long likes;
+    private Long dislikes;
 }

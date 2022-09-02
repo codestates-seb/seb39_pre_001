@@ -4,8 +4,7 @@ CREATE TABLE `questions` (
   `description` varchar(255),
   `created_at` datetime,
   `modified_at` datetime,
-  `user_id` int,
-  `tag_id` int
+  `user_id` int
 );
 
 CREATE TABLE `users` (
@@ -40,8 +39,6 @@ CREATE TABLE `tags_questions` (
 );
 
 ALTER TABLE `questions` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `questions` ADD FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`);
 
 ALTER TABLE `questions_likes` ADD FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
 

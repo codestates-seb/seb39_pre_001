@@ -19,6 +19,7 @@ public interface QuestionMapper {
 
     @Mapping(target = "tags", source = "tags")
     @Mapping(target = "likes", source = "likeCount")
+    @Mapping(target = "dislikes", source = "dislikeCount")
     @Mapping(target = "user.userId", source = "user.id")
     QuestionResponseDto dtoFrom(Question question);
 
@@ -33,8 +34,16 @@ public interface QuestionMapper {
     @Mapping(target = "tag.name", source = "tag")
     TagQuestion tagQuestionFromTag(String tag);
 
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "tagQuestionList", source = "tags")
     Question entityFromDto(QuestionPatchDto dto);
 
+//    @Mapping(target = "tagQuestionList", )
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "questionId", ignore = true)
+    @Mapping(target = "questionLikes", ignore = true)
+    @Mapping(target = "tags", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromSource(@MappingTarget Question question, Question source);
 
 

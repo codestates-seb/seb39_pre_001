@@ -2,6 +2,7 @@ package com.preproject.preproject.questions.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,6 +16,7 @@ public class QuestionPatchDto {
     private String title;
     private String description;
 
-    private List<String> tags;
+    @Builder.Default
+    private List<String> tags = new ArrayList<>();
     private Long userId;
 }
