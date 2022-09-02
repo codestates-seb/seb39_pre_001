@@ -17,8 +17,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath*:db/h2/data.sql
-#      schema-locations: classpath*:db/h2/schema.sql
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:db/h2/data.sql
+      schema-locations: classpath*:db/h2/schema.sql

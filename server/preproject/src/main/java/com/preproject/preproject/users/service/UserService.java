@@ -1,6 +1,8 @@
 package com.preproject.preproject.users.service;
 
 import com.preproject.preproject.exception.BusinessLogicException;
+import com.preproject.preproject.exception.BusinessRuntimeException;
+import com.preproject.preproject.exception.CustomExceptionCode;
 import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.users.dto.UserLoginDto;
 import com.preproject.preproject.users.entity.Users;
@@ -52,5 +54,13 @@ public class UserService {
 
         return "Failed";
 
+    }
+
+    public Users getUserById(long userId) {
+        return userRepository
+                .findById(userId)
+                .orElseThrow(
+                        () -> {throw new BusinessRuntimeException(CustomExceptionCode.USER_NOT_FOUND);}
+                );
     }
 }

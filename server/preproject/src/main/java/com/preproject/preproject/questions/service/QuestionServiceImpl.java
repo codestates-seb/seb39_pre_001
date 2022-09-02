@@ -15,21 +15,15 @@ import com.preproject.preproject.tags.repository.TagQuestionRepository;
 import com.preproject.preproject.tags.service.TagQuestionService;
 import com.preproject.preproject.tags.service.TagService;
 import com.preproject.preproject.users.entity.Users;
-import com.preproject.preproject.users.service.UsersService;
+import com.preproject.preproject.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Profiles;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
     private final QuestionDislikeRepository questionDislikeRepository;
-    private final UsersService usersService;
+    private final UserService userService;
     private final TagService tagService;
 
     private final QuestionMapper questionMapper;
@@ -60,7 +54,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question postQuestion(Question question) {
-        Users user = usersService.getUserById(question.getUser().getId());
+        Users user = userService.getUserById(question.getUser().getId());
 
         List<TagQuestion> tagQuestionList = question.getTagQuestionList().stream()
                 .map(tagQuestion -> {
@@ -113,7 +107,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void like(long questionId, long userId) {
-        Users user = usersService.getUserById(userId);
+        Users user = userService.getUserById(userId);
         Question question = getQuestionById(questionId);
 
         if (question.alreadyLikedBy(user)) {
@@ -132,7 +126,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void dislike(long questionId, long userId) {
 
-        Users user = usersService.getUserById(userId);
+        Users user = userService.getUserById(userId);
         Question question = getQuestionById(questionId);
 
         if (question.alreadyDislikedBy(user)) {
