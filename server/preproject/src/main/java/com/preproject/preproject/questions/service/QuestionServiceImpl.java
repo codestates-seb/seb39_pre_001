@@ -1,5 +1,7 @@
 package com.preproject.preproject.questions.service;
 
+import com.preproject.preproject.exception.BusinessRuntimeException;
+import com.preproject.preproject.exception.CustomExceptionCode;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.entity.QuestionLike;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
@@ -108,12 +110,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
     public void like(long questionId, long userId) {
         Users user = usersService.getUserById(userId);
         Question question = getQuestionById(questionId);
 
         if (question.alreadyLikedBy(user)) {
-            throw new RuntimeException("you have already liked this question.");
+            throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_LIKED);
         }
 
         QuestionLike questionLike =
@@ -134,14 +137,14 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository
                 .findById(questionId)
                 .orElseThrow(() -> {
-                    throw new NoSuchElementException("no data");
+                    throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_NOT_FOUND);
                 });
     }
 
 
     public void verifyDuplicationById(long questionId) {
         if (questionRepository.findById(questionId).isPresent()) {
-            throw new RuntimeException("duplicated");
+            throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_DUPLICATED);
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.preproject.preproject.users.service;
 
+import com.preproject.preproject.exception.BusinessRuntimeException;
+import com.preproject.preproject.exception.CustomExceptionCode;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class UsersServiceImpl implements UsersService {
         return usersRepository
                 .findById(userId)
                 .orElseThrow(
-                        () -> {throw new NoSuchElementException("no user");}
+                        () -> {throw new BusinessRuntimeException(CustomExceptionCode.USER_NOT_FOUND);}
                 );
     }
 

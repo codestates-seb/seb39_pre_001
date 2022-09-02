@@ -26,10 +26,8 @@ public class QuestionLike {
     private Users user;
 
     public void addQuestion(Question question) {
-        System.out.println("addquestion");
         this.question = question;
         if (!this.question.getQuestionLikes().contains(this)) {
-            System.out.println("add question like");
             this.question.getQuestionLikes().add(this);
         }
     }
@@ -43,7 +41,6 @@ public class QuestionLike {
 
     @Builder
     public static QuestionLike of(Question question, Users user) {
-        System.out.println("i'm invoked");
         QuestionLike questionLike = new QuestionLike();
         questionLike.addQuestion(question);
         questionLike.addUser(user);
