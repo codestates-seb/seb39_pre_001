@@ -1,6 +1,8 @@
 package com.preproject.preproject.users.controller;
 
 
+import com.preproject.preproject.exception.BusinessLogicException;
+import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.users.dto.UserLoginDto;
 import com.preproject.preproject.users.dto.UsersPostDto;
 import com.preproject.preproject.users.entity.Users;
@@ -49,6 +51,7 @@ public class UsersController {
             return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
         }
 
-        return new ResponseEntity<>("로그인 실패", HttpStatus.BAD_REQUEST);
+        throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
     }
+
 }

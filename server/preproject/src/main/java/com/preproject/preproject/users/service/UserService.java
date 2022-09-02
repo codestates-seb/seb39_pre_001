@@ -1,5 +1,7 @@
 package com.preproject.preproject.users.service;
 
+import com.preproject.preproject.exception.BusinessLogicException;
+import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.users.dto.UserLoginDto;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.repository.UserRepository;
@@ -30,7 +32,7 @@ public class UserService {
                 = userRepository.findById(userId);
 
         Users findUser = optionalUsers.orElseThrow(() ->
-                new RuntimeException("유저가 없습니다."));
+                new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return findUser;
     }
@@ -40,7 +42,7 @@ public class UserService {
 
         Optional<Users> user = userRepository.findByEmail(userLoginDto.getEmail());
 
-        user.orElseThrow(() -> new NoSuchElementException("존재하는 이메일이 없습니다."));
+        user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.EMAIL_NOT_FOUND));
 
         log.info("db password : {} , input password : {} ", user.get().getPassword(), userLoginDto.getPassword());
 
