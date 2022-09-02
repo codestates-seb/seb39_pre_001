@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import TextEditor from './TextEditor';
+import axios from 'axios';
 
 const AnswerWrapper = styled.div`
   background-color: #ffffff;
@@ -73,11 +75,25 @@ const TagLink = styled.a`
 `;
 
 const Answer = () => {
+  const [answer, setAnswer] = useState('');
+
+  const submitHandler = async () => {
+    const data = {
+      userId: 1,
+      content: answer,
+    };
+    await axios
+      .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/1/answer', data)
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <AnswerWrapper>
       <Header>Your Answer</Header>
-      <TextEditor />
-      <AnswerSubmitButton>Post Your Answer</AnswerSubmitButton>
+      <TextEditor content={answer} setContent={setAnswer} />
+      <AnswerSubmitButton onClick={submitHandler}>Post Your Answer</AnswerSubmitButton>
       {/* Link -> 질문 작성 페이지로 이동 */}
       <BottomText>
         Not the answer you're looking for? Browse other questions tagged <TagLink>macos</TagLink>

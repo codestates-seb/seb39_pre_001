@@ -77,21 +77,31 @@ const StyledSummary = styled.div`
 `;
 
 function Summary({ question }) {
-  const { id, title, body, tags, author, date, like, dislike, view } = question;
+  const {
+    questionId,
+    title,
+    description,
+    tags,
+    user: { displayName },
+    date,
+    likes,
+    dislikes,
+    view,
+  } = question;
   return (
     <StyledSummary>
       <div className='stats'>
-        <div className='like'>{like} likes</div>
-        <div className='dislike'>{dislike} dislikes</div>
-        <div className='view'>{view} views</div>
+        <div className='like'>{likes} likes</div>
+        <div className='dislike'>{dislikes} dislikes</div>
+        <div className='view'>view views</div>
       </div>
       <div className='content'>
         <h3 className='title'>
-          <Link to={'/questions/' + String(id)}>
-            {id} {title}
+          <Link to={'/questions/' + String(questionId)}>
+            {questionId} {title}
           </Link>
         </h3>
-        <div className='body'>{body}</div>
+        <div className='body'>{description}</div>
         <div className='meta'>
           <div className='tags'>
             {tags.map((tag, i) => (
@@ -100,7 +110,7 @@ function Summary({ question }) {
           </div>
           <div className='user'>
             <img src={userImg} alt='user' />
-            {author} 이(가) {date}
+            {displayName} 이(가) date
           </div>
         </div>
       </div>

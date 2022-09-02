@@ -2,6 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import TextEditor from '../components/TextEditor';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StyledQuestionCreator = styled.div`
   background-color: #f1f2f3;
@@ -90,7 +92,10 @@ const StyledButton = styled.button`
 `;
 
 function QuestionCreator() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
+  const navigate = useNavigate();
 
   const tagInputHandler = (e) => {
     if (e.target.value === ' ') {
@@ -110,6 +115,25 @@ function QuestionCreator() {
     setTags(filteredTags);
   };
 
+  const titleHandler = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const submitHandler = async () => {
+    const data = {
+      title: title,
+      description: content,
+      tags: tags,
+      userId: 1,
+    };
+    await axios
+      .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/ask', data)
+      .catch(function (error) {
+        console.log(error);
+      });
+    await navigate('/questions');
+  };
+
   return (
     <StyledQuestionCreator>
       <div className='creator-container'>
@@ -122,10 +146,11 @@ function QuestionCreator() {
             name='title'
             placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
             autoComplete='off'
+            onChange={titleHandler}
           />
           <h3>Body</h3>
           <p>Include all the information someone would need to answer your question</p>
-          <TextEditor />
+          <TextEditor content={content} setContent={setContent} />
           <h3>Tags</h3>
           <p>Add up to 5 tags to describe what your question is about</p>
           <div className='tag-maker'>
@@ -143,7 +168,7 @@ function QuestionCreator() {
             />
           </div>
         </form>
-        <StyledButton>Review your question</StyledButton>
+        <StyledButton onClick={submitHandler}>Review your question</StyledButton>
       </div>
     </StyledQuestionCreator>
   );

@@ -13,9 +13,7 @@ const TextEditorWrapper = styled.div`
   }
 `;
 
-const TextEditor = () => {
-  const [content, setContent] = useState('');
-
+const TextEditor = ({ content, setContent }) => {
   // input에 작성한 text 가져오기
   const editorRef = useRef();
 

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import Answer from '../components/Answer';
 import question from '../data/dummy';
 import userImg from '../static/user.png';
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const StyledQuestionAnswer = styled.div`
   font-size: 16px;
@@ -50,11 +53,15 @@ const StyledQuestionAnswer = styled.div`
       padding-right: 16px;
       gap: 10px;
       > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         width: 36px;
         font-size: 18px;
       }
     }
     > .body {
+      width: 100%;
       > .main {
         margin-top: 0;
       }
@@ -122,9 +129,29 @@ const StyledAskButton = styled.button`
 
 function QuestionAnswer() {
   const { questionId } = useParams();
-  const { id, title, body, tags, author, date, like, dislike, view } = question.filter(
-    (e) => String(e.id) === questionId
-  )[0];
+  const [data, setData] = useState(question[0]);
+  const {
+    title,
+    description,
+    tags,
+    user: { displayName },
+    likes,
+    dislikes,
+  } = data;
+
+  useEffect(() => {
+    const dataFetch = async () => {
+      await axios
+        .get(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`)
+        .then(function (response) {
+          setData(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+  }, []);
 
   return (
     <StyledQuestionAnswer>
@@ -135,18 +162,22 @@ function QuestionAnswer() {
         </Link>
       </div>
       <div className='info'>
-        <div>{date}</div>
+        <div>date</div>
         <div>
-          <span>Viewed</span> {view} times
+          <span>Viewed</span> view times
         </div>
       </div>
       <div className='body-container'>
         <div className='vote'>
-          <div>{like} 👍</div>
-          <div>{dislike} 👎</div>
+          <div>
+            {likes} <AiOutlineLike />
+          </div>
+          <div>
+            {dislikes} <AiOutlineDislike />{' '}
+          </div>
         </div>
         <div className='body'>
-          <p className='main'>{body}</p>
+          <p className='main'>{description}</p>
           <div className='tags'>
             {tags.map((tag, i) => (
               <div key={i}>{tag}</div>
@@ -159,7 +190,7 @@ function QuestionAnswer() {
             </div>
             <div className='author-info'>
               <img src={userImg} alt='user-img'></img>
-              <a href='/'>{author}</a>
+              <a href='/'>{displayName}</a>
             </div>
           </div>
         </div>

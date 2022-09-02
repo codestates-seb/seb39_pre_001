@@ -4,6 +4,7 @@ import logo from '../static/stack-overflow.png';
 import SocialLogin from '../components/SocialLogin';
 import EmailLogin from '../components/EmailLogin';
 import { RiShareBoxLine } from 'react-icons/ri';
+import axios from 'axios';
 
 const LoginContainer = styled.div`
   display: flex;

@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import Summary from '../components/Summary';
 import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
+import axios from 'axios';
 
 // 전체 questions page
 const QuestionsPageWrapper = styled.div`
@@ -13,6 +14,7 @@ const QuestionsPageWrapper = styled.div`
   justify-content: center;
   max-width: 1000px;
   margin: auto;
+  min-height: 70vh;
   > .sidebar {
     flex: 0 0 164px;
     > nav {
@@ -147,6 +149,7 @@ function Questions() {
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(5);
   const [selected, setSelected] = useState('newest');
+  const [pageInfo, setPageInfo] = useState({ totalElements: question.length });
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -158,17 +161,17 @@ function Questions() {
     switch (e.target.value) {
       case 'newest':
         setSelected('newest');
-        setData([...question]);
+        setData([...data]);
         break;
       case 'like':
         setSelected('like');
-        const tempData = [...question];
+        const tempData = [...data];
         const sortedLike = tempData.sort((a, b) => b.like - a.like);
         setData([...sortedLike]);
         break;
       case 'dislike':
         setSelected('dislike');
-        const tempData2 = [...question];
+        const tempData2 = [...data];
         const sortedDislike = tempData2.sort((a, b) => b.dislike - a.dislike);
         setData([...sortedDislike]);
         break;
@@ -176,6 +179,22 @@ function Questions() {
         break;
     }
   };
+
+  // 질문 목록 받아오기
+  useEffect(() => {
+    const dataFetch = async () => {
+      await axios
+        .get(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions?page=${page}`)
+        .then(function (response) {
+          setData(response.data.data);
+          setPageInfo(response.data.pageInfo);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+  }, [page]);
 
   return (
     <QuestionsPageWrapper>
@@ -204,15 +223,15 @@ function Questions() {
           </div>
         </div>
         <div className='questions-container'>
-          {data.slice(items * (page - 1), items * (page - 1) + items).map((e) => (
-            <Summary key={e.id} question={e}></Summary>
+          {data.map((e) => (
+            <Summary key={e.questionId} question={e}></Summary>
           ))}
         </div>
         <div className='pagination-container'>
           <Pagination
             activePage={page}
             itemsCountPerPage={items}
-            totalItemsCount={data.length}
+            totalItemsCount={pageInfo.totalElements}
             pageRangeDisplayed={5}
             onChange={handlePageChange}></Pagination>
           <select name='items' onChange={itemChange}>

@@ -5,7 +5,7 @@ const StyledBackground = styled.div`
 `;
 
 const Background = () => {
-  return <StyledBackground>Team BeefMacoron</StyledBackground>;
+  return <StyledBackground>Team ChickenMilktea</StyledBackground>;
 };
 
 export default Background;

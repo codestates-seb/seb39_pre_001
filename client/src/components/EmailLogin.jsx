@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const EmailLoginForm = styled.form`
   display: flex;
@@ -46,9 +47,9 @@ const Label = styled.label`
 const Input = styled.input`
   width: 240px;
   height: 32px;
-  border: 1px solid #BABFC4;
+  border: 1px solid #babfc4;
   border-radius: 4px;
-  `;
+`;
 
 const LabelLinkWrapper = styled.div`
   display: flex;
@@ -60,12 +61,12 @@ const LabelLinkWrapper = styled.div`
 const LoginButton = styled.button`
   width: 240px;
   height: 37px;
-  border: 1px solid #0A95FF;
+  border: 1px solid #0a95ff;
   border-radius: 4px;
-  background-color: #0A95FF;
+  background-color: #0a95ff;
   color: white;
   :hover {
-    background-color: #0074CC;
+    background-color: #0074cc;
   }
   cursor: pointer;
 `;
@@ -84,7 +85,8 @@ const EmailLogin = () => {
 
   // validation check
   const emailChangeHandler = (e) => {
-    const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     const currentEmail = e.target.value;
     setEmail(currentEmail);
 
@@ -95,11 +97,25 @@ const EmailLogin = () => {
     }
   };
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const data = {
+      email: '',
+      password: '12345',
+    };
+    await axios
+      .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/users/login', data)
+      .then((res) => console.log(res))
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <EmailLoginForm>
       <InputEmail>
         <Label>Email</Label>
-        <Input type="email" size="30" maxLength="100" onChange={emailChangeHandler} />
+        <Input type='email' size='30' maxLength='100' onChange={emailChangeHandler} />
         {email.length > 0 && <ErrorMessage>{emailMessage}</ErrorMessage>}
       </InputEmail>
       <InputPassword>
@@ -107,9 +123,11 @@ const EmailLogin = () => {
           <Label>Password</Label>
           <Link>Forgot password?</Link>
         </LabelLinkWrapper>
-        <Input type="password" autoComplete="off" />
+        <Input type='password' autoComplete='off' />
       </InputPassword>
-      <LoginButton type="submit">Log in</LoginButton>
+      <LoginButton type='submit' onClick={(e) => submitHandler(e)}>
+        Log in
+      </LoginButton>
     </EmailLoginForm>
   );
 };
