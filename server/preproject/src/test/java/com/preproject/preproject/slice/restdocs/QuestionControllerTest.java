@@ -88,6 +88,7 @@ public class QuestionControllerTest {
                         .tags(tags)
                         .user(usersResponseDto)
                         .likes(5L)
+                        .dislikes(1L)
                         .build();
 
         given(questionService.getQuestion(Mockito.anyLong())).willReturn(Mockito.mock(Question.class));
@@ -124,6 +125,7 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
                                                 fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
                                                 fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
                                                 fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
@@ -159,6 +161,7 @@ public class QuestionControllerTest {
                         .tags(requestDto.getTags())
                         .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
                         .likes(5L)
+                        .dislikes(1L)
                         .build();
 
         given(questionMapper.entityFromDto(Mockito.any(QuestionPostDto.class))).willReturn(Mockito.mock(Question.class));
@@ -206,7 +209,8 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                                                 fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("관련 태그"),
-                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수")
+                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수")
 
                                         )
                                 )
@@ -237,6 +241,7 @@ public class QuestionControllerTest {
                         .tags(List.of("java", "react", "mysql"))
                         .description(requestDto.getDescription())
                         .likes(5L)
+                        .dislikes(1L)
                         .build();
 
         String request = gson.toJson(requestDto);
@@ -289,7 +294,8 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                                                 fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("수정 태그"),
-                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수")
+                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수")
                                         )
                                 )
                         )
@@ -312,6 +318,7 @@ public class QuestionControllerTest {
                         .tags(List.of("java", "spring", "mysql"))
                         .title("question title1")
                         .likes(5L)
+                        .dislikes(1L)
                         .build());
 
         given(questionService.getQuestions(Mockito.any(PageRequest.class))).willReturn(Mockito.mock(PageImpl.class));
@@ -355,6 +362,7 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data[].user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                                                 fieldWithPath("data[].tags").type(JsonFieldType.ARRAY).description("수정 태그"),
                                                 fieldWithPath("data[].likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data[].dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
                                                 fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지네이션 정보"),
                                                 fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
                                                 fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 번에 출력할 페이지 개수"),
@@ -396,6 +404,46 @@ public class QuestionControllerTest {
                                 RestDocumentationHelper.prettyPrintResponse(),
                                 requestParameters(
                                         parameterWithName("userId").description("좋아요 누른 사용자 식별자")
+                                ),
+                                pathParameters(
+                                        parameterWithName("questionId").description("게시글 식별자")
+                                ),
+                                responseFields(
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("결과")
+                                )
+                        )
+                );
+
+    }
+
+    @DisplayName("QuestionController.dislike")
+    @Test
+    public void givenQuestionId_whenPatch_thenQuestionDislikeUpdated() throws Exception {
+
+        //given
+
+        long questionId = 1L;
+
+        //when
+        ResultActions resultActions =
+                mockMvc
+                        .perform(
+                                patch(QuestionControllerHelper.URL + "/{questionId}/dislike", questionId).param("userId", "1")
+                                        .contentType(MediaType.APPLICATION_JSON)
+                        );
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value("disliked"));
+
+        resultActions
+                .andDo(
+                        document(
+                                "hit-dislike-button",
+                                RestDocumentationHelper.prettyPrintRequest(),
+                                RestDocumentationHelper.prettyPrintResponse(),
+                                requestParameters(
+                                        parameterWithName("userId").description("싫어요 누른 사용자 식별자")
                                 ),
                                 pathParameters(
                                         parameterWithName("questionId").description("게시글 식별자")
