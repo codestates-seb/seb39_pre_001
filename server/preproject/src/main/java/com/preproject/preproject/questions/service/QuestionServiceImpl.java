@@ -62,8 +62,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question postQuestion(Question question) {
         Users user = usersService.getUserById(question.getUser().getId());
 
-        List<TagQuestion> tagQuestionList =
-                question.getTagQuestionList().stream()
+        List<TagQuestion> tagQuestionList = question.getTagQuestionList().stream()
                 .map(tagQuestion -> {
                     Tag tag = tagService.findOrCreateTag(tagQuestion.getTag().getName());
                     tagQuestion.addQuestion(question);
@@ -113,7 +112,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Transactional
     public void like(long questionId, long userId) {
         Users user = usersService.getUserById(userId);
         Question question = getQuestionById(questionId);
