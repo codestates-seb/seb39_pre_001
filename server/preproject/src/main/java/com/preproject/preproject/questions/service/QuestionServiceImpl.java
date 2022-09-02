@@ -138,7 +138,7 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = getQuestionById(questionId);
 
         if (question.alreadyDislikedBy(user)) {
-            throw new RuntimeException("you have already disliked this question");
+            throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_DISLIKED);
         }
 
         QuestionDislike questionDislike =

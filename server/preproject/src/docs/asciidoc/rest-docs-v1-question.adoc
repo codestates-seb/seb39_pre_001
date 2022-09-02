@@ -79,7 +79,7 @@ include::{snippets}/hit-like-button/http-response.adoc[]
 .response-fields
 include::{snippets}/hit-like-button/response-fields.adoc[]
 
-== 게시글 싫어요
+=== 게시글 싫어요
 
 .http-request
 include::{snippets}/hit-dislike-button/http-request.adoc[]
