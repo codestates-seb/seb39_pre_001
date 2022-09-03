@@ -6,12 +6,13 @@ import com.preproject.preproject.questions.dto.QuestionPostDto;
 import com.preproject.preproject.questions.dto.QuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.tags.entity.TagQuestion;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.*;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Mapper(componentModel = "spring")
 //@DecoratedWith(QuestionDecoratorMapper.class)
@@ -29,7 +30,7 @@ public interface QuestionMapper {
     @Mapping(target = "tagQuestionList", source = "tags")
     Question entityFromDto(QuestionPostDto dto);
 
-    List<TagQuestion> tagQuestionListFromTags(List<String> tags);
+//    List<TagQuestion> tagQuestionListFromTags(List<String> tags);
 
     @Mapping(target = "tag.name", source = "tag")
     TagQuestion tagQuestionFromTag(String tag);
@@ -47,4 +48,16 @@ public interface QuestionMapper {
     void updateEntityFromSource(@MappingTarget Question question, Question source);
 
 
+    default List<TagQuestion> tagQuestionListFromTags(List<String> tags) {
+        if ( tags == null ) {
+            return null;
+        }
+        List<String> reduced = tags.stream().distinct().collect(Collectors.toList());
+        List<TagQuestion> list = new ArrayList<TagQuestion>( reduced.size() );
+        for ( String string : reduced ) {
+            list.add( tagQuestionFromTag( string ) );
+        }
+
+        return list;
+    }
 }
