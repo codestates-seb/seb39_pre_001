@@ -8,7 +8,7 @@ import com.preproject.preproject.tags.repository.TagQuestionRepository;
 import com.preproject.preproject.tags.repository.TagRepository;
 import com.preproject.preproject.tags.service.TagService;
 import com.preproject.preproject.users.entity.Users;
-import com.preproject.preproject.users.repository.UsersRepository;
+import com.preproject.preproject.users.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class TagQuestionRepositoryTest {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository usersRepository;
 
     @BeforeEach
     public void populateData() {

@@ -74,6 +74,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question updateQuestion(Question question) {
         Question entity = getQuestionById(question.getQuestionId());
         entity.checkWriter(question.getUser().getId());
+        questionMapper.updateEntityFromSource(entity, question);
 
         List<TagQuestion> list = question.getTagQuestionList().stream()
                 .map(

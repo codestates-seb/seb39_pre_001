@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,4 +30,7 @@ public class QuestionResponseDto {
 
     private Long likes;
     private Long dislikes;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

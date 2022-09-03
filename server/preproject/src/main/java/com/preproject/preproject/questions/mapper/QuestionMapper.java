@@ -38,12 +38,12 @@ public interface QuestionMapper {
     @Mapping(target = "tagQuestionList", source = "tags")
     Question entityFromDto(QuestionPatchDto dto);
 
-//    @Mapping(target = "tagQuestionList", )
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "questionId", ignore = true)
-    @Mapping(target = "questionLikes", ignore = true)
-    @Mapping(target = "tags", ignore = true)
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    //    @Mapping(target = "tagQuestionList", )
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+            ignoreByDefault = true)
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "description", source = "description")
     void updateEntityFromSource(@MappingTarget Question question, Question source);
 
 
