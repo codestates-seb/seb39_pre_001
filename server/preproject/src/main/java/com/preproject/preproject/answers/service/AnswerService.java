@@ -4,6 +4,8 @@ import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.answers.repository.AnswerRepository;
 import com.preproject.preproject.exception.BusinessLogicException;
 import com.preproject.preproject.exception.ExceptionCode;
+import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.questions.service.QuestionService;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UserService;
 import org.springframework.stereotype.Service;
@@ -16,19 +18,26 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final UserService userService;
 
-    public AnswerService(AnswerRepository answerRepository, UserService userService) {
+    private final QuestionService questionService;
+
+    public AnswerService(AnswerRepository answerRepository, UserService userService,
+                         QuestionService questionService) {
         this.answerRepository = answerRepository;
         this.userService = userService;
+        this.questionService = questionService;
     }
 
     public Answer createAnswer(Answer answer) {
 
         //회원이 존재하는지 check 후 회원을 users 에 저장
         Users users = userService.findUserCheck(answer.getUser().getId());
+        Question question = questionService.getQuestion(answer.getQuestion().getQuestionId());
 
-        answer.setUser(users);
+        if (users.alreadyAnswered(question)) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_ANSWERED);
+        }
 
-        users.getAnswers().add(answer);
+        answer.addQuestionAndUser(question, users);
 
         return answerRepository.save(answer);
     }

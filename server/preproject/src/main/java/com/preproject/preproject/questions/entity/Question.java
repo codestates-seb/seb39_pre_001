@@ -1,5 +1,6 @@
 package com.preproject.preproject.questions.entity;
 
+import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.audit.Auditing;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
@@ -50,6 +51,10 @@ public class Question extends Auditing {
     @Builder.Default
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Answer> answers = new ArrayList<>();
 
     public void setTagQuestionList(List<TagQuestion> list) {
         this.tagQuestionList = list;
