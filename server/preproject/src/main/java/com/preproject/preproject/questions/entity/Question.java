@@ -34,6 +34,10 @@ public class Question extends Auditing {
     @Column(nullable = false)
     private String description;
 
+    private int answerCount;
+    private int likeCount;
+    private int dislikeCount;
+
     @Builder.Default
     @Setter
     @OneToMany(mappedBy = "question")
@@ -53,12 +57,8 @@ public class Question extends Auditing {
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
-
-    public void setTagQuestionList(List<TagQuestion> list) {
-        this.tagQuestionList = list;
-    }
 
     public List<String> getTags() {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());

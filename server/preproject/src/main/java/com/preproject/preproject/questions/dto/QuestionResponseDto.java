@@ -1,5 +1,6 @@
 package com.preproject.preproject.questions.dto;
 
+import com.preproject.preproject.answers.dto.AnswerResponseDto;
 import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.users.dto.UsersResponseDto;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,7 @@ public class QuestionResponseDto {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    @Builder.Default
+    private List<AnswerResponseDto> answers = new ArrayList<>();
 }
