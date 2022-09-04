@@ -37,6 +37,8 @@ public class AnswerService {
             throw new BusinessLogicException(ExceptionCode.ALREADY_ANSWERED);
         }
 
+        question.setAnswerCount(question.getAnswerCount() + 1);
+
         answer.addQuestionAndUser(question, users);
 
         return answerRepository.save(answer);

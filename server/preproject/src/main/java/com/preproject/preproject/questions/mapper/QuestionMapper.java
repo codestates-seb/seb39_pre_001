@@ -1,20 +1,21 @@
 package com.preproject.preproject.questions.mapper;
 
-import com.preproject.preproject.dto.PageInfo;
+import com.preproject.preproject.answers.mapper.mapstruct.AnswerMapper;
+import com.preproject.preproject.questions.dto.MultiQuestionResponseDto;
 import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.dto.QuestionPostDto;
-import com.preproject.preproject.questions.dto.QuestionResponseDto;
+import com.preproject.preproject.questions.dto.SingleQuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.tags.entity.TagQuestion;
-import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.*;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        uses = AnswerMapper.class
+)
 //@DecoratedWith(QuestionDecoratorMapper.class)
 public interface QuestionMapper {
 
@@ -22,9 +23,16 @@ public interface QuestionMapper {
     @Mapping(target = "likes", source = "likeCount")
     @Mapping(target = "dislikes", source = "dislikeCount")
     @Mapping(target = "user.userId", source = "user.id")
-    QuestionResponseDto dtoFrom(Question question);
+    SingleQuestionResponseDto dtoFrom(Question question);
 
-    List<QuestionResponseDto> listDtoFromEntities(List<Question> questions);
+    @Mapping(target = "tags", source = "tags")
+    @Mapping(target = "likes", source = "likeCount")
+    @Mapping(target = "dislikes", source = "dislikeCount")
+    @Mapping(target = "answers", source = "answerCount")
+    MultiQuestionResponseDto toMultiQuestionResponseDtoFrom(Question question);
+
+
+    List<MultiQuestionResponseDto> listDtoFromEntities(List<Question> questions);
 
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "tagQuestionList", source = "tags")
@@ -49,13 +57,13 @@ public interface QuestionMapper {
 
 
     default List<TagQuestion> tagQuestionListFromTags(List<String> tags) {
-        if ( tags == null ) {
+        if (tags == null) {
             return null;
         }
         List<String> reduced = tags.stream().distinct().collect(Collectors.toList());
-        List<TagQuestion> list = new ArrayList<TagQuestion>( reduced.size() );
-        for ( String string : reduced ) {
-            list.add( tagQuestionFromTag( string ) );
+        List<TagQuestion> list = new ArrayList<TagQuestion>(reduced.size());
+        for (String string : reduced) {
+            list.add(tagQuestionFromTag(string));
         }
 
         return list;

@@ -1,20 +1,16 @@
 package com.preproject.preproject.slice.restdocs;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.gson.Gson;
-import com.preproject.preproject.dto.PageInfo;
 import com.preproject.preproject.helper.QuestionControllerHelper;
 import com.preproject.preproject.helper.RestDocumentationHelper;
 import com.preproject.preproject.questions.controller.QuestionController;
 import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.dto.QuestionPostDto;
-import com.preproject.preproject.questions.dto.QuestionResponseDto;
+import com.preproject.preproject.questions.dto.SingleQuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
-import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.users.dto.UsersResponseDto;
-import com.preproject.preproject.users.entity.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,9 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -80,15 +74,15 @@ public class QuestionControllerTest {
                 "java", "react", "mysql"
         );
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(questionId)
                         .title("question 1")
                         .description("this is question 1")
                         .tags(tags)
                         .user(usersResponseDto)
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
                         .build();
 
         given(questionService.getQuestion(Mockito.anyLong())).willReturn(Mockito.mock(Question.class));
@@ -153,15 +147,15 @@ public class QuestionControllerTest {
 
         String requestBody = gson.toJson(requestDto);
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(1L)
                         .title(requestDto.getTitle())
                         .description(requestDto.getDescription())
                         .tags(requestDto.getTags())
                         .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
                         .build();
 
         given(questionMapper.entityFromDto(Mockito.any(QuestionPostDto.class))).willReturn(Mockito.mock(Question.class));
@@ -233,15 +227,15 @@ public class QuestionControllerTest {
                         .tags(List.of("java", "react", "mysql"))
                         .build();
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(questionId)
                         .title(requestDto.getTitle())
                         .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
                         .tags(List.of("java", "react", "mysql"))
                         .description(requestDto.getDescription())
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
                         .build();
 
         String request = gson.toJson(requestDto);
@@ -310,15 +304,15 @@ public class QuestionControllerTest {
         params.add("page", "1");
         params.add("tab", null);
 
-        List<QuestionResponseDto> list = List.of(
-                QuestionResponseDto.builder().user(
+        List<SingleQuestionResponseDto> list = List.of(
+                SingleQuestionResponseDto.builder().user(
                                 UsersResponseDto.builder().userId(1L).displayName("user1").build())
                         .questionId(1L)
                         .description("question1")
                         .tags(List.of("java", "spring", "mysql"))
                         .title("question title1")
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
                         .build());
 
         given(questionService.getQuestions(Mockito.any(PageRequest.class))).willReturn(Mockito.mock(PageImpl.class));

@@ -3,9 +3,10 @@ package com.preproject.preproject.questions.controller;
 import com.preproject.preproject.dto.MultiResponseDto;
 import com.preproject.preproject.dto.PageInfo;
 import com.preproject.preproject.dto.SingleResponseDto;
+import com.preproject.preproject.questions.dto.MultiQuestionResponseDto;
 import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.dto.QuestionPostDto;
-import com.preproject.preproject.questions.dto.QuestionResponseDto;
+import com.preproject.preproject.questions.dto.SingleQuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
@@ -29,51 +30,50 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
 
     @GetMapping
-    public ResponseEntity<MultiResponseDto<QuestionResponseDto>> getQuestions(
+    public ResponseEntity<MultiResponseDto<MultiQuestionResponseDto>> getQuestions(
             @RequestParam(name = "tab", required = false, defaultValue = "createdAt") String tab,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
 
-        if (tab == null) tab = "createdAt";
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(tab));
 
         Page<Question> entities = questionService.getQuestions(pageable);
 
         PageInfo pageInfo = PageInfo.of(entities, tab);
-        List<QuestionResponseDto> contents = questionMapper.listDtoFromEntities(entities.getContent());
+        List<MultiQuestionResponseDto> contents = questionMapper.listDtoFromEntities(entities.getContent());
 
         return new ResponseEntity<>(new MultiResponseDto<>(contents, pageInfo), HttpStatus.OK);
     }
 
     @GetMapping("/{questionId}")
-    public ResponseEntity<SingleResponseDto<QuestionResponseDto>> getQuestion(
+    public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> getQuestion(
             @PathVariable long questionId) {
 
         Question found = questionService.getQuestion(questionId);
-        QuestionResponseDto responseDto = questionMapper.dtoFrom(found);
+        SingleQuestionResponseDto responseDto = questionMapper.dtoFrom(found);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @PostMapping("/ask")
-    public ResponseEntity<SingleResponseDto<QuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto) {
+    public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto) {
 
         // todo: user authentication needed. Principal needed.
         Question mapped = questionMapper.entityFromDto(questionPostDto);
         Question created = questionService.postQuestion(mapped);
-        QuestionResponseDto response = questionMapper.dtoFrom(created);
+        SingleQuestionResponseDto response = questionMapper.dtoFrom(created);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{questionId}")
-    public ResponseEntity<SingleResponseDto<QuestionResponseDto>> updateQuestion(
+    public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> updateQuestion(
             @PathVariable long questionId, @RequestBody QuestionPatchDto patchDto) {
 
         patchDto.setQuestionId(questionId);
         Question mapped = questionMapper.entityFromDto(patchDto);
         Question updated = questionService.updateQuestion(mapped);
-        QuestionResponseDto response = questionMapper.dtoFrom(updated);
+        SingleQuestionResponseDto response = questionMapper.dtoFrom(updated);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }

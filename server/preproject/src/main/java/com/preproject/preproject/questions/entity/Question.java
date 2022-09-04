@@ -37,6 +37,7 @@ public class Question extends Auditing {
     private int answerCount;
     private int likeCount;
     private int dislikeCount;
+    private int views;
 
     @Builder.Default
     @Setter
@@ -60,9 +61,6 @@ public class Question extends Auditing {
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
-    public List<String> getTags() {
-        return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
-    }
 
     public boolean alreadyLikedBy(Users user) {
         return this
@@ -76,22 +74,32 @@ public class Question extends Auditing {
                 .anyMatch(questionDislike -> questionDislike.getUser() == user);
     }
 
+    public void checkWriter(long userId) {
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("Only user who wrote this question can update.");
+        }
+    }
+
     public void addUser(Users user) {
         this.user = user;
         if (!this.user.getQuestions().contains(this)) {
             this.user.getQuestions().add(this);
         }
     }
-    public long getLikeCount() {
+
+    public int getLikeCount() {
         return this.questionLikes.size();
     }
-    public long getDislikeCount() {return this.getQuestionDislikes().size();}
-
-    public void checkWriter(long userId) {
-        if (this.getUser().getId() != userId) {
-            throw new RuntimeException("Only user who wrote this question can update.");
-        }
+    public int getDislikeCount() {return this.questionDislikes.size();}
+    public int getAnswerCount() {
+        return this.answers.size();
     }
+
+
+    public List<String> getTags() {
+        return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
+    }
+
 
     public boolean taggedWith(TagQuestion tagQuestion) {
         return this.getTagQuestionList().contains(tagQuestion);
