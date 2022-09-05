@@ -10,6 +10,7 @@ import com.preproject.preproject.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public String login(UserLoginDto userLoginDto) {
 
         Optional<Users> user = userRepository.findByEmail(userLoginDto.getEmail());
