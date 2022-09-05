@@ -90,4 +90,15 @@ public class QuestionController {
         questionService.dislike(questionId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("disliked"), HttpStatus.OK);
     }
+
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<SingleResponseDto<String>> delete(
+            @PathVariable long questionId,
+            long userId) {
+        questionService.delete(questionId, userId);
+
+        return new ResponseEntity<>(new SingleResponseDto<>("delete"), HttpStatus.OK);
+
+    }
 }

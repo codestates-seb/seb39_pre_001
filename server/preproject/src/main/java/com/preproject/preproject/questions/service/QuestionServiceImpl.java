@@ -147,6 +147,16 @@ public class QuestionServiceImpl implements QuestionService {
         questionDislikeRepository.save(questionDislike);
     }
 
+    @Override
+    public void delete(long questionId, long userId) {
+
+        Question question = getQuestionById(questionId);
+        question.checkWriter(userId);
+
+        questionRepository.delete(question);
+
+    }
+
     public Question getQuestionById(long questionId) {
         return questionRepository
                 .findById(questionId)

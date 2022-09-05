@@ -41,12 +41,12 @@ public class Question extends Auditing {
 
     @Builder.Default
     @Setter
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @Builder.Default
     @Setter
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionDislike> questionDislikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -54,11 +54,11 @@ public class Question extends Auditing {
     private Users user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
 
