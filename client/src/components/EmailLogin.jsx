@@ -100,8 +100,8 @@ const EmailLogin = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const data = {
-      email: '',
-      password: '12345',
+      email: 'ym24319577@gmail.com',
+      password: '1234',
     };
     await axios
       .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/users/login', data)

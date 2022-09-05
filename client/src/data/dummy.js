@@ -1,15 +1,15 @@
 const question = [
   {
-    questionId: 1,
-    title: 'question title1',
-    description: 'question1',
+    questionId: 0,
+    title: '',
+    description: '',
     user: {
-      userId: 1,
-      displayName: 'user1',
+      userId: 0,
+      displayName: '',
     },
-    tags: ['java', 'spring', 'mysql'],
-    likes: 5,
-    dislikes: 1,
+    tags: [],
+    likes: 0,
+    dislikes: 0,
   },
 ];
 

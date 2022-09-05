@@ -4,11 +4,12 @@ import QuestionAnswer from './pages/QuestionAnswer';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { createGlobalStyle } from 'styled-components';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Background from './components/Background';
+import QuestionEdit from './pages/QuestionEdit';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -33,6 +34,7 @@ function App() {
           <Route path='/questions/:questionId' element={<QuestionAnswer />} />
           <Route path='/users/login' element={<Login />} />
           <Route path='/users/join' element={<Signup />} />
+          <Route path='/questions/:questionId/edit' element={<QuestionEdit />} />
         </Routes>
         <Footer />
       </BrowserRouter>

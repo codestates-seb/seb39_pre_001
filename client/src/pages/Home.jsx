@@ -62,9 +62,18 @@ const StyledHome = styled.div`
           padding: 12px 32px;
           color: #fff;
           cursor: pointer;
+          :hover {
+            background-color: #da680b;
+          }
         }
         > div {
           margin-top: 12px;
+          > a {
+            color: #3b4045;
+            :hover {
+              color: #da680b;
+            }
+          }
         }
         ::after {
           background-color: #fee3cd;

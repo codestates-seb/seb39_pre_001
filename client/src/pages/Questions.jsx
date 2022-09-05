@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Summary from '../components/Summary';
-import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import axios from 'axios';
+import SummaryLoading from '../components/SummaryLoading';
 
 // 전체 questions page
 const QuestionsPageWrapper = styled.div`
@@ -145,18 +145,17 @@ const StyledAskButton = styled.button`
 `;
 
 function Questions() {
-  const [data, setData] = useState(question);
-  const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [loader] = useState([1, 2, 3, 4, 5]);
   const [items, setItems] = useState(5);
+  const [page, setPage] = useState(1);
   const [selected, setSelected] = useState('newest');
-  const [pageInfo, setPageInfo] = useState({ totalElements: question.length });
+  const [pageInfo, setPageInfo] = useState({ totalElements: 0 });
 
   const handlePageChange = (page) => {
     setPage(page);
   };
-  const itemChange = (e) => {
-    setItems(Number(e.target.value));
-  };
+
   const sortHandler = (e) => {
     switch (e.target.value) {
       case 'newest':
@@ -209,7 +208,7 @@ function Questions() {
           </Link>
         </div>
         <div className='sort'>
-          <div className='questions-counter'>{question.length} questions</div>
+          <div className='questions-counter'>{pageInfo.totalElements} questions</div>
           <div className='sort-container' onClick={sortHandler}>
             <button className={selected === 'newest' ? 'is-selected' : null} value={'newest'}>
               최신순
@@ -223,9 +222,9 @@ function Questions() {
           </div>
         </div>
         <div className='questions-container'>
-          {data.map((e) => (
-            <Summary key={e.questionId} question={e}></Summary>
-          ))}
+          {data.length !== 0
+            ? data.map((e) => <Summary key={e.questionId} question={e} />)
+            : loader.map((e, i) => <SummaryLoading key={i} />)}
         </div>
         <div className='pagination-container'>
           <Pagination
@@ -234,12 +233,6 @@ function Questions() {
             totalItemsCount={pageInfo.totalElements}
             pageRangeDisplayed={5}
             onChange={handlePageChange}></Pagination>
-          <select name='items' onChange={itemChange}>
-            <option value='5'>5개</option>
-            <option value='10'>10개</option>
-            <option value='15'>15개</option>
-            <option value='20'>20개</option>
-          </select>
         </div>
       </StyledQuestions>
     </QuestionsPageWrapper>

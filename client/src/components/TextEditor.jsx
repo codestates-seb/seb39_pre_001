@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import styled from 'styled-components';
@@ -24,10 +24,14 @@ const TextEditor = ({ content, setContent }) => {
     setContent(data);
   };
 
+  useEffect(() => {
+    editorRef.current.getInstance().setMarkdown(content);
+  }, [content]);
+
   return (
     <TextEditorWrapper>
       <Editor
-        initialValue=' '
+        initialValue={content || ' '}
         previewStyle='tab'
         height='auto'
         initialEditType='markdown'

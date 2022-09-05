@@ -1,18 +1,20 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Answer from '../components/Answer';
+import Answers from '../components/Answers';
 import question from '../data/dummy';
 import userImg from '../static/user.png';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 const StyledQuestionAnswer = styled.div`
   font-size: 16px;
   margin: auto;
   padding: 24px;
   width: 80%;
-  max-width: 750px;
+  max-width: 1000px;
   border-left: 1px solid #d6d9dc;
   border-right: 1px solid #d6d9dc;
   border-bottom: 1px solid #d6d9dc;
@@ -27,6 +29,7 @@ const StyledQuestionAnswer = styled.div`
       margin: 0 0 24px 0;
       width: 80%;
       max-width: 600px;
+      overflow-wrap: break-word;
     }
   }
   > .info {
@@ -61,9 +64,15 @@ const StyledQuestionAnswer = styled.div`
       }
     }
     > .body {
-      width: 100%;
+      width: calc(100% - 70px);
       > .main {
         margin-top: 0;
+        overflow-wrap: break-word;
+        > p {
+          :first-child {
+            margin-top: 0;
+          }
+        }
       }
       > .tags {
         display: flex;
@@ -128,9 +137,11 @@ const StyledAskButton = styled.button`
 `;
 
 function QuestionAnswer() {
+  const navigate = useNavigate();
   const { questionId } = useParams();
   const [data, setData] = useState(question[0]);
   const {
+    id = questionId,
     title,
     description,
     tags,
@@ -152,6 +163,21 @@ function QuestionAnswer() {
     };
     dataFetch();
   }, []);
+
+  // 질문 삭제
+  const deleteHandler = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      await axios
+        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`)
+        .then(() => {
+          alert('삭제되었습니다.');
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      await navigate('/questions');
+    }
+  };
 
   return (
     <StyledQuestionAnswer>
@@ -177,7 +203,9 @@ function QuestionAnswer() {
           </div>
         </div>
         <div className='body'>
-          <p className='main'>{description}</p>
+          <p className='main'>
+            <ReactMarkdown>{description}</ReactMarkdown>
+          </p>
           <div className='tags'>
             {tags.map((tag, i) => (
               <div key={i}>{tag}</div>
@@ -185,8 +213,10 @@ function QuestionAnswer() {
           </div>
           <div className='author-container'>
             <div className='editor'>
-              <a href='/'>edit</a>
-              <a href='/'>delete</a>
+              <Link to={`/questions/${String(id)}/edit`}>edit</Link>
+              <Link to={`/questions/` + id} onClick={deleteHandler}>
+                delete
+              </Link>
             </div>
             <div className='author-info'>
               <img src={userImg} alt='user-img'></img>
@@ -195,6 +225,7 @@ function QuestionAnswer() {
           </div>
         </div>
       </div>
+      <Answers questionId={id} />
       <Answer />
     </StyledQuestionAnswer>
   );
