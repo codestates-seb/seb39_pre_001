@@ -14,6 +14,5 @@ public interface AnswerMapper {
     Answer answerPatch(AnswerPatchDto answerPatchDto);
 
     @Mapping(target = "user.userId", source = "user.id")
-    @Mapping(target = "questionId", source = "question.questionId")
     AnswerResponseDto answerResponse(Answer answer);
 }

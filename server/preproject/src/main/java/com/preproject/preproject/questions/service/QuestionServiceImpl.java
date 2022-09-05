@@ -49,7 +49,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getQuestion(long questionId) {
-        return getQuestionById(questionId);
+        Question entity = getQuestionById(questionId);
+
+        entity.setViews(entity.getViews() + 1);
+
+        return questionRepository.save(entity);
     }
 
     @Override

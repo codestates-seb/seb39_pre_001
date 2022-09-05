@@ -43,6 +43,7 @@ public class AnswerControllerTest {
 
         //given
         AnswerPostDto post = AnswerPostDto.builder()
+                .questionId(1L)
                 .content("답변내용").build();
 
         String content = gson.toJson(post);

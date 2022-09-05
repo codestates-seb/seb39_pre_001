@@ -12,5 +12,5 @@ public class AnswerResponseDto {
     private long answerId;
     private String content;
     private UsersResponseDto user;
-    private long questionId;
+//    private long questionId;
 }
