@@ -44,7 +44,7 @@ public class AnswerController {
         Answer response =
                 answerService.updateAnswer(answerMapper.answerPatch(answerPatchDto));
 
-        return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(answerMapper.answerResponse(response)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/answer/{answer-id}")
@@ -52,6 +52,6 @@ public class AnswerController {
 
         answerService.deleteAnswer(answerId);
 
-        return new ResponseEntity<>("답글이 삭제되었습니다", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new SingleResponseDto<>("답글이 삭제되었습니다"), HttpStatus.NO_CONTENT);
     }
 }
