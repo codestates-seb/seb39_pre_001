@@ -84,9 +84,9 @@ public class QuestionControllerTest {
                         .content("answer1")
                         .user(
                                 UsersResponseDto.builder()
-                                .userId(1L).displayName("user1")
-                                .build()
-                                )
+                                        .userId(1L).displayName("user1")
+                                        .build()
+                        )
                         .build();
 
         SingleQuestionResponseDto responseDto =
@@ -401,6 +401,11 @@ public class QuestionControllerTest {
                         .views(100)
                         .createdAt(LocalDateTime.now())
                         .modifiedAt(LocalDateTime.now())
+                        .user(
+                                UsersResponseDto.builder()
+                                        .userId(1L)
+                                        .displayName("user1")
+                                        .build())
                         .build());
 
         given(questionService.getQuestions(Mockito.any(PageRequest.class))).willReturn(Mockito.mock(PageImpl.class));
@@ -447,6 +452,9 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회수"),
                                                 fieldWithPath("data[].createdAt").type(JsonFieldType.VARIES).description("작성일자"),
                                                 fieldWithPath("data[].modifiedAt").type(JsonFieldType.VARIES).description("최종 수정일자"),
+                                                fieldWithPath("data[].user").type(JsonFieldType.OBJECT).description("작성자 정보"),
+                                                fieldWithPath("data[].user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+                                                fieldWithPath("data[].user.displayName").type(JsonFieldType.STRING).description("작성자 이름"),
                                                 fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지네이션 정보"),
                                                 fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
                                                 fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 번에 출력할 페이지 개수"),
@@ -536,6 +544,48 @@ public class QuestionControllerTest {
                                         fieldWithPath("data").type(JsonFieldType.STRING).description("결과")
                                 )
                         )
+                );
+
+    }
+
+    @DisplayName("QuestionController.delete")
+    @Test
+    public void givenQuestionIdAndUserId_whenDeleteRequested_thenQuestionDeleted() throws Exception {
+
+        long questionId = 1L;
+        long userId  = 1L;
+        String response = "delete";
+
+        //when
+        ResultActions resultActions =
+                mockMvc
+                        .perform(
+                                delete(QuestionControllerHelper.URL + "/{questionId}", questionId).param("userId", "1")
+                                        .contentType(MediaType.APPLICATION_JSON)
+                        );
+
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value(response));
+
+        resultActions
+                .andDo(
+                        document(
+                                "delete-question",
+                                RestDocumentationHelper.prettyPrintRequest(),
+                                RestDocumentationHelper.prettyPrintResponse(),
+                                pathParameters(
+                                        parameterWithName("questionId").description("게시글 식별자")
+                                ),
+                                requestParameters(
+                                        parameterWithName("userId").description("작성자 식별자")
+                                ),
+                                responseFields(
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("결과")
+                                )
+                        )
+
                 );
 
     }

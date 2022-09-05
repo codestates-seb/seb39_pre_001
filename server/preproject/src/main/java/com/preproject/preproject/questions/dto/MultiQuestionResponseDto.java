@@ -24,6 +24,8 @@ public class MultiQuestionResponseDto {
     @Builder.Default
     private List<String> tags = new ArrayList<>();
 
+    private UsersResponseDto user;
+
     private Integer likes;
     private Integer dislikes;
     private Integer answers;

@@ -3,7 +3,7 @@
 :toc: left
 :toclevels: 4
 :toc-title: Table of Contents
-:source-highlighter: prettify
+:source-highlighter: highlightjs
 
 == 회원
 === 회원 가입
@@ -113,6 +113,21 @@ include::{snippets}/hit-dislike-button/http-response.adoc[]
 .response-fields
 include::{snippets}/hit-dislike-button/response-fields.adoc[]
 
+=== 게시글 삭제
+.http-request
+include::{snippets}/delete-question/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-question/path-parameters.adoc[]
+
+.request-parameters (query param)
+include::{snippets}/delete-question/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-question/http-response.adoc[]
+
+.response-field
+include::{snippets}/delete-question/response-fields.adoc[]
 
 == 답변
 === 답변 등록
