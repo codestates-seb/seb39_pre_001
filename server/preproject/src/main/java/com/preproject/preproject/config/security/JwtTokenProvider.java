@@ -13,8 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -26,7 +28,7 @@ import java.util.Set;
 public class JwtTokenProvider {
     private String secretKey = "chickenmilktea";
 
-    private long tokenValidTime = 30 * 60 * 1000L;  //유효시간 30분
+    private long tokenValidTime = 60 * 60 * 1000L;  //유효시간 30분
 
     @Autowired
     private final UserDetailsService userDetailsService;
@@ -39,7 +41,7 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userPk, Set<String> roles) {
+    public String createToken(String userPk, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(userPk);   // JWT payload 에 저장되는 정보 단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장
         Date now = new Date();
@@ -66,6 +68,10 @@ public class JwtTokenProvider {
 
     // Request 의 Header 에서 token 값을 가져옴. "X-AUTH-TOKEN" : "TOKEN 값"
     public String resolveToken(HttpServletRequest request) {
+//        String token = null;
+//        Cookie cookie = WebUtils.getCookie(request, "X-AUTH-TOKEN");
+//        if(cookie != null) token = cookie.getValue();
+//        return token;
         return request.getHeader("X-AUTH-TOKEN");
     }
 

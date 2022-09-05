@@ -46,9 +46,11 @@ public class Users implements UserDetails {
 
     private LocalDateTime regdate = LocalDateTime.now();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<String> roles = new HashSet<>();
+    @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<String> roles = new HashSet<>();
+    private List<String> roles = new ArrayList<>();
 
 
     @Builder.Default
@@ -73,6 +75,10 @@ public class Users implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public String getPassword() {
+//        return password;
+//    }
     @Override
     public String getUsername() {
         return email;

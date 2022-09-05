@@ -14,9 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -33,13 +36,14 @@ public class UsersController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @PostMapping("/join")
     public ResponseEntity postUser(@RequestBody UsersPostDto usersPostDto) {
         Users users = userMapper.userPost(usersPostDto);
-        users.setRoles(Collections.singleton("ROLE_USER"));
+        users.setRoles(Collections.singletonList("ROLE_USER"));
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
 
         Users response = userService.createUser(users);
 
@@ -54,7 +58,7 @@ public class UsersController {
 
     //login 기능
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserLoginDto loginDto) {
+    public ResponseEntity login(@RequestBody UserLoginDto loginDto, HttpServletResponse response) {
         log.info("email = {} , password = {} ", loginDto.getEmail(), loginDto.getPassword());
 
 //        if (userService.login(loginDto).equals("Success")) {
@@ -62,14 +66,33 @@ public class UsersController {
 //        }
 //
 //        throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
-        Optional<Users> user = userRepository.findByEmail(loginDto.getEmail());
-        user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.EMAIL_NOT_FOUND));
+        Users user = userRepository.findByEmail(loginDto.getEmail())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.EMAIL_NOT_FOUND));
 
-        if (!user.get().getPassword().equals(loginDto.getPassword())) {
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
         }
 
-        return new ResponseEntity<>(jwtTokenProvider.createToken(user.get().getUsername(), user.get().getRoles()), HttpStatus.OK);
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+        response.setHeader("X-AUTH-TOKEN", token);
+
+//        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+//        response.addCookie(cookie);
+
+        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
+
+//    @PostMapping("/logout")
+//    public void logout(HttpServletResponse response) {
+//        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(false);
+//        cookie.setMaxAge(0);
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
+//    }
 
 }
