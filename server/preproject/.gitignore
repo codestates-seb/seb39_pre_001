@@ -4,6 +4,11 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.idea/
+server/.idea/
+
+production/
+!**/.gradle/
 
 ### STS ###
 .apt_generated
@@ -25,6 +30,9 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+server/preproject/.idea/
+server/preproject/.gradle/
+server/preproject/build/
 
 ### NetBeans ###
 /nbproject/private/
@@ -35,3 +43,9 @@ out/
 
 ### VS Code ###
 .vscode/
+/.gradle/7.5/
+/.gradle/
+/build/
+/server/preproject/build/
+server/preproject/src/main/resources/application-remote-dev.yml
+

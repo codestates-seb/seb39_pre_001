@@ -1,10 +1,13 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
-  h2:
-    console:
-      enabled: true
-      path: /h2
+      ddl-auto: update  # (1) 스키마 자동 생성
+    show-sql: true      # (2) SQL 쿼리 출력
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
   datasource:
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: manager0
+    url: jdbc:mysql://localhost:3306/pre?allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: root

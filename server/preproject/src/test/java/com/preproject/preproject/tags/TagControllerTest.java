@@ -3,7 +3,7 @@ package com.preproject.preproject.tags;
 import com.google.gson.Gson;
 import com.preproject.preproject.tags.controller.TagsController;
 import com.preproject.preproject.tags.dto.TagResponseDto;
-import com.preproject.preproject.tags.entity.Tags;
+import com.preproject.preproject.tags.entity.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
