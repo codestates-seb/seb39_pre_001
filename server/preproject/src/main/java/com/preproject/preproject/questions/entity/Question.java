@@ -90,11 +90,6 @@ public class Question extends Auditing {
     public int getLikeCount() {
         return this.questionLikes.size();
     }
-    public int getDislikeCount() {return this.questionDislikes.size();}
-    public int getAnswerCount() {
-        return this.answers.size();
-    }
-
 
     public List<String> getTags() {
         return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());

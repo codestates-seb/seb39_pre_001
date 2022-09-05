@@ -278,6 +278,7 @@ public class QuestionControllerTest {
                 QuestionPatchDto.builder()
                         .questionId(questionId)
                         .title("updated")
+                        .userId(1L)
                         .description("updated desc")
                         .tags(List.of("java", "react", "mysql"))
                         .build();
@@ -349,7 +350,8 @@ public class QuestionControllerTest {
                                                 fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정될 게시글 제목").optional(),
                                                 fieldWithPath("description").type(JsonFieldType.STRING).description("수정될 게시글 내용").optional(),
-                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정 태그").optional()
+                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정 태그").optional(),
+                                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 식별자")
                                         )
                                 ),
                                 responseFields(

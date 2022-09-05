@@ -118,6 +118,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (question.alreadyLikedBy(user)) {
             throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_LIKED);
         }
+        question.setLikeCount(question.getQuestionLikes().size() + 1);
 
         QuestionLike questionLike =
                 QuestionLike.builder()
@@ -137,6 +138,8 @@ public class QuestionServiceImpl implements QuestionService {
         if (question.alreadyDislikedBy(user)) {
             throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_DISLIKED);
         }
+
+        question.setDislikeCount(question.getQuestionDislikes().size() + 1);
 
         QuestionDislike questionDislike =
                 QuestionDislike.builder()
