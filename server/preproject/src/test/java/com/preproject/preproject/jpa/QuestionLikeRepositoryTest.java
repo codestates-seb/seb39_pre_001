@@ -7,7 +7,7 @@ import com.preproject.preproject.questions.repository.QuestionDislikeRepository;
 import com.preproject.preproject.questions.repository.QuestionLikeRepository;
 import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.users.entity.Users;
-import com.preproject.preproject.users.repository.UsersRepository;
+import com.preproject.preproject.users.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionLikeRepositoryTest {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository usersRepository;
 
     @Autowired
     private QuestionRepository questionRepository;

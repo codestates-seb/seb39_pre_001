@@ -1,20 +1,19 @@
 package com.preproject.preproject.slice.restdocs;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.gson.Gson;
-import com.preproject.preproject.dto.PageInfo;
+import com.preproject.preproject.answers.dto.AnswerResponseDto;
+import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.helper.QuestionControllerHelper;
 import com.preproject.preproject.helper.RestDocumentationHelper;
 import com.preproject.preproject.questions.controller.QuestionController;
+import com.preproject.preproject.questions.dto.MultiQuestionResponseDto;
 import com.preproject.preproject.questions.dto.QuestionPatchDto;
 import com.preproject.preproject.questions.dto.QuestionPostDto;
-import com.preproject.preproject.questions.dto.QuestionResponseDto;
+import com.preproject.preproject.questions.dto.SingleQuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
-import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.users.dto.UsersResponseDto;
-import com.preproject.preproject.users.entity.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,9 +32,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -80,15 +78,30 @@ public class QuestionControllerTest {
                 "java", "react", "mysql"
         );
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        AnswerResponseDto answerResponseDto =
+                AnswerResponseDto.builder()
+                        .answerId(1L)
+                        .content("answer1")
+                        .user(
+                                UsersResponseDto.builder()
+                                .userId(1L).displayName("user1")
+                                .build()
+                                )
+                        .build();
+
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(questionId)
                         .title("question 1")
                         .description("this is question 1")
                         .tags(tags)
                         .user(usersResponseDto)
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
+                        .views(10)
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .answers(List.of(answerResponseDto))
                         .build();
 
         given(questionService.getQuestion(Mockito.anyLong())).willReturn(Mockito.mock(Question.class));
@@ -126,11 +139,21 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
                                                 fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
                                                 fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
+                                                fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("조회수"),
                                                 fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
                                                 fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그")
+                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그"),
+                                                fieldWithPath("data.createdAt").type(JsonFieldType.VARIES).description("게시글 생성일자"),
+                                                fieldWithPath("data.modifiedAt").type(JsonFieldType.VARIES).description("게시글 마지막 수정일자"),
+                                                fieldWithPath("data.answers[]").type(JsonFieldType.ARRAY).description("게시글에 달린 답글"),
+                                                fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답글 식별자"),
+                                                fieldWithPath("data.answers[].content").type(JsonFieldType.STRING).description("답글 내용"),
+                                                fieldWithPath("data.answers[].user").type(JsonFieldType.OBJECT).description("답글 작성한 사용자 정보"),
+                                                fieldWithPath("data.answers[].user.userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
+                                                fieldWithPath("data.answers[].user.displayName").type(JsonFieldType.STRING).description("사용자 이름")
+
                                         )
                                 )
                         )
@@ -153,15 +176,32 @@ public class QuestionControllerTest {
 
         String requestBody = gson.toJson(requestDto);
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        AnswerResponseDto answerResponseDto =
+                AnswerResponseDto.builder()
+                        .user(
+                                UsersResponseDto.builder()
+                                        .build()
+                        )
+                        .build();
+
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(1L)
-                        .title(requestDto.getTitle())
-                        .description(requestDto.getDescription())
+                        .title("question 1")
+                        .description("this is question 1")
                         .tags(requestDto.getTags())
-                        .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
-                        .likes(5L)
-                        .dislikes(1L)
+                        .user(
+                                UsersResponseDto.builder()
+                                        .userId(1L)
+                                        .displayName("user1")
+                                        .build()
+                        )
+                        .likes(0)
+                        .dislikes(0)
+                        .views(0)
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .answers(List.of(answerResponseDto))
                         .build();
 
         given(questionMapper.entityFromDto(Mockito.any(QuestionPostDto.class))).willReturn(Mockito.mock(Question.class));
@@ -202,15 +242,24 @@ public class QuestionControllerTest {
                                 ),
                                 responseFields(
                                         List.of(
-                                                fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                                fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
+                                                fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("조회수"),
                                                 fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
-                                                fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자 정보"),
+                                                fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                                fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("관련 태그"),
-                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
-                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수")
+                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그"),
+                                                fieldWithPath("data.createdAt").type(JsonFieldType.VARIES).description("게시글 생성일자"),
+                                                fieldWithPath("data.modifiedAt").type(JsonFieldType.VARIES).description("게시글 마지막 수정일자"),
+                                                fieldWithPath("data.answers[]").type(JsonFieldType.ARRAY).description("게시글에 달린 답글"),
+                                                fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답글 식별자"),
+                                                fieldWithPath("data.answers[].content").type(JsonFieldType.VARIES).description("답글 내용"),
+                                                fieldWithPath("data.answers[].user").type(JsonFieldType.VARIES).description("답글 작성한 사용자 정보"),
+                                                fieldWithPath("data.answers[].user.userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
+                                                fieldWithPath("data.answers[].user.displayName").type(JsonFieldType.VARIES).description("사용자 이름")
 
                                         )
                                 )
@@ -229,19 +278,37 @@ public class QuestionControllerTest {
                 QuestionPatchDto.builder()
                         .questionId(questionId)
                         .title("updated")
+                        .userId(1L)
                         .description("updated desc")
                         .tags(List.of("java", "react", "mysql"))
                         .build();
 
-        QuestionResponseDto responseDto =
-                QuestionResponseDto.builder()
+        AnswerResponseDto answerResponseDto =
+                AnswerResponseDto.builder()
+                        .user(
+                                UsersResponseDto.builder()
+                                        .build()
+                        )
+                        .build();
+
+        SingleQuestionResponseDto responseDto =
+                SingleQuestionResponseDto.builder()
                         .questionId(questionId)
                         .title(requestDto.getTitle())
-                        .user(UsersResponseDto.builder().userId(1L).displayName("user1").build())
-                        .tags(List.of("java", "react", "mysql"))
                         .description(requestDto.getDescription())
-                        .likes(5L)
-                        .dislikes(1L)
+                        .tags(requestDto.getTags())
+                        .user(
+                                UsersResponseDto.builder()
+                                        .userId(1L)
+                                        .displayName("user1")
+                                        .build()
+                        )
+                        .likes(0)
+                        .dislikes(0)
+                        .views(0)
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .answers(List.of(answerResponseDto))
                         .build();
 
         String request = gson.toJson(requestDto);
@@ -283,19 +350,30 @@ public class QuestionControllerTest {
                                                 fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정될 게시글 제목").optional(),
                                                 fieldWithPath("description").type(JsonFieldType.STRING).description("수정될 게시글 내용").optional(),
-                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정 태그").optional()
+                                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정 태그").optional(),
+                                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("작성자 식별자")
                                         )
                                 ),
                                 responseFields(
                                         List.of(
-                                                fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                                fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
                                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
+                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
+                                                fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("조회수"),
                                                 fieldWithPath("data.description").type(JsonFieldType.STRING).description("게시글 내용"),
+                                                fieldWithPath("data.user").type(JsonFieldType.OBJECT).description("작성자"),
                                                 fieldWithPath("data.user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
                                                 fieldWithPath("data.user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                                fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("수정 태그"),
-                                                fieldWithPath("data.likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
-                                                fieldWithPath("data.dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수")
+                                                fieldWithPath("data.tags[]").type(JsonFieldType.ARRAY).description("관련 태그"),
+                                                fieldWithPath("data.createdAt").type(JsonFieldType.VARIES).description("게시글 생성일자"),
+                                                fieldWithPath("data.modifiedAt").type(JsonFieldType.VARIES).description("게시글 마지막 수정일자"),
+                                                fieldWithPath("data.answers[]").type(JsonFieldType.ARRAY).description("게시글에 달린 답글"),
+                                                fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답글 식별자"),
+                                                fieldWithPath("data.answers[].content").type(JsonFieldType.NULL).description("답글 내용"),
+                                                fieldWithPath("data.answers[].user").type(JsonFieldType.OBJECT).description("답글 작성한 사용자 정보"),
+                                                fieldWithPath("data.answers[].user.userId").type(JsonFieldType.NUMBER).description("사용자 식별자"),
+                                                fieldWithPath("data.answers[].user.displayName").type(JsonFieldType.NULL).description("사용자 이름")
                                         )
                                 )
                         )
@@ -309,16 +387,20 @@ public class QuestionControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("page", "1");
         params.add("tab", null);
+        params.add("size", "5");
 
-        List<QuestionResponseDto> list = List.of(
-                QuestionResponseDto.builder().user(
-                                UsersResponseDto.builder().userId(1L).displayName("user1").build())
+        List<MultiQuestionResponseDto> list = List.of(
+                MultiQuestionResponseDto.builder()
                         .questionId(1L)
                         .description("question1")
                         .tags(List.of("java", "spring", "mysql"))
                         .title("question title1")
-                        .likes(5L)
-                        .dislikes(1L)
+                        .likes(5)
+                        .dislikes(1)
+                        .answers(2)
+                        .views(100)
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build());
 
         given(questionService.getQuestions(Mockito.any(PageRequest.class))).willReturn(Mockito.mock(PageImpl.class));
@@ -349,7 +431,8 @@ public class QuestionControllerTest {
                                 RestDocumentationHelper.prettyPrintResponse(),
                                 requestParameters(
                                         parameterWithName("page").optional().description("페이지 번호. 미입력시 1"),
-                                        parameterWithName("tab").optional().description("정렬 기준. 미입력시 createdAt")
+                                        parameterWithName("tab").optional().description("정렬 기준. 미입력시 createdAt"),
+                                        parameterWithName("size").optional().description("페이지 당 표시할 게시글 수. 기본값 5")
                                 ),
                                 responseFields(
                                         List.of(
@@ -357,12 +440,13 @@ public class QuestionControllerTest {
                                                 fieldWithPath("data[].questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                                 fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
                                                 fieldWithPath("data[].description").type(JsonFieldType.STRING).description("게시글 내용"),
-                                                fieldWithPath("data[].user").type(JsonFieldType.OBJECT).description("작성자 정보"),
-                                                fieldWithPath("data[].user.userId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
-                                                fieldWithPath("data[].user.displayName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                                                 fieldWithPath("data[].tags").type(JsonFieldType.ARRAY).description("수정 태그"),
                                                 fieldWithPath("data[].likes").type(JsonFieldType.NUMBER).description("좋아요 받은 수"),
                                                 fieldWithPath("data[].dislikes").type(JsonFieldType.NUMBER).description("싫어요 받은 수"),
+                                                fieldWithPath("data[].answers").type(JsonFieldType.NUMBER).description("달린 답글 수"),
+                                                fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회수"),
+                                                fieldWithPath("data[].createdAt").type(JsonFieldType.VARIES).description("작성일자"),
+                                                fieldWithPath("data[].modifiedAt").type(JsonFieldType.VARIES).description("최종 수정일자"),
                                                 fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지네이션 정보"),
                                                 fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
                                                 fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 번에 출력할 페이지 개수"),

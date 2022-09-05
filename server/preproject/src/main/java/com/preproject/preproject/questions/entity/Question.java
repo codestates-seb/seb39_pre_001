@@ -1,5 +1,6 @@
 package com.preproject.preproject.questions.entity;
 
+import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.audit.Auditing;
 import com.preproject.preproject.tags.entity.TagQuestion;
 import com.preproject.preproject.users.entity.Users;
@@ -33,14 +34,19 @@ public class Question extends Auditing {
     @Column(nullable = false)
     private String description;
 
+    private int answerCount;
+    private int likeCount;
+    private int dislikeCount;
+    private int views;
+
     @Builder.Default
     @Setter
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionLike> questionLikes = new ArrayList<>();
 
     @Builder.Default
     @Setter
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<QuestionDislike> questionDislikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -48,16 +54,13 @@ public class Question extends Auditing {
     private Users user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagQuestion> tagQuestionList = new ArrayList<>();
 
-    public void setTagQuestionList(List<TagQuestion> list) {
-        this.tagQuestionList = list;
-    }
+    @Builder.Default
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Answer> answers = new ArrayList<>();
 
-    public List<String> getTags() {
-        return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
-    }
 
     public boolean alreadyLikedBy(Users user) {
         return this
@@ -71,22 +74,27 @@ public class Question extends Auditing {
                 .anyMatch(questionDislike -> questionDislike.getUser() == user);
     }
 
+    public void checkWriter(long userId) {
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("Only user who wrote this question can update.");
+        }
+    }
+
     public void addUser(Users user) {
         this.user = user;
         if (!this.user.getQuestions().contains(this)) {
             this.user.getQuestions().add(this);
         }
     }
-    public long getLikeCount() {
+
+    public int getLikeCount() {
         return this.questionLikes.size();
     }
-    public long getDislikeCount() {return this.getQuestionDislikes().size();}
 
-    public void checkWriter(long userId) {
-        if (this.getUser().getId() != userId) {
-            throw new RuntimeException("Only user who wrote this question can update.");
-        }
+    public List<String> getTags() {
+        return this.tagQuestionList.stream().map(tagQuestion -> tagQuestion.getTag().getName()).collect(Collectors.toList());
     }
+
 
     public boolean taggedWith(TagQuestion tagQuestion) {
         return this.getTagQuestionList().contains(tagQuestion);

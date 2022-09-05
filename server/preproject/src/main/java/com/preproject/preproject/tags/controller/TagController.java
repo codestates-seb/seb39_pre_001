@@ -1,6 +1,7 @@
 package com.preproject.preproject.tags.controller;
 
 
+import com.preproject.preproject.dto.SingleResponseDto;
 import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.tags.entity.Tag;
 import com.preproject.preproject.tags.mapper.mapstruct.TagMapper;
@@ -30,9 +31,8 @@ public class TagController {
     public ResponseEntity getTags() {
 
         List<Tag> tags = tagService.findTags();
-        List<TagResponseDto> response = tags.stream()
-                .map(tags1 -> mapper.tagResponse(tags1)).collect(Collectors.toList());
+        List<TagResponseDto> response = mapper.listFromDto(tags);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 }

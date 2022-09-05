@@ -15,6 +15,8 @@ public interface QuestionService {
 
     Question updateQuestion(Question question);
 
+    void delete(long questionId, long userId);
+
     void like(long questionId, long userId);
 
     void dislike(long questionId, long userId);

@@ -4,7 +4,10 @@ CREATE TABLE `questions` (
   `description` varchar(255),
   `created_at` datetime,
   `modified_at` datetime,
-  `user_id` int
+  `user_id` int,
+  `answer_count` int,
+  `like_count` int,
+  `dislike_count` int
 );
 
 CREATE TABLE `users` (
