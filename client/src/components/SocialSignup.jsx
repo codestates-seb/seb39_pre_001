@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import google from '../resources/google.png';
+import google from '../static/google.png';
 import { BsGithub } from 'react-icons/bs';
 import { ImFacebook2 } from 'react-icons/im';
 
 const GoogleLogo = styled.img.attrs({
-  src: `${google}`
+  src: `${google}`,
 })`
   width: 18px;
   height: 18px;
@@ -31,12 +31,12 @@ const GoogleSignupButton = styled.button`
   height: 38px;
   padding: 10.4px;
   margin: 4px 0px 4px;
-  border: 1px solid #D6D9DC;
+  border: 1px solid #d6d9dc;
   border-radius: 4px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-weight: 500;
   :hover {
-    background-color: #F8F9F9;
+    background-color: #f8f9f9;
   }
   cursor: pointer;
 `;
@@ -49,11 +49,11 @@ const GithubSignupButton = styled.button`
   height: 38px;
   padding: 10.4px;
   margin: 4px 0px 4px;
-  border: 1px solid #2F3337;
+  border: 1px solid #2f3337;
   border-radius: 4px;
-  background-color: #2F3337;
+  background-color: #2f3337;
   color: white;
-    :hover {
+  :hover {
     background-color: #232629;
   }
   cursor: pointer;
@@ -71,8 +71,8 @@ const FacebookSignupButton = styled.button`
   border-radius: 4px;
   background-color: #385499;
   color: white;
-      :hover {
-    background-color: #314A86;
+  :hover {
+    background-color: #314a86;
   }
   cursor: pointer;
 `;
@@ -89,12 +89,20 @@ const SocialSignupWrapper = styled.div`
 `;
 
 const SocialSignup = () => {
-
   return (
     <SocialSignupWrapper>
-      <GoogleSignupButton><GoogleLogo />Sign up with Google</GoogleSignupButton>
-      <GithubSignupButton><GithubLogo />Sign up with GitHub</GithubSignupButton>
-      <FacebookSignupButton><FacebookLogo />Sign up with Facebook</FacebookSignupButton>
+      <GoogleSignupButton>
+        <GoogleLogo />
+        Sign up with Google
+      </GoogleSignupButton>
+      <GithubSignupButton>
+        <GithubLogo />
+        Sign up with GitHub
+      </GithubSignupButton>
+      <FacebookSignupButton>
+        <FacebookLogo />
+        Sign up with Facebook
+      </FacebookSignupButton>
     </SocialSignupWrapper>
   );
 };

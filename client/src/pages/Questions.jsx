@@ -2,23 +2,35 @@ import styled from 'styled-components';
 import Summary from '../components/Summary';
 import question from '../data/dummy';
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
+import axios from 'axios';
 
 // 전체 questions page
 const QuestionsPageWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	max-width: 1000px;
+	margin: auto;
+	min-height: 70vh;
+	> .sidebar {
+		flex: 0 0 164px;
+		padding-bottom: 50px;
+		> nav {
+			width: 164px;
+			position: sticky;
+			top: 47px;
+		}
+	}
 `;
 
 const StyledQuestions = styled.div`
 	font-size: 16px;
-	/* margin: auto; */
 	padding: 24px;
 	width: 80%;
-	max-width: 750px;
+	flex: 1 1 80%;
 	border-left: 1px solid #d6d9dc;
 	border-right: 1px solid #d6d9dc;
 	border-bottom: 1px solid #d6d9dc;
@@ -116,6 +128,43 @@ const StyledQuestions = styled.div`
 			font-size: 13px;
 			color: #3b4045;
 		}
+		.btn-pagination {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			button {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 31.91px;
+				height: 27px;
+				margin: 0 2px;
+				padding: 0 8px;
+				color: #3b4045;
+				background-color: #ffffff;
+				border: 1px solid #babfc3;
+				border-radius: 4px;
+				cursor: pointer;
+				:hover {
+					background-color: #d6d9dc;
+				}
+
+				&.btn-active {
+					color: #ffffff;
+					background-color: #f48225;
+					cursor: default;
+				}
+			}
+			p {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 27px;
+				font-size: 13px;
+				margin: 0 2px;
+				padding: 0 8px;
+			}
+		}
 	}
 `;
 
@@ -138,28 +187,37 @@ function Questions() {
 	const [page, setPage] = useState(1);
 	const [items, setItems] = useState(5);
 	const [selected, setSelected] = useState('newest');
+	const [pageInfo, setPageInfo] = useState({ totalElements: question.length });
+
+	// // pagination 버튼 클릭 시 state 이용한 버튼 색상 변경
+	const questionCount = [5, 10, 15];
+	const [btnActive, setBtnActive] = useState(5);
+	const toggleActive = (e) => {
+		setBtnActive(Number(e.target.value));
+	};
 
 	const handlePageChange = (page) => {
 		setPage(page);
 	};
 	const itemChange = (e) => {
 		setItems(Number(e.target.value));
+		// console.log(e.target.value);
 	};
 	const sortHandler = (e) => {
 		switch (e.target.value) {
 			case 'newest':
 				setSelected('newest');
-				setData([...question]);
+				setData([...data]);
 				break;
 			case 'like':
 				setSelected('like');
-				const tempData = [...question];
+				const tempData = [...data];
 				const sortedLike = tempData.sort((a, b) => b.like - a.like);
 				setData([...sortedLike]);
 				break;
 			case 'dislike':
 				setSelected('dislike');
-				const tempData2 = [...question];
+				const tempData2 = [...data];
 				const sortedDislike = tempData2.sort((a, b) => b.dislike - a.dislike);
 				setData([...sortedDislike]);
 				break;
@@ -168,9 +226,29 @@ function Questions() {
 		}
 	};
 
+	// 질문 목록 받아오기
+	useEffect(() => {
+		const dataFetch = async () => {
+			await axios
+				.get(
+					`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions?page=${page}&size=${items}`
+				)
+				.then(function (response) {
+					setData(response.data.data);
+					setPageInfo(response.data.pageInfo);
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		};
+		dataFetch();
+	}, [page, items]);
+
 	return (
 		<QuestionsPageWrapper>
-			<Dropdown />
+			<div className="sidebar">
+				<Dropdown />
+			</div>
 			<StyledQuestions>
 				<div className="title">
 					<h1>All Questions</h1>
@@ -202,26 +280,36 @@ function Questions() {
 					</div>
 				</div>
 				<div className="questions-container">
-					{data
-						.slice(items * (page - 1), items * (page - 1) + items)
-						.map((e) => (
-							<Summary key={e.id} question={e}></Summary>
-						))}
+					{data.map((e) => (
+						<Summary key={e.questionId} question={e}></Summary>
+					))}
 				</div>
 				<div className="pagination-container">
 					<Pagination
 						activePage={page}
 						itemsCountPerPage={items}
-						totalItemsCount={data.length}
+						totalItemsCount={pageInfo.totalElements}
 						pageRangeDisplayed={5}
 						onChange={handlePageChange}
 					></Pagination>
-					<select name="items" onChange={itemChange}>
-						<option value="5">5개</option>
-						<option value="10">10개</option>
-						<option value="15">15개</option>
-						<option value="20">20개</option>
-					</select>
+					<div className="btn-pagination" onClick={itemChange}>
+						{/* <button value="5">5</button>
+						<button value="10">10</button>
+						<button value="15">15</button> */}
+						{questionCount.map((el, idx) => {
+							return (
+								<button
+									key={idx}
+									value={el}
+									className={el === btnActive ? 'btn-active' : ''}
+									onClick={toggleActive}
+								>
+									{el}
+								</button>
+							);
+						})}
+						<p>per page</p>
+					</div>
 				</div>
 			</StyledQuestions>
 		</QuestionsPageWrapper>

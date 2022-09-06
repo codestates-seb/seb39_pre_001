@@ -1,0 +1,203 @@
+import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import Answer from '../components/Answer';
+import question from '../data/dummy';
+import userImg from '../static/user.png';
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const StyledQuestionAnswer = styled.div`
+  font-size: 16px;
+  margin: auto;
+  padding: 24px;
+  width: 80%;
+  max-width: 750px;
+  border-left: 1px solid #d6d9dc;
+  border-right: 1px solid #d6d9dc;
+  border-bottom: 1px solid #d6d9dc;
+  > .title {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-between;
+    align-items: flex-end;
+    > h1 {
+      font-size: 27px;
+      font-weight: 500;
+      margin: 0 0 24px 0;
+      width: 80%;
+      max-width: 600px;
+    }
+  }
+  > .info {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e3e6e8;
+    > div {
+      margin: 0 16px 8px 0;
+      font-size: 13px;
+      > span {
+        color: #6a737c;
+      }
+    }
+  }
+  > .body-container {
+    display: flex;
+    font-size: 15px;
+    > .vote {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-right: 16px;
+      gap: 10px;
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 36px;
+        font-size: 18px;
+      }
+    }
+    > .body {
+      width: 100%;
+      > .main {
+        margin-top: 0;
+      }
+      > .tags {
+        display: flex;
+        flex-wrap: wrap;
+        > div {
+          font-size: 12px;
+          color: #39739d;
+          background-color: #e1ecf4;
+          margin: 0 2px 2px 0;
+          padding: 4.8px 6px;
+          border-radius: 4px;
+        }
+      }
+      > .author-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 16px 0;
+        font-size: 13px;
+        > .editor {
+          > a {
+            margin: 4px;
+            text-decoration: none;
+            color: #6a737c;
+            :first-child {
+              margin-left: 0px;
+            }
+          }
+        }
+        > .author-info {
+          display: flex;
+          padding: 6px;
+          background-color: #d9eaf7;
+          border-radius: 3px;
+          width: 130px;
+          > img {
+            display: block;
+            width: 32px;
+          }
+          > a {
+            text-decoration: none;
+            color: #0074cc;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+`;
+
+const StyledAskButton = styled.button`
+  box-sizing: content-box;
+  color: #ffffff;
+  background-color: #0a95ff;
+  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  width: 80px;
+  height: 15px;
+`;
+
+function QuestionAnswer() {
+  const { questionId } = useParams();
+  const [data, setData] = useState(question[0]);
+  const {
+    title,
+    description,
+    tags,
+    user: { displayName },
+    likes,
+    dislikes,
+  } = data;
+
+  useEffect(() => {
+    const dataFetch = async () => {
+      await axios
+        .get(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`)
+        .then(function (response) {
+          setData(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+  }, []);
+
+  return (
+    <StyledQuestionAnswer>
+      <div className='title'>
+        <h1>{title}</h1>
+        <Link to='/questions/ask'>
+          <StyledAskButton>Ask Question</StyledAskButton>
+        </Link>
+      </div>
+      <div className='info'>
+        <div>date</div>
+        <div>
+          <span>Viewed</span> view times
+        </div>
+      </div>
+      <div className='body-container'>
+        <div className='vote'>
+          <div>
+            {likes} <AiOutlineLike />
+          </div>
+          <div>
+            {dislikes} <AiOutlineDislike />{' '}
+          </div>
+        </div>
+        <div className='body'>
+          <p className='main'>{description}</p>
+          <div className='tags'>
+            {tags.map((tag, i) => (
+              <div key={i}>{tag}</div>
+            ))}
+          </div>
+          <div className='author-container'>
+            <div className='editor'>
+              <a href='/'>edit</a>
+              <a href='/'>delete</a>
+            </div>
+            <div className='author-info'>
+              <img src={userImg} alt='user-img'></img>
+              <a href='/'>{displayName}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Answer />
+    </StyledQuestionAnswer>
+  );
+}
+
+export default QuestionAnswer;

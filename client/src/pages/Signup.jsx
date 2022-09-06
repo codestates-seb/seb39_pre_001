@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import NavBar from '../components/NavBar';
 import SideText from '../components/SideText';
 import SignupForm from '../components/SignupForm';
 
@@ -11,18 +10,15 @@ const SignupContainer = styled.div`
   min-height: 100vh;
   flex-wrap: wrap;
   padding: 24px;
+  background-color: #f1f2f3;
 `;
 
 const Signup = () => {
-
   return (
-    <>
-      <NavBar />
-      <SignupContainer>
-        <SideText />
-        <SignupForm />
-      </SignupContainer>
-    </>
+    <SignupContainer>
+      <SideText />
+      <SignupForm />
+    </SignupContainer>
   );
 };
 

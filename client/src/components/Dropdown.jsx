@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const DropdownContainer = styled.nav`
-	position: relative; // Questions 페이지에는
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	width: 200px;
@@ -11,7 +11,6 @@ const DropdownContainer = styled.nav`
 	top: 0;
 	margin: 0;
 	background-color: #ffffff;
-	z-index: -1; // box-shadow 보이기 위해 설정
 `;
 
 const LinkWrapper = styled.div`
@@ -20,8 +19,18 @@ const LinkWrapper = styled.div`
 	flex-direction: column;
 	> div {
 		font-size: 11px;
-		padding: 0;
-		margin: 16px 0px 4px 8px;
+		padding: 10px;
+		margin: 10px 8px 4px 8px;
+	}
+	> .tab-menu {
+		color: #525960;
+		font-size: 13px;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		height: 34px;
+		padding: 4px 4px 4px 30px;
+		margin: 0;
 	}
 `;
 
@@ -104,22 +113,18 @@ const Dropdown = () => {
 					</svg>
 					Questions
 				</NavLinkMenu>
-				<NavLinkMenu to="/tags" className="tab-menu">
-					Tags
-				</NavLinkMenu>
+				<div className="tab-menu">Tags</div>
 				<div>TEAMS</div>
 				<Teams>
 					<div className="textbox">
-						<p>
-							<strong>Stack Overflow for Teams -</strong>
-							<br />
-							Start collaborating and sharing organizational knowledge.
-						</p>
+						<strong>Stack Overflow for Teams -</strong>
+						Start collaborating and sharing organizational knowledge.
 					</div>
 					<img
 						src="https://cdn.sstatic.net/Img/teams/teams-illo-free-sidebar-promo.svg?v=47faa659a05e"
 						width="139"
 						height="114"
+						alt="promo"
 					/>
 					<button className="orange-button">Create a free Team</button>
 					<button className="white-button">Why Teams?</button>
