@@ -1,14 +1,11 @@
 package com.preproject.preproject.questions.dto;
 
-import com.preproject.preproject.tags.dto.TagResponseDto;
-import com.preproject.preproject.users.dto.UsersResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
 
 @Getter
 @NoArgsConstructor
@@ -16,15 +13,10 @@ import java.util.List;
 @Builder
 public class QuestionResponseDto {
 
-    //todo: likes count
+    //todo: user, tags
 
     private Long questionId;
     private String title;
     private String description;
-
-    private UsersResponseDto user;
-
-    @Builder.Default
-    private List<String> tags = new ArrayList<>();
 
 }
