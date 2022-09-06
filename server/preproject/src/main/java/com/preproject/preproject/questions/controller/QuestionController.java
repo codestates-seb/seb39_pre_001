@@ -102,7 +102,10 @@ public class QuestionController {
     @DeleteMapping("/{questionId}")
     public ResponseEntity<SingleResponseDto<String>> delete(
             @PathVariable long questionId,
-            long userId) {
+            @AuthenticationPrincipal Users users) {
+
+        long userId = users.getId();
+
         questionService.delete(questionId, userId);
 
         return new ResponseEntity<>(new SingleResponseDto<>("delete"), HttpStatus.OK);
