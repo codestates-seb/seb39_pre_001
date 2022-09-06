@@ -3,13 +3,16 @@ package com.preproject.preproject.answers.service;
 import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.answers.repository.AnswerRepository;
 import com.preproject.preproject.exception.BusinessLogicException;
+import com.preproject.preproject.exception.BusinessRuntimeException;
 import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.questions.entity.Question;
+import com.preproject.preproject.questions.repository.QuestionRepository;
 import com.preproject.preproject.questions.service.QuestionService;
 import com.preproject.preproject.users.entity.Users;
 import com.preproject.preproject.users.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,12 +22,14 @@ public class AnswerService {
     private final UserService userService;
 
     private final QuestionService questionService;
+    private final QuestionRepository questionRepository;
 
     public AnswerService(AnswerRepository answerRepository, UserService userService,
-                         QuestionService questionService) {
+                         QuestionService questionService, QuestionRepository questionRepository) {
         this.answerRepository = answerRepository;
         this.userService = userService;
         this.questionService = questionService;
+        this.questionRepository = questionRepository;
     }
 
     public Answer createAnswer(Answer answer) {
@@ -53,11 +58,23 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long questionId, long answerId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
+        Question findQuestion = questionService.getQuestion(questionId);
 
-        answerRepository.delete(findAnswer);
+        if (!findAnswer.hasEqual(findQuestion)) {
+            throw new BusinessLogicException(ExceptionCode.ANSWER_QUESTION_NOT_MATCHED);
+        }
 
+        findQuestion.setAnswerCount(findQuestion.getAnswers().size() - 1);
+        findQuestion.getAnswers().remove(findAnswer);
+
+        questionRepository.save(findQuestion);
+
+    }
+
+    public List<Answer> getAnswersByuserId(long userid) {
+        return answerRepository.findAll(userid);
     }
 
     public Answer findVerifiedAnswer(long answerId) {
