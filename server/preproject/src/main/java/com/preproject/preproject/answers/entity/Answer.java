@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -48,5 +49,9 @@ public class Answer {
         if (!this.user.getAnswers().contains(this)) {
             this.user.getAnswers().add(this);
         }
+    }
+
+    public boolean hasEqual(Question question) {
+        return Objects.equals(this.question, question);
     }
 }

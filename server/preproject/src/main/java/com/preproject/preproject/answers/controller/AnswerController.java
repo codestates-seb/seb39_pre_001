@@ -48,9 +48,12 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{question-id}/answer/{answer-id}")
-    public ResponseEntity DeleteAnswer(@PathVariable("answer-id") long answerId) {
+    public ResponseEntity deleteAnswer(
+            @PathVariable("answer-id") long answerId,
+            @PathVariable("question-id") long questionId
+    ) {
 
-        answerService.deleteAnswer(answerId);
+        answerService.deleteAnswer(questionId, answerId);
 
         return new ResponseEntity<>(new SingleResponseDto<>("답글이 삭제되었습니다"), HttpStatus.NO_CONTENT);
     }
