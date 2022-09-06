@@ -173,4 +173,9 @@ public class QuestionStubService implements QuestionService {
     public void dislike(long questionId, long userId) {
 
     }
+
+    @Override
+    public void delete(long questionId, long userId) {
+
+    }
 }

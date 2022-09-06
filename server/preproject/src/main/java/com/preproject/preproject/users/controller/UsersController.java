@@ -2,6 +2,9 @@ package com.preproject.preproject.users.controller;
 
 
 import com.preproject.preproject.config.security.JwtTokenProvider;
+import com.preproject.preproject.dto.SingleResponseDto;
+import com.preproject.preproject.answers.entity.Answer;
+import com.preproject.preproject.answers.service.AnswerService;
 import com.preproject.preproject.exception.BusinessLogicException;
 import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.users.dto.UserLoginDto;
@@ -38,6 +41,7 @@ public class UsersController {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final AnswerService answerService;
 
     @PostMapping("/join")
     public ResponseEntity postUser(@RequestBody UsersPostDto usersPostDto) {
@@ -47,7 +51,7 @@ public class UsersController {
 
         Users response = userService.createUser(users);
 
-        return new ResponseEntity(userMapper.userResponse(response), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto<>(userMapper.userResponse(response)), HttpStatus.CREATED);
     }
 
     @GetMapping("/join")
@@ -95,4 +99,15 @@ public class UsersController {
 //        response.addCookie(cookie);
 //    }
 
+@GetMapping("/{user-id}/answers")
+public ResponseEntity<SingleResponseDto<String>> getAnswers(@PathVariable("user-id") long userId) {
+
+    List<Answer> list = answerService.getAnswersByuserId(userId);
+    list.forEach(x -> {
+        System.out.println(x.getAnswerId());
+        System.out.println(x.getContent());
+    });
+
+    return new ResponseEntity<>(new SingleResponseDto<>("test"), HttpStatus.OK);
+}
 }

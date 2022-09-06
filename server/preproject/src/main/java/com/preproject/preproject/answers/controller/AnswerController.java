@@ -54,16 +54,18 @@ public class AnswerController {
 
 //        response.checkAnswerWriter(users.getId());
 
-        return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(answerMapper.answerResponse(response)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/answer/{answer-id}")
-    public ResponseEntity DeleteAnswer(@PathVariable("answer-id") long answerId,
-                                       @AuthenticationPrincipal Users users) {
+    public ResponseEntity deleteAnswer(
+            @PathVariable("answer-id") long answerId,
+            @PathVariable("question-id") long questionId,
+            @AuthenticationPrincipal Users users) {
         long userId = users.getId();
 
-        answerService.deleteAnswer(answerId, userId);
+        answerService.deleteAnswer(questionId, answerId, userId);
 
-        return new ResponseEntity<>("답글이 삭제되었습니다", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new SingleResponseDto<>("답글이 삭제되었습니다"), HttpStatus.NO_CONTENT);
     }
 }

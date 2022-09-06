@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,16 +37,19 @@ public class Users implements UserDetails {
 
     @Id
     @Column(name = "USER_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String displayName;
+
+    @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, updatable = false)
+    @Column(unique = true, updatable = false, nullable = false)
     private String email;
 
+    @Builder.Default
     private LocalDateTime regdate = LocalDateTime.now();
 
 //    @ElementCollection(fetch = FetchType.EAGER)
@@ -65,7 +71,8 @@ public class Users implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<QuestionDislike> questionDislikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
     @Override
@@ -102,5 +109,9 @@ public class Users implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean alreadyAnswered(Question question) {
+        return this.getAnswers().stream().anyMatch(answer -> Objects.equals(answer.getQuestion().getQuestionId(), question.getQuestionId()));
     }
 }

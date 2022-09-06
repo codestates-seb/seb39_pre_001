@@ -10,6 +10,7 @@ import com.preproject.preproject.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
@@ -30,6 +31,7 @@ public class UserService {
         return userRepository.save(users);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public Users findUserCheck(long userId) {
         Optional<Users> optionalUsers
                 = userRepository.findById(userId);

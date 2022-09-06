@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -48,8 +49,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Question getQuestion(long questionId) {
-        return getQuestionById(questionId);
+        Question entity = getQuestionById(questionId);
+
+        entity.setViews(entity.getViews() + 1);
+
+        return questionRepository.save(entity);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question updateQuestion(Question question) {
         Question entity = getQuestionById(question.getQuestionId());
         entity.checkWriter(question.getUser().getId());
+        questionMapper.updateEntityFromSource(entity, question);
 
         List<TagQuestion> list = question.getTagQuestionList().stream()
                 .map(
@@ -113,6 +120,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (question.alreadyLikedBy(user)) {
             throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_LIKED);
         }
+        question.setLikeCount(question.getQuestionLikes().size() + 1);
 
         QuestionLike questionLike =
                 QuestionLike.builder()
@@ -133,6 +141,8 @@ public class QuestionServiceImpl implements QuestionService {
             throw new BusinessRuntimeException(CustomExceptionCode.QUESTION_ALREADY_DISLIKED);
         }
 
+        question.setDislikeCount(question.getQuestionDislikes().size() + 1);
+
         QuestionDislike questionDislike =
                 QuestionDislike.builder()
                         .question(question)
@@ -140,6 +150,16 @@ public class QuestionServiceImpl implements QuestionService {
                         .build();
 
         questionDislikeRepository.save(questionDislike);
+    }
+
+    @Override
+    public void delete(long questionId, long userId) {
+
+        Question question = getQuestionById(questionId);
+        question.checkWriter(userId);
+
+        questionRepository.delete(question);
+
     }
 
     public Question getQuestionById(long questionId) {
