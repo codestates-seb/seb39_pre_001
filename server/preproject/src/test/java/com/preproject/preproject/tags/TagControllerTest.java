@@ -1,7 +1,7 @@
 package com.preproject.preproject.tags;
 
 import com.google.gson.Gson;
-import com.preproject.preproject.tags.controller.TagsController;
+import com.preproject.preproject.tags.controller.TagController;
 import com.preproject.preproject.tags.dto.TagResponseDto;
 import com.preproject.preproject.tags.entity.Tag;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-@WebMvcTest(TagsController.class)
+@WebMvcTest(TagController.class)
 @AutoConfigureRestDocs
 public class TagControllerTest {
 

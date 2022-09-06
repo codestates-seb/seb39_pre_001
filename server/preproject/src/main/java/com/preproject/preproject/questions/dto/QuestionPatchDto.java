@@ -18,5 +18,7 @@ public class QuestionPatchDto {
 
     @Builder.Default
     private List<String> tags = new ArrayList<>();
+
+    @Setter
     private Long userId;
 }

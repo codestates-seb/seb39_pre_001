@@ -41,6 +41,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 헤더에서 JWT 를 받아온다.
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+//        System.out.println(token);
+
+        // 받아온 토큰이 null 이거나 Bearer 로 시작하지 않으면 필터 실행
+//        if (token == null || !token.startsWith("Bearer")) {
+//            chain.doFilter(request, response);
+//            return;
+//        }
+
+        // 받아온 토큰이 Bearer 로 시작하면 replace 하여 복호화
+//        String jwt = token.replace("Bearer  ", "");
+//        System.out.println(jwt);
+
         // 유효한 토큰인지 확인
         if (token != null && jwtTokenProvider.validateToken(token)) {
             // 토큰이 유효하면 토큰으로부터 유저 정보를 받아온다.

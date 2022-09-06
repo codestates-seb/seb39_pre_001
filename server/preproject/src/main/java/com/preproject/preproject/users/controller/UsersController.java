@@ -73,8 +73,8 @@ public class UsersController {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
         }
 
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-        response.setHeader("X-AUTH-TOKEN", token);
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles(), user.getDisplayName());
+        response.setHeader("X-AUTH-TOKEN",token);
 
 //        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
 //        cookie.setPath("/");
@@ -82,7 +82,7 @@ public class UsersController {
 //        cookie.setSecure(true);
 //        response.addCookie(cookie);
 
-        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+        return new ResponseEntity<>(user.getDisplayName(), HttpStatus.OK);
     }
 
 //    @PostMapping("/logout")

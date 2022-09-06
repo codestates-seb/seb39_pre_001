@@ -37,13 +37,17 @@ public class AnswerService {
 
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
+        findAnswer.checkAnswerWriter(answer.getUser().getId());
+
         Optional.ofNullable(answer.getContent()).ifPresent(content -> findAnswer.setContent(content));
 
         return answerRepository.save(findAnswer);
     }
 
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long answerId, long userId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
+
+        findAnswer.checkAnswerWriterForDelete(userId);
 
         answerRepository.delete(findAnswer);
 

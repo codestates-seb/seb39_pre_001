@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Answer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long answerId;
 
     @Column(nullable = false)
@@ -32,4 +32,20 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private Users user;
+
+    public void checkAnswerWriter(long userId) {
+        System.out.println("checkAnswerWriter : "+ this.getUser().getId());
+        System.out.println("parameterId : " + userId);
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("Only user who wrote this answer can update.");
+        }
+    }
+
+    public void checkAnswerWriterForDelete(long userId) {
+        System.out.println("checkAnswerWriter : "+ this.getUser().getId());
+        System.out.println("parameterId : " + userId);
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("Only user who wrote this answer can delete.");
+        }
+    }
 }

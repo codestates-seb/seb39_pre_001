@@ -7,8 +7,10 @@ import com.preproject.preproject.answers.entity.Answer;
 import com.preproject.preproject.answers.mapper.mapstruct.AnswerMapper;
 import com.preproject.preproject.answers.service.AnswerService;
 import com.preproject.preproject.dto.SingleResponseDto;
+import com.preproject.preproject.users.entity.Users;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +26,9 @@ public class AnswerController {
 
     @PostMapping("/{question-id}/answer")
     public ResponseEntity postAnswer(@RequestBody AnswerPostDto answersPostDto,
-                                     @PathVariable("question-id") long questionId) {
+                                     @PathVariable("question-id") long questionId,
+                                     @AuthenticationPrincipal Users users) {
+        answersPostDto.setUserId(users.getId());
         answersPostDto.setQuestionId(questionId);
 
         Answer answers = answerMapper.answerPost(answersPostDto);
@@ -37,20 +41,28 @@ public class AnswerController {
 
     @PatchMapping("/{question-id}/answer/{answer-id}")
     public ResponseEntity PatchAnswer(@PathVariable("answer-id") long answerId,
-                                      @RequestBody AnswerPatchDto answerPatchDto) {
+                                      @RequestBody AnswerPatchDto answerPatchDto,
+                                      @AuthenticationPrincipal Users users) {
         answerPatchDto.setAnswerId(answerId);
-        System.out.println(answerPatchDto.getAnswerId());
+        answerPatchDto.setUserId(users.getId());
 
-        Answer response =
-                answerService.updateAnswer(answerMapper.answerPatch(answerPatchDto));
+        System.out.println("AnswerPatchDto.getID : " + answerPatchDto.getUserId());
+        System.out.println("users.getID : " + users.getId());
+
+        Answer answer = answerMapper.answerPatch(answerPatchDto);
+        Answer response = answerService.updateAnswer(answer);
+
+//        response.checkAnswerWriter(users.getId());
 
         return new ResponseEntity<>(answerMapper.answerResponse(response), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/answer/{answer-id}")
-    public ResponseEntity DeleteAnswer(@PathVariable("answer-id") long answerId) {
+    public ResponseEntity DeleteAnswer(@PathVariable("answer-id") long answerId,
+                                       @AuthenticationPrincipal Users users) {
+        long userId = users.getId();
 
-        answerService.deleteAnswer(answerId);
+        answerService.deleteAnswer(answerId, userId);
 
         return new ResponseEntity<>("답글이 삭제되었습니다", HttpStatus.NO_CONTENT);
     }
