@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import axios from 'axios';
 import SummaryLoading from '../components/SummaryLoading';
+import LoginCheck from '../components/LoginCheck';
 
 // 전체 questions page
 const QuestionsPageWrapper = styled.div`
@@ -182,7 +183,7 @@ const StyledAskButton = styled.button`
   height: 15px;
 `;
 
-function Questions() {
+function Questions({ token }) {
   const [data, setData] = useState([]);
   const [loader] = useState([1, 2, 3, 4, 5]);
   const [items, setItems] = useState(5);
@@ -252,7 +253,13 @@ function Questions() {
       <StyledQuestions>
         <div className='title'>
           <h1>All Questions</h1>
-          <Link to='/questions/ask'>
+          <Link
+            to={token ? '/questions/ask' : '/users/login'}
+            onClick={() => {
+              if (!token) {
+                alert('로그인을 먼저 해주세요.');
+              }
+            }}>
             <StyledAskButton>Ask Question</StyledAskButton>
           </Link>
         </div>

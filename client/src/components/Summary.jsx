@@ -97,7 +97,7 @@ function Summary({ question }) {
     title,
     description,
     tags,
-    // user: { displayName },
+    user: { displayName },
     createdAt,
     likes,
     dislikes,
@@ -123,7 +123,7 @@ function Summary({ question }) {
           </div>
           <div className='user'>
             <img src={userImg} alt='user' />
-            displayName 이(가) {createdAt}에 작성
+            {displayName} 이(가) {createdAt}에 작성
           </div>
         </div>
       </div>

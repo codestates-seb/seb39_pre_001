@@ -74,18 +74,21 @@ const TagLink = styled.a`
   }
 `;
 
-const Answer = ({ questionId }) => {
+const Answer = ({ questionId, token }) => {
   const [answer, setAnswer] = useState('');
 
   // 답변 등록
   const submitHandler = async () => {
     const data = {
-      userId: 5,
       content: answer,
       questionId: +questionId,
     };
     await axios
-      .post(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer`, data)
+      .post(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer`, data, {
+        headers: {
+          'x-auth-token': token,
+        },
+      })
       .catch(function (error) {
         console.log(error);
       });

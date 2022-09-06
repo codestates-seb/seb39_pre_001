@@ -93,12 +93,16 @@ const StyledAnswers = styled.div`
   }
 `;
 
-const Answers = ({ questionId, answers = [] }) => {
+const Answers = ({ questionId, answers = [], token }) => {
   // 답변 삭제
   const deleteHandler = async (answerId) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
-        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer/${answerId}`)
+        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer/${answerId}`, {
+          headers: {
+            'x-auth-token': token,
+          },
+        })
         .then(() => {
           alert('삭제되었습니다.');
         })

@@ -135,7 +135,7 @@ const StyledAskButton = styled.button`
   height: 15px;
 `;
 
-function QuestionAnswer() {
+function QuestionAnswer({ token }) {
   const navigate = useNavigate();
   const { questionId } = useParams();
   const [data, setData] = useState({ user: { displayName: '' }, tags: [] });
@@ -164,13 +164,17 @@ function QuestionAnswer() {
         });
     };
     dataFetch();
-  }, []);
+  }, [likes, dislikes, questionId]);
 
   // 질문 삭제
   const deleteHandler = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
-        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}?userId=4`)
+        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`, {
+          headers: {
+            'x-auth-token': token,
+          },
+        })
         .then(() => {
           alert('삭제되었습니다.');
         })
@@ -179,6 +183,41 @@ function QuestionAnswer() {
         });
       await navigate('/questions');
     }
+  };
+
+  // 질문 좋아요
+  const likeHandler = () => {
+    axios
+      .patch(
+        `https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/like`,
+        {},
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      )
+      .then(window.location.reload())
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // 질문 싫어요
+  const dislikeHandler = () => {
+    axios
+      .patch(
+        `https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/dislike`,
+        {},
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      )
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -197,10 +236,10 @@ function QuestionAnswer() {
       </div>
       <div className='body-container'>
         <div className='vote'>
-          <div>
+          <div onClick={likeHandler}>
             {likes} <AiOutlineLike />
           </div>
-          <div>
+          <div onClick={dislikeHandler}>
             {dislikes} <AiOutlineDislike />{' '}
           </div>
         </div>
@@ -227,8 +266,8 @@ function QuestionAnswer() {
           </div>
         </div>
       </div>
-      <Answers questionId={id} answers={answers} />
-      <Answer questionId={id} />
+      <Answers questionId={id} answers={answers} token={token} />
+      <Answer questionId={id} token={token} />
     </StyledQuestionAnswer>
   );
 }

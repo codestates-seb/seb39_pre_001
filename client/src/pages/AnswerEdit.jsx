@@ -86,7 +86,7 @@ const Header = styled.h2`
   padding: 20px 0px 0px;
 `;
 
-function AnswerEdit() {
+function AnswerEdit({ token }) {
   const navigate = useNavigate();
   const { questionId, answerId } = useParams();
   const [content, setContent] = useState('');
@@ -117,7 +117,12 @@ function AnswerEdit() {
     await axios
       .patch(
         `https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer/${answerId}`,
-        data
+        data,
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
       )
       .catch(function (error) {
         console.log(error);

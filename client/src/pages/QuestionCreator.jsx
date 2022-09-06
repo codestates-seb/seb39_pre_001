@@ -92,7 +92,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-function QuestionCreator() {
+function QuestionCreator({ token }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
@@ -122,12 +122,12 @@ function QuestionCreator() {
     setTitle(e.target.value);
   };
 
+  // 질문 등록
   const submitHandler = async () => {
     const data = {
       title: title,
       description: content,
       tags: tags,
-      userId: 4,
     };
     if (!title) {
       alert('제목을 입력하세요.');
@@ -137,7 +137,11 @@ function QuestionCreator() {
       alert('태그를 5개 이하로 입력하세요.');
     } else {
       await axios
-        .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/ask', data)
+        .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/ask', data, {
+          headers: {
+            'x-auth-token': token,
+          },
+        })
         .catch(function (error) {
           console.log(error);
         });

@@ -91,7 +91,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-function QuestionEdit() {
+function QuestionEdit({ token }) {
   const { questionId } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -130,7 +130,11 @@ function QuestionEdit() {
       userId: 1,
     };
     await axios
-      .patch('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/' + questionId, data)
+      .patch('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/' + questionId, data, {
+        headers: {
+          'x-auth-token': token,
+        },
+      })
       .catch(function (error) {
         console.log(error);
       });
