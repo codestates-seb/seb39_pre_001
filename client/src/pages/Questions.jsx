@@ -17,6 +17,10 @@ const QuestionsPageWrapper = styled.div`
   min-height: 70vh;
   > .sidebar {
     flex: 0 0 164px;
+<<<<<<< Updated upstream
+=======
+    padding-bottom: 50px;
+>>>>>>> Stashed changes
     > nav {
       width: 164px;
       position: sticky;
@@ -127,6 +131,46 @@ const StyledQuestions = styled.div`
       font-size: 13px;
       color: #3b4045;
     }
+<<<<<<< Updated upstream
+=======
+    .btn-pagination {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 31.91px;
+        height: 27px;
+        margin: 0 2px;
+        padding: 0 8px;
+        color: #3b4045;
+        background-color: #ffffff;
+        border: 1px solid #babfc3;
+        border-radius: 4px;
+        cursor: pointer;
+        :hover {
+          background-color: #d6d9dc;
+        }
+
+        &.btn-active {
+          color: #ffffff;
+          background-color: #f48225;
+          cursor: default;
+        }
+      }
+      p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 27px;
+        font-size: 13px;
+        margin: 0 2px;
+        padding: 0 8px;
+      }
+    }
+>>>>>>> Stashed changes
   }
 `;
 
@@ -151,6 +195,7 @@ function Questions() {
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState('newest');
   const [pageInfo, setPageInfo] = useState({ totalElements: 0 });
+<<<<<<< Updated upstream
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -195,6 +240,63 @@ function Questions() {
     dataFetch();
   }, [page]);
 
+=======
+
+  // pagination 버튼 클릭 시 state 이용한 버튼 색상 변경
+  const questionCount = [5, 10, 15];
+  const [btnActive, setBtnActive] = useState(5);
+  const toggleActive = (e) => {
+    setBtnActive(Number(e.target.value));
+  };
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
+  const itemChange = (e) => {
+    setItems(Number(e.target.value));
+    // console.log(e.target.value);
+  };
+  const sortHandler = (e) => {
+    switch (e.target.value) {
+      case 'newest':
+        setSelected('newest');
+        setData([...data]);
+        break;
+      case 'like':
+        setSelected('like');
+        const tempData = [...data];
+        const sortedLike = tempData.sort((a, b) => b.like - a.like);
+        setData([...sortedLike]);
+        break;
+      case 'dislike':
+        setSelected('dislike');
+        const tempData2 = [...data];
+        const sortedDislike = tempData2.sort((a, b) => b.dislike - a.dislike);
+        setData([...sortedDislike]);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // 질문 목록 받아오기
+  useEffect(() => {
+    const dataFetch = async () => {
+      await axios
+        .get(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions?page=${page}&size=${items}`)
+        .then(function (response) {
+          setData(response.data.data);
+          setPageInfo(response.data.pageInfo);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+  }, [page, items]);
+
+>>>>>>> Stashed changes
   return (
     <QuestionsPageWrapper>
       <div className='sidebar'>
@@ -233,6 +335,19 @@ function Questions() {
             totalItemsCount={pageInfo.totalElements}
             pageRangeDisplayed={5}
             onChange={handlePageChange}></Pagination>
+<<<<<<< Updated upstream
+=======
+          <div className='btn-pagination' onClick={itemChange}>
+            {questionCount.map((el, idx) => {
+              return (
+                <button key={idx} value={el} className={el === btnActive ? 'btn-active' : ''} onClick={toggleActive}>
+                  {el}
+                </button>
+              );
+            })}
+            <p>per page</p>
+          </div>
+>>>>>>> Stashed changes
         </div>
       </StyledQuestions>
     </QuestionsPageWrapper>

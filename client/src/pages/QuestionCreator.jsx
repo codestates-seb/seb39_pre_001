@@ -58,6 +58,10 @@ const StyledQuestionCreator = styled.div`
           padding-left: 8px;
           background-color: #e1ecf4;
           border-radius: 3px;
+<<<<<<< Updated upstream
+=======
+          white-space: nowrap;
+>>>>>>> Stashed changes
           > button {
             font-size: 12px;
             color: #39739d;
@@ -103,7 +107,13 @@ function QuestionCreator() {
       return;
     }
     if (e.target.value[e.target.value.length - 1] === ' ') {
+<<<<<<< Updated upstream
       setTags([...tags, e.target.value.slice(0, -1)]);
+=======
+      if (!tags.includes(e.target.value.slice(0, -1))) {
+        setTags([...tags, e.target.value.slice(0, -1)]);
+      }
+>>>>>>> Stashed changes
       e.target.value = '';
       return;
     }
@@ -124,6 +134,7 @@ function QuestionCreator() {
       title: title,
       description: content,
       tags: tags,
+<<<<<<< Updated upstream
       userId: 1,
     };
     await axios
@@ -132,6 +143,25 @@ function QuestionCreator() {
         console.log(error);
       });
     await navigate('/questions');
+=======
+      userId: 4,
+    };
+    if (!title) {
+      alert('제목을 입력하세요.');
+    } else if (content.length < 10) {
+      alert('본문을 10자 이상 입력하세요.');
+    } else if (tags.length > 5) {
+      alert('태그를 5개 이하로 입력하세요.');
+    } else {
+      await axios
+        .post('https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/ask', data)
+        .catch(function (error) {
+          console.log(error);
+        });
+      await navigate('/questions');
+    }
+    return;
+>>>>>>> Stashed changes
   };
 
   return (

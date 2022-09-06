@@ -1,6 +1,10 @@
 import styled from 'styled-components';
+<<<<<<< Updated upstream
 import dummyAnswers from '../data/dummy-answers';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+=======
+import { Link } from 'react-router-dom';
+>>>>>>> Stashed changes
 import userImg from '../static/user.png';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 import axios from 'axios';
@@ -94,6 +98,7 @@ const StyledAnswers = styled.div`
   }
 `;
 
+<<<<<<< Updated upstream
 const Answers = ({ questionId }) => {
   const navigate = useNavigate();
 
@@ -102,23 +107,42 @@ const Answers = ({ questionId }) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
         .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`)
+=======
+const Answers = ({ questionId, answers = [] }) => {
+  // 답변 삭제
+  const deleteHandler = async (answerId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      await axios
+        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer/${answerId}`)
+>>>>>>> Stashed changes
         .then(() => {
           alert('삭제되었습니다.');
         })
         .catch(function (error) {
           console.log(error);
         });
+<<<<<<< Updated upstream
       await navigate('/questions');
+=======
+      await window.location.reload();
+>>>>>>> Stashed changes
     }
   };
 
   return (
     <StyledAnswers>
       <div className='answers-container'>
+<<<<<<< Updated upstream
         <h2 className='answers-counter'>{dummyAnswers.length} Answers</h2>
         <div className='answers-list'>
           {dummyAnswers.map((answer) => (
             <div className='answer' key={answer.answer_id}>
+=======
+        <h2 className='answers-counter'>{answers.length} Answers</h2>
+        <div className='answers-list'>
+          {answers.map((answer) => (
+            <div className='answer' key={answer.answerId}>
+>>>>>>> Stashed changes
               <div className='vote'>
                 <div>
                   {answer.likes} <AiOutlineLike />
@@ -133,8 +157,13 @@ const Answers = ({ questionId }) => {
                 </p>
                 <div className='author-container'>
                   <div className='editor'>
+<<<<<<< Updated upstream
                     <Link to={`/questions/${String(questionId)}`}>edit</Link>
                     <Link to={`/questions/` + questionId} onClick={deleteHandler}>
+=======
+                    <Link to={`/questions/${questionId}/answer/${answer.answerId}/edit`}>edit</Link>
+                    <Link to={`/questions/` + questionId} onClick={() => deleteHandler(answer.answerId)}>
+>>>>>>> Stashed changes
                       delete
                     </Link>
                   </div>

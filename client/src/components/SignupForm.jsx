@@ -25,21 +25,23 @@ const NavLink = styled(Link)`
   color: #0074cc;
   cursor: pointer;
   :hover {
-    color: #1E9DFE;
+    color: #1e9dfe;
   }
 `;
 
-// const signupSubmitHandler
-
 const SignupForm = () => {
-
   return (
     <SignupSection>
       <SocialSignup />
       <EmailSignup />
       <BottomText>
-        <div>Already have an account? <NavLink to="/users/login">Log in</NavLink></div>
-        <div>Are you an employer? Sign up on Talent<RiShareBoxLine /></div>
+        <div>
+          Already have an account? <NavLink to='/users/login'>Log in</NavLink>
+        </div>
+        <div>
+          Are you an employer? Sign up on Talent
+          <RiShareBoxLine />
+        </div>
       </BottomText>
     </SignupSection>
   );

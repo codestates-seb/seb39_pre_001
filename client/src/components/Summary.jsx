@@ -97,18 +97,30 @@ function Summary({ question }) {
     title,
     description,
     tags,
+<<<<<<< Updated upstream
     user: { displayName },
     date,
     likes,
     dislikes,
     view,
+=======
+    // user: { displayName },
+    createdAt,
+    likes,
+    dislikes,
+    views,
+>>>>>>> Stashed changes
   } = question;
   return (
     <StyledSummary>
       <div className='stats'>
         <div className='like'>{likes} likes</div>
         <div className='dislike'>{dislikes} dislikes</div>
+<<<<<<< Updated upstream
         <div className='view'>view views</div>
+=======
+        <div className='view'>{views} views</div>
+>>>>>>> Stashed changes
       </div>
       <div className='content'>
         <h3 className='title'>
@@ -123,7 +135,11 @@ function Summary({ question }) {
           </div>
           <div className='user'>
             <img src={userImg} alt='user' />
+<<<<<<< Updated upstream
             {displayName} 이(가) date
+=======
+            displayName 이(가) {createdAt}에 작성
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>

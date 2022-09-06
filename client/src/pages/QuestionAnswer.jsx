@@ -2,7 +2,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Answer from '../components/Answer';
 import Answers from '../components/Answers';
+<<<<<<< Updated upstream
 import question from '../data/dummy';
+=======
+>>>>>>> Stashed changes
 import userImg from '../static/user.png';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
@@ -139,7 +142,11 @@ const StyledAskButton = styled.button`
 function QuestionAnswer() {
   const navigate = useNavigate();
   const { questionId } = useParams();
+<<<<<<< Updated upstream
   const [data, setData] = useState(question[0]);
+=======
+  const [data, setData] = useState({ user: { displayName: '' }, tags: [] });
+>>>>>>> Stashed changes
   const {
     id = questionId,
     title,
@@ -148,6 +155,12 @@ function QuestionAnswer() {
     user: { displayName },
     likes,
     dislikes,
+<<<<<<< Updated upstream
+=======
+    views,
+    createdAt,
+    answers,
+>>>>>>> Stashed changes
   } = data;
 
   useEffect(() => {
@@ -168,7 +181,11 @@ function QuestionAnswer() {
   const deleteHandler = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
+<<<<<<< Updated upstream
         .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}`)
+=======
+        .delete(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}?userId=4`)
+>>>>>>> Stashed changes
         .then(() => {
           alert('삭제되었습니다.');
         })
@@ -188,9 +205,15 @@ function QuestionAnswer() {
         </Link>
       </div>
       <div className='info'>
+<<<<<<< Updated upstream
         <div>date</div>
         <div>
           <span>Viewed</span> view times
+=======
+        <div>{createdAt}</div>
+        <div>
+          <span>Viewed</span> {views} times
+>>>>>>> Stashed changes
         </div>
       </div>
       <div className='body-container'>
@@ -225,8 +248,13 @@ function QuestionAnswer() {
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
       <Answers questionId={id} />
       <Answer />
+=======
+      <Answers questionId={id} answers={answers} />
+      <Answer questionId={id} />
+>>>>>>> Stashed changes
     </StyledQuestionAnswer>
   );
 }

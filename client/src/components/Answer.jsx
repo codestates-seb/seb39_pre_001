@@ -74,6 +74,7 @@ const TagLink = styled.a`
   }
 `;
 
+<<<<<<< Updated upstream
 const Answer = () => {
   const [answer, setAnswer] = useState('');
 
@@ -87,6 +88,24 @@ const Answer = () => {
       .catch(function (error) {
         console.log(error);
       });
+=======
+const Answer = ({ questionId }) => {
+  const [answer, setAnswer] = useState('');
+
+  // 답변 등록
+  const submitHandler = async () => {
+    const data = {
+      userId: 5,
+      content: answer,
+      questionId: +questionId,
+    };
+    await axios
+      .post(`https://cors-jwy.herokuapp.com/http://119.71.184.39:8080/questions/${questionId}/answer`, data)
+      .catch(function (error) {
+        console.log(error);
+      });
+    await window.location.reload();
+>>>>>>> Stashed changes
   };
 
   return (
