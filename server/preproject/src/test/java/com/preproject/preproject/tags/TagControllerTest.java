@@ -1,14 +1,20 @@
 package com.preproject.preproject.tags;
 
 import com.google.gson.Gson;
-import com.preproject.preproject.tags.controller.TagsController;
+import com.preproject.preproject.tags.controller.TagController;
 import com.preproject.preproject.tags.dto.TagResponseDto;
-import com.preproject.preproject.tags.entity.Tags;
+import com.preproject.preproject.tags.entity.Tag;
+import com.preproject.preproject.tags.mapper.mapstruct.TagMapper;
+import com.preproject.preproject.tags.service.TagService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,12 +26,15 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.BDDMockito.*;
 
 import java.util.List;
 
-@WebMvcTest(TagsController.class)
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(TagController.class)
 @AutoConfigureRestDocs
 public class TagControllerTest {
 
@@ -34,6 +43,12 @@ public class TagControllerTest {
 
     @Autowired
     private Gson gson;
+
+    @MockBean
+    private TagService tagService;
+
+    @MockBean
+    private TagMapper tagMapper;
 
     @Test
     @DisplayName("Tag 조회 테스트")
@@ -47,9 +62,13 @@ public class TagControllerTest {
 //                new Tags(4, "SPRING BOOT")
 //        );
 
-        TagResponseDto tags = new TagResponseDto(1L, "JAVA");
+        List<TagResponseDto> tags = List.of(new TagResponseDto(1L, "JAVA"));
 
         String content = gson.toJson(tags);
+
+
+        given(tagService.findTags()).willReturn(List.of());
+        given(tagMapper.listFromDto(Mockito.any(List.class))).willReturn(tags);
 
         //when
         ResultActions actions =
@@ -68,13 +87,14 @@ public class TagControllerTest {
 //                .andExpect(jsonPath("$.tags_id").value(3))
 //                .andExpect(jsonPath("$.name").value("REACT"))
 //                .andExpect(jsonPath("$.tags_id").value(4))
-//                .andExpect(jsonPath("$.name").value("SPRING BOOT"))
+////                .andExpect(jsonPath("$.name").value("SPRING BOOT"))
                 .andDo(document("get-tags",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         responseFields(
-                                fieldWithPath("tag_id").type(JsonFieldType.NUMBER).description("태그 아이디"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그 이름")
+                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("태그"),
+                                fieldWithPath("data[].tagId").type(JsonFieldType.NUMBER).description("태그식별자"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("태그 이름")
                         )));
 
     }
