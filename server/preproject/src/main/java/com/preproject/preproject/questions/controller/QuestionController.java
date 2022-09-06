@@ -87,13 +87,17 @@ public class QuestionController {
 
 
     @PatchMapping("/{questionId}/like")
-    public ResponseEntity<SingleResponseDto<String>> like(@PathVariable long questionId, long userId) {
+    public ResponseEntity<SingleResponseDto<String>> like(@PathVariable long questionId,
+                                                          @AuthenticationPrincipal Users users) {
+        long userId = users.getId();
         questionService.like(questionId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("liked"), HttpStatus.OK);
     }
 
     @PatchMapping("/{questionId}/dislike")
-    public ResponseEntity<SingleResponseDto<String>> dislike(@PathVariable long questionId, long userId) {
+    public ResponseEntity<SingleResponseDto<String>> dislike(@PathVariable long questionId,
+                                                             @AuthenticationPrincipal Users users) {
+        long userId = users.getId();
         questionService.dislike(questionId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("disliked"), HttpStatus.OK);
     }
