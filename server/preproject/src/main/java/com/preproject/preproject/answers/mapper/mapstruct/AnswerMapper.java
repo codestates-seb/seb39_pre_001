@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface AnswerMapper {
     Answer answerPost(AnswerPostDto answerPostDto);
 
+    @Mapping(target = "user.id", source = "userId")
     Answer answerPatch(AnswerPatchDto answerPatchDto);
 
     @Mapping(target = "user.userId", source = "user.id")

@@ -27,8 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -79,8 +77,8 @@ public class UsersController {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
         }
 
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-        response.setHeader("X-AUTH-TOKEN", token);
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles(), user.getDisplayName());
+        response.setHeader("X-AUTH-TOKEN",token);
 
 //        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
 //        cookie.setPath("/");
@@ -88,7 +86,7 @@ public class UsersController {
 //        cookie.setSecure(true);
 //        response.addCookie(cookie);
 
-        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+        return new ResponseEntity<>(user.getDisplayName(), HttpStatus.OK);
     }
 
 //    @PostMapping("/logout")
@@ -101,15 +99,15 @@ public class UsersController {
 //        response.addCookie(cookie);
 //    }
 
-    @GetMapping("/{user-id}/answers")
-    public ResponseEntity<SingleResponseDto<String>> getAnswers(@PathVariable("user-id") long userId) {
+@GetMapping("/{user-id}/answers")
+public ResponseEntity<SingleResponseDto<String>> getAnswers(@PathVariable("user-id") long userId) {
 
-        List<Answer> list = answerService.getAnswersByuserId(userId);
-        list.forEach(x -> {
-            System.out.println(x.getAnswerId());
-            System.out.println(x.getContent());
-        });
+    List<Answer> list = answerService.getAnswersByuserId(userId);
+    list.forEach(x -> {
+        System.out.println(x.getAnswerId());
+        System.out.println(x.getContent());
+    });
 
-        return new ResponseEntity<>(new SingleResponseDto<>("test"), HttpStatus.OK);
-    }
+    return new ResponseEntity<>(new SingleResponseDto<>("test"), HttpStatus.OK);
+}
 }

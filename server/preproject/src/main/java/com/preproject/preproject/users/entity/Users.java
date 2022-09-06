@@ -114,6 +114,4 @@ public class Users implements UserDetails {
     public boolean alreadyAnswered(Question question) {
         return this.getAnswers().stream().anyMatch(answer -> Objects.equals(answer.getQuestion().getQuestionId(), question.getQuestionId()));
     }
-
-
 }

@@ -53,13 +53,16 @@ public class AnswerService {
 
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
+        findAnswer.checkAnswerWriter(answer.getUser().getId());
+
         Optional.ofNullable(answer.getContent()).ifPresent(content -> findAnswer.setContent(content));
 
         return answerRepository.save(findAnswer);
     }
 
-    public void deleteAnswer(long questionId, long answerId) {
+    public void deleteAnswer(long questionId, long answerId, long userId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
+        findAnswer.checkAnswerWriterForDelete(userId);
         Question findQuestion = questionService.getQuestion(questionId);
 
         if (!findAnswer.hasEqual(findQuestion)) {
@@ -70,6 +73,10 @@ public class AnswerService {
         findQuestion.getAnswers().remove(findAnswer);
 
         questionRepository.save(findQuestion);
+
+
+//        answerRepository.delete(findAnswer);
+
 
     }
 

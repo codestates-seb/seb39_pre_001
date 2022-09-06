@@ -10,6 +10,7 @@ import com.preproject.preproject.questions.dto.SingleQuestionResponseDto;
 import com.preproject.preproject.questions.entity.Question;
 import com.preproject.preproject.questions.mapper.QuestionMapper;
 import com.preproject.preproject.questions.service.QuestionService;
+import com.preproject.preproject.users.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,9 +58,12 @@ public class QuestionController {
     }
 
     @PostMapping("/ask")
-    public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto) {
+    public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> postQuestion(@RequestBody QuestionPostDto questionPostDto,
+                                                                                     @AuthenticationPrincipal Users users) {
 
         // todo: user authentication needed. Principal needed.
+        questionPostDto.setUserId(users.getId());
+
         Question mapped = questionMapper.entityFromDto(questionPostDto);
         Question created = questionService.postQuestion(mapped);
         SingleQuestionResponseDto response = questionMapper.dtoFrom(created);
@@ -68,8 +73,10 @@ public class QuestionController {
 
     @PatchMapping("/{questionId}")
     public ResponseEntity<SingleResponseDto<SingleQuestionResponseDto>> updateQuestion(
-            @PathVariable long questionId, @RequestBody QuestionPatchDto patchDto) {
+            @PathVariable long questionId, @RequestBody QuestionPatchDto patchDto,
+            @AuthenticationPrincipal Users users) {
 
+        patchDto.setUserId(users.getId());
         patchDto.setQuestionId(questionId);
         Question mapped = questionMapper.entityFromDto(patchDto);
         Question updated = questionService.updateQuestion(mapped);
