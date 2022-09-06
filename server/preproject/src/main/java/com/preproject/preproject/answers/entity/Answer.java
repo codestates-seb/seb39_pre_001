@@ -23,13 +23,30 @@ public class Answer {
     @Column(nullable = false)
     private String content;
 
-    //todo: question entity 와 매핑 필요?
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    //todo: users entity 매핑 필요?
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "USER_ID")
     private Users user;
+
+    public void addQuestionAndUser(Question question, Users user) {
+        addQuestion(question);
+        addUsers(user);
+    }
+
+    private void addQuestion(Question question) {
+        this.question = question;
+        if (!this.question.getAnswers().contains(this)) {
+            this.question.getAnswers().add(this);
+        }
+    }
+
+    private void addUsers(Users user) {
+        this.user = user;
+        if (!this.user.getAnswers().contains(this)) {
+            this.user.getAnswers().add(this);
+        }
+    }
 }

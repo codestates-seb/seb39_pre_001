@@ -2,6 +2,7 @@ package com.preproject.preproject.users.controller;
 
 
 import com.preproject.preproject.config.security.JwtTokenProvider;
+import com.preproject.preproject.dto.SingleResponseDto;
 import com.preproject.preproject.exception.BusinessLogicException;
 import com.preproject.preproject.exception.ExceptionCode;
 import com.preproject.preproject.users.dto.UserLoginDto;
@@ -47,7 +48,7 @@ public class UsersController {
 
         Users response = userService.createUser(users);
 
-        return new ResponseEntity(userMapper.userResponse(response), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto<>(userMapper.userResponse(response)), HttpStatus.CREATED);
     }
 
     @GetMapping("/join")
